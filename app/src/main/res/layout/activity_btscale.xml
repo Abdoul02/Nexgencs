@@ -1,0 +1,141 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical" >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lLayout1">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:id="@+id/rLayoutProduct">
+
+                <Spinner
+                    android:id="@+id/productSpinner"
+                    android:background="@drawable/custom_spinner"
+                    android:spinnerMode="dropdown"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    />
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rLayoutCostCenter"
+                android:layout_marginLeft="5dp"
+                android:orientation="horizontal"
+                android:layout_toRightOf="@+id/rLayoutProduct"
+                >
+
+                <Spinner
+                    android:id="@+id/costCenterSpinner"
+                    android:background="@drawable/custom_spinner"
+                    android:spinnerMode="dropdown"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lLayout1">
+        </ListView>
+
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginTop="15dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fingerprint" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnGetWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="getWeight"
+                android:clickable="false"
+                android:enabled="false"
+                android:text="Get Weight from scale"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="25dp"
+                    android:id="@+id/txtWeight"
+                    android:text="00.00KG"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+            <ListView
+                android:id="@+id/listView2"
+                android:layout_marginTop="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/red" >
+
+            </ListView>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
+

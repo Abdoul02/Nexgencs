@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/download"
+        android:title="Done"
+        android:icon="@drawable/download"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_alcohol"
+        android:title="@string/action_alcohol"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_screen"
+        android:title="@string/action_screen"
+        app:showAsAction="never"/>
+    <item
+
+        android:id="@+id/action_scan"
+        android:title="scan"
+        app:showAsAction="never"
+        />
+</menu>

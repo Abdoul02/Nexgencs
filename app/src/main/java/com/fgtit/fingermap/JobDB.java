@@ -1,0 +1,663 @@
+package com.fgtit.fingermap;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.fgtit.entities.JobCard;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+/**
+ * Created by Abdoul on 29-07-2016.
+ */
+public class JobDB extends SQLiteOpenHelper {
+
+
+    private static final String TAG = "JobDB";
+
+    public JobDB(Context applicationcontext) {
+        super(applicationcontext, "androidsqlite.db", null, 5);
+    }
+    //Creates Table
+    @Override
+    public void onCreate(SQLiteDatabase database) {
+        String query, query2,query3,btScale,pine,ec_job,ec_job_info,ec_material;
+        query = "CREATE TABLE jobcard ( jobID INTEGER PRIMARY KEY, name TEXT, description TEXT, " +
+                "location TEXT, assignee TEXT, approvedBy TEXT,customer TEXT, progress INTEGER, start TEXT, end TEXT,jobCode TEXT,attachment TEXT," +
+                "office TEXT)";
+
+        query2 ="CREATE TABLE jobCard_info(jId INTEGER PRIMARY KEY,comment TEXT, dat TEXT, tim TEXT, jobCode TEXT, udpateStatus TEXT,startKm TEXT,endKm text)";
+
+        query3="CREATE TABLE record ( recID INTEGER PRIMARY KEY, userId TEXT, userName TEXT, " +
+                "udpateStatus TEXT, dat TEXT, lat TEXT, lng TEXT, id INTEGER, status TEXT,imei TEXT," +
+                "shifts_id INTEGER, shift_type INTEGER, costCenterId INTEGER)";
+
+        btScale = "CREATE TABLE bt_scale(scale_id INTEGER PRIMARY KEY, userId TEXT, weight TEXT, date TEXT, time TEXT,imei TEXT," +
+                "status TEXT, product_id INTEGER, cost_center_id INTEGER)";
+
+        pine = "CREATE TABLE pine(pine_id INTEGER PRIMARY KEY, userId TEXT, deliveryNote TEXT, diggersrestDN TEXT, date TEXT)";
+
+        ec_job = "CREATE TABLE ec_job(id INTEGER PRIMARY KEY,job_id INTEGER,company TEXT)";
+
+        ec_job_info = "CREATE TABLE ec_job_info(ec_id INTEGER PRIMARY KEY,id INTEGER, job_id INTEGER, work_undertaken TEXT, clock_time TEXT,status TEXT,km TEXT," +
+                "travelling_time INTEGER)";
+
+        ec_material= "CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
+                "unit_price TEXT)";
+
+        database.execSQL(query);
+        database.execSQL(query2);
+        database.execSQL(query3);
+        database.execSQL(btScale);
+        database.execSQL(pine);
+        database.execSQL(ec_job);
+        database.execSQL(ec_job_info);
+        database.execSQL(ec_material);
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
+
+        //If version is one, edit the table and add the following columns and add a new tables
+        if(current_version < 2){
+
+            database.execSQL("ALTER TABLE record ADD COLUMN shifts_id INTEGER");
+            database.execSQL("ALTER TABLE record ADD COLUMN shift_type INTEGER");
+            database.execSQL("ALTER TABLE record ADD COLUMN costCenterId INTEGER");
+            database.execSQL("CREATE TABLE bt_scale(scale_id INTEGER PRIMARY KEY, userID TEXT, weight TEXT, date TEXT, time TEXT,imei TEXT," +
+                    "status TEXT)");
+            database.execSQL("CREATE TABLE pine(pine_id INTEGER PRIMARY KEY, userId TEXT, deliveryNote TEXT, diggersrestDN TEXT, date TEXT)");
+            database.execSQL("ALTER TABLE jobcard ADD COLUMN office TEXT");
+            database.execSQL("ALTER TABLE bt_scale ADD COLUMN product_id INTEGER");
+            database.execSQL("ALTER TABLE bt_scale ADD COLUMN costcenter_id INTEGER");
+            database.execSQL("CREATE TABLE ec_job(id INTEGER PRIMARY KEY,job_id INTEGER,company TEXT)");
+            database.execSQL("CREATE TABLE ec_job_info(ec_id INTEGER PRIMARY KEY,id INTEGER, job_id INTEGER, work_undertaken TEXT, clock_time TEXT,status TEXT,km TEXT," +
+                    "travelling_time INTEGER)");
+            database.execSQL("CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
+                    "unit_price TEXT)");
+        }else if (current_version > 2 && current_version < 4){
+            //record columns were added in version 2, so version 3, just add the new tables btScale and Pine.
+
+            database.execSQL("CREATE TABLE bt_scale(scale_id INTEGER PRIMARY KEY, userId TEXT, weight TEXT, date TEXT, time TEXT,imei TEXT," +
+                    "status TEXT)");
+            database.execSQL("CREATE TABLE pine(pine_id INTEGER PRIMARY KEY, userId TEXT, deliveryNote TEXT, diggersrestDN TEXT, date TEXT)");
+           /* database.execSQL("CREATE TABLE jozi(job_id INTEGER PRIMARY KEY, date TEXT, company TEXT, office TEXT, location TEXT, jobType TEXT, " +
+                    "jobNo TEXT, id INTEGER)");*/
+            database.execSQL("ALTER TABLE jobcard ADD COLUMN office TEXT");
+            database.execSQL("ALTER TABLE bt_scale ADD COLUMN product_id INTEGER");
+            database.execSQL("ALTER TABLE bt_scale ADD COLUMN costcenter_id INTEGER");
+            database.execSQL("CREATE TABLE ec_job(id INTEGER PRIMARY KEY,job_id INTEGER,company TEXT)");
+            database.execSQL("CREATE TABLE ec_job_info(ec_id INTEGER PRIMARY KEY,id INTEGER, job_id INTEGER, work_undertaken TEXT, clock_time TEXT,status TEXT,km TEXT," +
+                    "travelling_time INTEGER)");
+            database.execSQL("CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
+                    "unit_price TEXT)");
+
+        }else if(current_version > 4 && current_version <6){
+
+            database.execSQL("CREATE TABLE ec_job(id INTEGER PRIMARY KEY,job_id INTEGER,company TEXT)");
+            database.execSQL("CREATE TABLE ec_job_info(ec_id INTEGER PRIMARY KEY,id INTEGER, job_id INTEGER, work_undertaken TEXT, clock_time TEXT,status TEXT,km TEXT," +
+                    "travelling_time INTEGER)");
+            database.execSQL("CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
+                    "unit_price TEXT)");
+        }
+
+
+
+        //database.execSQL(query);
+       // database.execSQL(query2);
+        //database.execSQL(query3);
+        //onCreate(database);
+    }
+    /**
+     * Inserts User into SQLite DB
+     * @param
+     */
+
+
+    //Job Card
+    public void insertjobcard(HashMap<String, String> queryValues) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("jobID", queryValues.get("jobID"));
+        values.put("name", queryValues.get("name"));
+        values.put("description",queryValues.get("description"));
+        values.put("location",queryValues.get("location"));
+        values.put("assignee",queryValues.get("assignee"));
+        values.put("progress",queryValues.get("progress"));
+        values.put("approvedBy", queryValues.get("approvedBy"));
+        values.put("customer", queryValues.get("customer"));
+        values.put("start", queryValues.get("start"));
+        values.put("end", queryValues.get("end"));
+        values.put("jobCode", queryValues.get("jobCode"));
+        values.put("attachment", queryValues.get("attachment"));
+        values.put("office", queryValues.get("office"));
+        database.insert("jobcard", null, values);
+        database.close();
+    }
+    public void insertJInfo(String comment, String time, String date, String jobCode,String startKm,String endKm){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("comment", comment);
+        values.put("dat", date);
+        values.put("tim", time);
+        values.put("jobCode", jobCode);
+        values.put("udpateStatus", "no");
+        values.put("startKm", startKm);
+        values.put("endKm", endKm);
+        database.insert("jobCard_info", null, values);
+        database.close();
+
+    }
+    public void deleteAll(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("jobcard", null, null);
+        db.close();
+    }
+    public void deletejobcard(String id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("jobcard", "jobCode = ?", new String[]{id});
+        db.close();
+    }
+    public void deleteJinfo(String id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("jobCard_info", "jobCode = ?", new String[]{id});
+        db.close();
+    }
+    public void updateJob(String code, int prog){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("progress", prog);
+        db.update("jobcard", values, "jobCode = ?", new String[]{code});
+    }
+    public Cursor getData(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from jobcard where jobCode="+id+"", null );
+        return res;
+    }
+
+    /**
+     * Get list of jobcard from SQLite DB as Array List
+     * @return
+     */
+    public ArrayList<HashMap<String, String>> getAlljobcard() {
+        ArrayList<HashMap<String, String>> wordList;
+        wordList = new ArrayList<HashMap<String, String>>();
+        String selectQuery = "SELECT  * FROM jobcard";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("jobCode",cursor.getString(10));
+                // map.put("userId", cursor.getString(1));
+                map.put("name", cursor.getString(1));
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return wordList;
+    }
+
+    public ArrayList<JobCard>getJobList(){
+        ArrayList<HashMap<String, String>> wordList;
+        ArrayList<JobCard> jobList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM jobcard";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+
+                JobCard jobCard = new JobCard();
+                jobCard.setJob_id(cursor.getString(10));
+                jobCard.setName(cursor.getString(1));
+                jobList.add(jobCard);
+
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return jobList;
+    }
+
+
+    public Cursor getJinfo(int id){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from jobCard_info where jId="+id+"", null );
+        return res;
+    }
+    public ArrayList<HashMap<String, String>> getAllJinfo() {
+        ArrayList<HashMap<String, String>> wordList;
+        wordList = new ArrayList<HashMap<String, String>>();
+        String selectQuery = "SELECT  * FROM jobCard_info";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("jId",cursor.getString(0));
+                // map.put("userId", cursor.getString(1));
+                map.put("time", cursor.getString(3));
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return wordList;
+    }
+
+
+    //Effective Cooling Job
+    public void insert_ec_Job(HashMap<String, String> queryValues){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("job_id", queryValues.get("job_id"));
+        values.put("company", queryValues.get("company"));
+        database.insert("ec_job", null, values);
+        database.close();
+    }
+    public ArrayList<HashMap<String, String>> get_all_ec_job() {
+
+        ArrayList<HashMap<String, String>> jobList;
+        jobList = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM ec_job";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("id", cursor.getString(0));
+                map.put("job_id",cursor.getString(1));
+                map.put("company", cursor.getString(2));
+                jobList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return jobList;
+    }
+    public Cursor get_ec_data(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from ec_job where id = "+id+"", null );
+        return res;
+    }
+    public void delete_ec_job(String id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("ec_job", "id = ?", new String[]{id});
+        db.close();
+    }
+
+    //ec_job_info
+
+    public void insert_job_info(HashMap<String, String> queryValues){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("job_id", queryValues.get("job_id"));
+        values.put("id", queryValues.get("id"));
+        values.put("work_undertaken", queryValues.get("work_undertaken"));
+        values.put("clock_time", queryValues.get("clock_time"));
+        values.put("status", queryValues.get("status"));
+        values.put("km", queryValues.get("km"));
+        values.put("travelling_time", queryValues.get("travelling_time"));
+        database.insert("ec_job_info", null, values);
+        database.close();
+    }
+    public int checkSignIn(String status,String date,String id){
+
+        int count = 0;
+        String selectQuery = "SELECT * FROM ec_job_info where status = '"+status+"' AND date(clock_time) = '"+date+"' AND id ='"+ id +"' ";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        count = cursor.getCount();
+        database.close();
+        return count;
+
+    }
+    //ec_material
+    public void insert_ec_material(HashMap<String, String> queryValues){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("job_id", queryValues.get("job_id"));
+        values.put("id", queryValues.get("id"));
+        values.put("quantity", queryValues.get("quantity"));
+        values.put("material_used", queryValues.get("material_used"));
+        values.put("unit_price", queryValues.get("unit_price"));
+        database.insert("ec_material", null, values);
+        database.close();
+    }
+    public void delete_ec_material(String id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("ec_material", "id = ?", new String[]{id});
+        db.close();
+    }
+    public String ec_material_JSON(){
+        ArrayList<HashMap<String, String>> materialList;
+        materialList = new ArrayList<HashMap<String, String>>();
+        String selectQuery = "SELECT  * FROM ec_material";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("id", cursor.getString(1));
+                map.put("job_id", cursor.getString(2));
+                map.put("quantity", cursor.getString(3));
+                map.put("material_used", cursor.getString(4));
+                map.put("unit_price",cursor.getString(5));
+                materialList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        Gson gson = new GsonBuilder().create();
+        //Use GSON to serialize Array List to JSON
+        return gson.toJson(materialList);
+    }
+
+    //Records
+    public void insertRecord(String id, String name,String dat, String lat, String lng,int uid,String status,String imei,int shifts_id,int shift_type,int costCenterId) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("userId", id);
+        values.put("userName", name);
+        values.put("udpateStatus", "no");
+        values.put("dat",dat);
+        values.put("lat",lat);
+        values.put("lng",lng);
+        values.put("id",uid);
+        values.put("status", status);
+        values.put("imei",imei);
+        values.put("shifts_id",shifts_id);
+        values.put("shift_type",shift_type);
+        values.put("costCenterId",costCenterId);
+        database.insert("record", null, values);
+        database.close();
+    }
+    public void deleteRecord(String recID){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("record","recID = ?",new String[]{recID});
+        db.close();
+    }
+    public Cursor getRec(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from record where recID="+id+"", null );
+        return res;
+    }
+    public ArrayList<HashMap<String, String>> getAllrecord() {
+        ArrayList<HashMap<String, String>> wordList;
+        wordList = new ArrayList<HashMap<String, String>>();
+        //String selectQuery = "SELECT  * FROM record";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery("select * from record", null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("date",cursor.getString(4));
+                // map.put("userId", cursor.getString(1));
+                map.put("userName", cursor.getString(2));
+                map.put("costCenterId",cursor.getString(12));
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return wordList;
+    }
+    public String composeJSONfromSQLite(){
+        ArrayList<HashMap<String, String>> wordList;
+        wordList = new ArrayList<HashMap<String, String>>();
+        String selectQuery = "SELECT  * FROM record";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("recId", cursor.getString(0));
+                map.put("dat", cursor.getString(4));
+                map.put("status", cursor.getString(8));
+                map.put("lon", cursor.getString(6));
+                map.put("lat", cursor.getString(5));
+                map.put("id", cursor.getString(7));
+                map.put("imei",cursor.getString(9));
+                //map.put("shifts_id",cursor.getString(10));
+                //map.put("shift_type",cursor.getString(11));
+                //map.put("costCenterId",cursor.getString(12));
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        Gson gson = new GsonBuilder().create();
+        //Use GSON to serialize Array List to JSON
+        return gson.toJson(wordList);
+    }
+    public int dbSyncCoun(){
+        int count = 0;
+        String selectQuery = "SELECT  * FROM record";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        count = cursor.getCount();
+        database.close();
+        return count;
+    }
+
+    //Pine
+    public void insertPine(String id, String deliveryNote, String diggersrestDN,String date){
+
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("userId", id);
+        values.put("deliveryNote", deliveryNote);
+        values.put("diggersrestDN", diggersrestDN);
+        values.put("date", date);
+        database.insert("pine", null, values);
+        database.close();
+    }
+    public void deletePine (String diggersrestDN){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("pine","diggersrestDN = ?",new String[]{diggersrestDN});
+        db.close();
+
+    }
+    public ArrayList<HashMap<String, String>> getAllPine() {
+
+        ArrayList<HashMap<String, String>> wordList;
+        wordList = new ArrayList<HashMap<String, String>>();
+        String selectQuery = "SELECT  * FROM pine";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("userId", cursor.getString(1));
+                map.put("deliveryNote",cursor.getString(2));
+                map.put("diggersrestDN", cursor.getString(3));
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return wordList;
+    }
+    public int getPineUser(String diggersRestDN){
+
+        String selectQuery = "SELECT * FROM pine where diggersrestDN ='"+diggersRestDN+"'";
+        SQLiteDatabase database = this.getWritableDatabase();
+        int userId = 0;
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+
+                userId = cursor.getInt((cursor.getColumnIndex("userId")));
+
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return userId;
+
+    }
+    public List <String> getPine(){
+
+        List<String> pineList = new ArrayList<String>();
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery("select * from pine", null);
+        if (cursor.moveToFirst()) {
+            do {
+                pineList.add(cursor.getString(3));
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return pineList;
+    }
+
+
+    //Scale
+    public void insert_bt_scale(String id,String weight, String date, String time, String imei, String status,int product_id, int cost_center_id){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("userId", id);
+        values.put("weight", weight);
+        values.put("date", date);
+        values.put("time", time);
+        values.put("imei", imei);
+        values.put("status", status);
+        values.put("product_id", product_id);
+        values.put("cost_center_id", cost_center_id);
+        database.insert("bt_scale", null, values);
+        database.close();
+    }
+    public void delete_scale_rec(String scale_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("bt_scale","scale_id = ?",new String[]{scale_id});
+        db.close();
+
+    }
+    public String bt_scale_JSON(){
+
+        ArrayList<HashMap<String, String>> wordList;
+        wordList = new ArrayList<HashMap<String, String>>();
+        String selectQuery = "SELECT  * FROM bt_scale";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("scale_id", cursor.getString(0));
+                map.put("user_id", cursor.getString(1));
+                map.put("weight", cursor.getString(2));
+                map.put("date", cursor.getString(3));
+                map.put("time", cursor.getString(4));
+                map.put("imei",cursor.getString(5));
+                map.put("status",cursor.getString(6));
+                map.put("product_id",cursor.getString(7));
+                map.put("cost_center_id",cursor.getString(8));
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        Gson gson = new GsonBuilder().create();
+        //Use GSON to serialize Array List to JSON
+        return gson.toJson(wordList);
+    }
+    public int getScaleCount(){
+
+        int count = 0;
+        String selectQuery = "SELECT  * FROM bt_scale";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        count = cursor.getCount();
+        database.close();
+        return count;
+    }
+
+
+
+    /**
+     * Compose JSON out of SQLite jobcards
+     * @return
+
+    public String composeJSONfromSQLite(){
+        ArrayList<HashMap<String, String>> wordList;
+        wordList = new ArrayList<HashMap<String, String>>();
+        String selectQuery = "SELECT  * FROM jobCard_info where udpateStatus = '"+"no"+"'";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("comment", cursor.getString(1));
+                map.put("dat", cursor.getString(2));
+                map.put("tim", cursor.getString(3));
+                map.put("jobCode", cursor.getString(4));
+                wordList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        Gson gson = new GsonBuilder().create();
+        //Use GSON to serialize Array List to JSON
+        return gson.toJson(wordList);
+    }   */
+
+    /**
+     * Get Sync status of SQLite
+     * @return
+     */
+    public String getSyncStatus(){
+        String msg = null;
+        if(this.dbSyncCoun() == 0){
+            msg = "SQLite and Remote MySQL DBs are in Sync!";
+        }else{
+            msg = "DB Sync needed\n";
+        }
+        return msg;
+    }
+    /**
+     * Get SQLite jobcards that are yet to be Synced
+     * @return
+     */
+    public int dbSyncCount(){
+        int count = 0;
+        String selectQuery = "SELECT  * FROM jobCard_info where udpateStatus = '"+"no"+"'";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        count = cursor.getCount();
+        database.close();
+        return count;
+    }
+
+    /**
+     * Update Sync status against each User ID
+     * @param id
+     * @param status
+
+    public void updateSyncStatus(String id, String status){
+        SQLiteDatabase database = this.getWritableDatabase();
+        String updateQuery = "Update jobCard_info set udpateStatus = '"+ status +"' where jId="+"'"+ id +"'";
+        Log.d("query",updateQuery);
+        database.execSQL(updateQuery);
+        database.close();
+    }*/
+    public void updateSyncStatus(String id, String status){
+        SQLiteDatabase database = this.getWritableDatabase();
+        String updateQuery = "Update record set udpateStatus = '"+ status +"' where recID="+"'"+ id +"'";
+        Log.d("query",updateQuery);
+        database.execSQL(updateQuery);
+        database.close();
+    }
+
+
+}

@@ -1,0 +1,47 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\Abdoul\\Documents\\Dev\\Alcohol_test\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v14\\values-v14.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Abdoul\\Documents\\Dev\\Alcohol_test\\app\\src\\main\\res\\values-v14\\styles.xml",
+                    "from": {
+                        "startLines": "7",
+                        "startColumns": "4",
+                        "startOffsets": "227",
+                        "endLines": "9",
+                        "endColumns": "12",
+                        "endOffsets": "364"
+                    },
+                    "to": {
+                        "startLines": "12",
+                        "startColumns": "4",
+                        "startOffsets": "752",
+                        "endLines": "14",
+                        "endColumns": "12",
+                        "endOffsets": "887"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Abdoul\\Documents\\Dev\\Alcohol_test\\app\\src\\main\\res\\values-v14\\styles_fgtit.xml",
+                    "from": {
+                        "startLines": "44,51,39,21,57",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "2084,2523,1927,801,2867",
+                        "endLines": "49,54,42,37,60",
+                        "endColumns": "12,12,9,12,12",
+                        "endOffsets": "2517,2777,2076,1921,3107"
+                    },
+                    "to": {
+                        "startLines": "2,8,15,19,36",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,493,892,1046,2171",
+                        "endLines": "7,11,18,35,39",
+                        "endColumns": "12,12,9,12,12",
+                        "endOffsets": "488,747,1041,2166,2411"
+                    }
+                }
+            ]
+        }
+    ]
+}

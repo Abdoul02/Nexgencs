@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <ListView
+            android:id="@+id/projectList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="#FFF"
+            android:dividerHeight="4px"
+            android:layout_alignParentLeft="true"
+            tools:listitem="@layout/project_entry">
+        </ListView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:onClick="createJob"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="32dp"/>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+

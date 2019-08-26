@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/JobLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <ListView
+            android:id="@+id/joziList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="#FFF"
+            android:dividerHeight="4px"
+            android:layout_alignParentLeft="true">
+        </ListView>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

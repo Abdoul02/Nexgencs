@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/grey"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <!-- Tally ID -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtTallyID"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="ID*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Bill Month -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtBill"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Bill Month*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Supervisor -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtSupervisor"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Supervisor*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- date received -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtDateReceived"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Date Received*"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Crosscut no  -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtCrosscut"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Crosscut No*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- DR delivery Note -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtDrDeliveryNote"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="DR Delivery Note #*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Supplier-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtSupplier"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Supplier*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Supplier Delivery Note -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtSupplierDN"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Supplier Delivery Note #*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Plantation -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtPlantation"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Plantation*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Vehicle Reg -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtVehicleReg"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Vehicle Reg*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Compartment -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtCompartment"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Compartment*"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Load Type -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <!--EditText
+                    android:id="@+id/edtLoadType"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="@string/loadType"
+                    android:textColorHint="#000"
+                    android:padding="8dp" /-->
+                <Spinner
+                    android:layout_width="300dp"
+                    android:id="@+id/spnLoadType"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:textAlignment="gravity"
+                    android:background="@drawable/ovalborder"></Spinner>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Placard no -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/edtPlacardNo"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Placard No"
+                    android:textColorHint="#000"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Load Vehicle type -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/custom_view" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_background_white_30"
+                android:orientation="vertical" >
+
+                <!--EditText
+                    android:id="@+id/edtLoadVehicle"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/ovalborder"
+                    android:hint="Load Vehicle type"
+                    android:textColorHint="#000"
+                    android:padding="8dp" /-->
+                <Spinner
+                    android:layout_width="300dp"
+                    android:id="@+id/spnVehicleLoad"
+                    android:layout_height="match_parent"
+                    android:gravity="top"
+                    android:paddingBottom="26dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="5dp"
+                    android:textAlignment="gravity"
+                    android:background="@drawable/ovalborder"></Spinner>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Create Button -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/btnCreatePine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:onClick="createPine"
+                    android:background="@drawable/btncustom"
+                    android:text="Create"
+                    android:textColor="#FFF"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</ScrollView>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.fgtit.fingermap.CreateEffectiveJob">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txt_input_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:hint="Name">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edt_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txt_input_address"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:hint="Address">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edt_address"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txt_input_order"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:hint="Order No">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edt_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txt_input_id"
+        android:layout_marginTop="15dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:hint="ID Number"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edt_id_number"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText2"
+        android:layout_centerHorizontal="true"
+        android:onClick="createJobCard"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btncustom"
+        android:text="Create Job"
+        android:textColor="#FFF"/>
+
+
+</LinearLayout>

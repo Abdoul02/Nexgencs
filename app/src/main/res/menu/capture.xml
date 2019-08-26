@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools">
+
+    <!-- android:icon="@drawable/about" -->
+
+	<item
+        android:id="@+id/action_back"
+        android:title="@string/action_back"
+        app:showAsAction="always"/>
+    
+    <item
+    android:id="@+id/action_capture"
+        android:title="@string/action_capture"
+        app:showAsAction="always"/>
+
+</menu>

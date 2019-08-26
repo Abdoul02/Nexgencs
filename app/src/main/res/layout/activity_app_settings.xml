@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+android:orientation="vertical"
+    tools:context="com.fgtit.fingermap.AppSettings">
+
+    <CheckBox
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lock Fingerprint Registration"
+        android:checked="true"
+        android:id="@+id/chFingerLock"
+        />
+
+
+    <!--CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="Send Location every Hour"
+        android:id="@+id/chLocation"
+ /-->
+
+
+    <RelativeLayout
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp" >
+
+        <TextView
+            android:id="@+id/txtOldPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="right"
+            android:text="Old password"
+            android:textColor="@color/black"
+             />
+
+        <EditText
+            android:id="@+id/edtOldPass"
+            android:layout_marginTop="5dp"
+            android:inputType="textPassword"
+            android:layout_below="@+id/txtOldPass"
+            android:layout_width="250dp"
+            android:padding="8dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/edtcustom"
+            android:layout_weight="1"
+            android:ems="10"
+            android:singleLine="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp" >
+
+        <TextView
+            android:id="@+id/txtNewPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="right"
+            android:text="New password"
+            android:textColor="@color/black"
+            />
+
+        <EditText
+            android:id="@+id/edtNewPass"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/txtNewPass"
+            android:padding="8dp"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:inputType="textPassword"
+            android:background="@drawable/edtcustom"
+            android:layout_weight="1"
+            android:ems="10"
+            android:singleLine="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp" >
+
+        <Button
+            android:id="@+id/btnUpdatePass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:onClick="updatePass"
+            android:background="@drawable/btncustom"
+            android:text="Update"
+            android:textColor="#FFF"/>
+
+    </RelativeLayout>
+</LinearLayout>

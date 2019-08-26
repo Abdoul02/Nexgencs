@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <!-- android:icon="@drawable/about" -->
+
+	<item
+        android:id="@+id/action_refresh"
+        android:title="@string/action_refresh"
+        app:showAsAction="always"/>
+    
+    <item
+    android:id="@+id/action_manage"
+        android:title="Logout"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_native_map"
+        android:title="Use Native Map"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_google_web_map"
+        android:title="Use Google Web Map"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_google_china_web_map"
+        android:title="Use Google China Web Map"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_mapbox_map"
+        android:title="Use MapBox Map"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+</menu>

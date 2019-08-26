@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    tools:context="com.fgtit.fingermap.PineDetail">
+
+
+    <EditText
+        android:id="@+id/edtDelivery"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:singleLine="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:padding="8dp"
+        android:background="@drawable/custom_edt"
+        android:hint="Delivery Note"
+        android:textColor="@color/black" >
+    </EditText>
+
+
+
+    <EditText
+        android:id="@+id/edtTag"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:singleLine="true"
+        android:layout_below="@+id/edtDelivery"
+        android:layout_marginTop="30dp"
+        android:padding="8dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/custom_edt"
+        android:hint="Tag"
+        android:textColor="@color/black" >
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/edtDiameter"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:singleLine="true"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/edtTag"
+        android:layout_marginTop="30dp"
+        android:padding="8dp"
+        android:inputType="numberDecimal"
+        android:background="@drawable/custom_edt"
+        android:hint="Diameter"
+        android:textColor="@color/black" >
+
+    </EditText>
+
+    <Spinner
+        android:layout_width="300dp"
+        android:id="@+id/spnStatus"
+        android:layout_height="55dp"
+        android:paddingBottom="26dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/edtDiameter"
+        android:paddingTop="5dp"
+        android:textAlignment="gravity"
+        android:prompt="@string/good"
+        android:background="@drawable/ovalborder">
+
+    </Spinner>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spnStatus"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:onClick="addPine"
+        android:background="@drawable/btncustom"
+        android:text="Add"
+        android:textColor="#FFF"/>
+
+
+
+
+
+</RelativeLayout>

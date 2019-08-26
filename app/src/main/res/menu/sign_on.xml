@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_view"
+        android:title="@string/action_view"
+        yourapp:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_alcohol"
+        android:title="@string/action_alcohol"
+        yourapp:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_screen"
+        android:title="@string/action_screen"
+        yourapp:showAsAction="never"/>
+</menu>

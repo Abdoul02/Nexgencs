@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context="com.fgtit.fingermap.EffectiveCooling">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txt_input_work"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:hint="Work Undertaken"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edt_work"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutMaterial">
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/txt_input_qty"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:hint="QTY"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edt_qty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/txt_input_material"
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:hint="Material used"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edt_material"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/txt_input_price"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp"
+                android:hint="price"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edt_unit_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="removeField"
+                android:layout_marginLeft="3dp"
+                android:visibility="invisible"
+                android:src="@drawable/delete_bin_48"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:onClick="addField"
+                android:src="@drawable/add_48"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/txt_input_km"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:hint="KM"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_km"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/txt_input_travel_time"
+            android:layout_alignParentRight="true"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:hint="Travelling Time"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_travel_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_time_in"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="timeIn"
+            android:textColor="@color/white"
+            android:background="@drawable/in_button"
+            android:text="Time IN"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txt_time_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_time_in"
+            android:text=""
+            />
+
+        <Button
+            android:layout_alignParentRight="true"
+            android:id="@+id/btn_time_out"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="timeOut"
+            android:textColor="@color/white"
+            android:background="@drawable/out_button"
+            android:text="Time OUT"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/txt_time_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btn_time_out"
+            android:text=""
+            />
+
+
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:onClick="upload"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/btncustom"
+        android:text="Upload"/>
+
+
+</LinearLayout>
