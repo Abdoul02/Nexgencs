@@ -25,12 +25,12 @@ public class JobDB extends SQLiteOpenHelper {
     private static final String TAG = "JobDB";
 
     public JobDB(Context applicationcontext) {
-        super(applicationcontext, "androidsqlite.db", null, 5);
+        super(applicationcontext, "androidsqlite.db", null, 6);
     }
     //Creates Table
     @Override
     public void onCreate(SQLiteDatabase database) {
-        String query, query2,query3,btScale,pine,ec_job,ec_job_info,ec_material;
+        String query, query2,query3,btScale,pine,ec_job,ec_job_info,ec_material,ec_customer,ec_product;
         query = "CREATE TABLE jobcard ( jobID INTEGER PRIMARY KEY, name TEXT, description TEXT, " +
                 "location TEXT, assignee TEXT, approvedBy TEXT,customer TEXT, progress INTEGER, start TEXT, end TEXT,jobCode TEXT,attachment TEXT," +
                 "office TEXT)";
@@ -54,6 +54,9 @@ public class JobDB extends SQLiteOpenHelper {
         ec_material= "CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
                 "unit_price TEXT)";
 
+        ec_customer = "CREATE TABLE ec_customer(customer_id INTEGER PRIMARY KEY,id INTEGER,name TEXT)";
+        ec_product = "CREATE TABLE ec_product(product_id INTEGER PRIMARY KEY, id INTEGER, name TEXT, price TEXT)";
+
         database.execSQL(query);
         database.execSQL(query2);
         database.execSQL(query3);
@@ -62,6 +65,8 @@ public class JobDB extends SQLiteOpenHelper {
         database.execSQL(ec_job);
         database.execSQL(ec_job_info);
         database.execSQL(ec_material);
+        database.execSQL(ec_customer);
+        database.execSQL(ec_product);
     }
     @Override
     public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
@@ -107,6 +112,12 @@ public class JobDB extends SQLiteOpenHelper {
                     "travelling_time INTEGER)");
             database.execSQL("CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
                     "unit_price TEXT)");
+        }
+
+        else if(current_version > 5 && current_version <7){
+
+            database.execSQL("CREATE TABLE ec_customer(customer_id INTEGER PRIMARY KEY,id INTEGER,name TEXT)");
+            database.execSQL("CREATE TABLE ec_product(product_id INTEGER PRIMARY KEY, id INTEGER, name TEXT, price TEXT)");
         }
 
 

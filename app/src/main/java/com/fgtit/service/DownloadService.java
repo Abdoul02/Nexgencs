@@ -26,7 +26,7 @@ public class DownloadService extends IntentService {
     public static final String TAG = "DownloadService";
     public static final String NOTIFICATION = "package com.fgtit.service";
     public static final String POST_JSON = "json";
-    public static final String EC_DATA_URL = "url";//"http://nexgencs.co.za/alos/get_ec_data.php";
+    public static final String EC_DATA_URL = "http://nexgencs.co.za/alos/get_ec_data.php";
     public static final String CUSTOMER = "customer";
     public static final String PRODUCTS = "product";
     public static final String RESULT = "result";
@@ -50,11 +50,11 @@ public class DownloadService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
 
         final String json = intent.getStringExtra(POST_JSON);
-        final String url = intent.getStringExtra(EC_DATA_URL);
+        //final String url = intent.getStringExtra(EC_DATA_URL);
         final String filter = intent.getStringExtra(FILTER);
 
         try {
-            post(url,json, new Callback() {
+            post(EC_DATA_URL,json, new Callback() {
                 Handler handler = new Handler(DownloadService.this.getMainLooper());
 
                 @Override

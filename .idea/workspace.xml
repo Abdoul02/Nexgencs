@@ -18,7 +18,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f462af32-b8b8-45fd-8e13-c95e5c1e2b24" name="Default" comment="Commit includes, search function for job card, alcohol test, nfc card." />
+    <list default="true" id="f462af32-b8b8-45fd-8e13-c95e5c1e2b24" name="Default" comment="Commit includes, search function for job card, alcohol test, nfc card.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fgtit/service/DownloadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fgtit/service/DownloadService.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,8 +31,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_5_API_22_x86" />
   <component name="ExternalProjectsData">
@@ -47,9 +51,33 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="67" selection-start-line="67" selection-end-line="67" />
+            <state relative-caret-position="174">
+              <caret line="34" column="108" selection-start-line="34" selection-start-column="108" selection-end-line="34" selection-end-column="108" />
               <folding>
+                <element signature="e#2925#4274#1" />
+                <element signature="e#4773#4960#0" />
+                <element signature="e#5788#6320#1" />
+                <element signature="e#6471#7580#0" />
+                <element signature="e#7585#8162#0" />
+                <element signature="e#8167#8315#0" />
+                <element signature="e#8320#8503#0" />
+                <element signature="e#8508#8694#0" />
+                <element signature="e#8699#8970#0" />
+                <element signature="e#8975#9179#0" />
+                <element signature="e#9185#9267#0" />
+                <element signature="e#9185#10070#0" />
+                <element signature="e#10076#10764#0" />
+                <element signature="e#10771#10975#0" />
+                <element signature="e#10980#11775#0" />
+                <element signature="e#11782#12184#0" />
+                <element signature="e#12189#12955#0" />
+                <element signature="e#12960#13164#0" />
+                <element signature="e#13169#13346#0" />
+                <element signature="e#13371#14063#0" />
+                <element signature="e#14068#14506#0" />
+                <element signature="e#14511#15100#0" />
+                <element signature="e#15105#15292#0" />
+                <element signature="e#15297#16319#0" />
                 <element signature="e#22478#23141#0" />
                 <element signature="e#23146#23344#0" />
                 <element signature="e#23349#24571#0" />
@@ -59,17 +87,17 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/Project.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="901">
+            <state relative-caret-position="488">
               <caret line="75" column="46" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
               <folding>
-                <element signature="e#4915#5277#0" />
-                <element signature="e#5283#5432#0" />
-                <element signature="e#5438#5665#0" />
-                <element signature="e#6223#7002#0" />
-                <element signature="e#7008#7123#0" />
+                <element signature="method#onKeyDown#0;class#Project#0" />
+                <element signature="method#exitApplication#0;class#Project#0" />
+                <element signature="method#onCreateOptionsMenu#0;class#Project#0" />
+                <element signature="method#deleteDialog#0;class#Project#0" />
+                <element signature="method#reload#0;class#Project#0" />
               </folding>
             </state>
           </provider>
@@ -81,61 +109,41 @@
             <state relative-caret-position="68">
               <caret line="32" column="20" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
               <folding>
-                <element signature="e#1499#1861#0" />
-                <element signature="e#1867#2011#0" />
-                <element signature="e#2017#2258#0" />
-                <element signature="e#2264#3909#0" />
-                <element signature="e#3915#4026#0" />
-                <element signature="e#6347#6772#0" />
-                <element signature="e#6777#7567#0" />
-                <element signature="e#7572#7748#0" />
-                <element signature="e#7753#7928#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="79" lean-forward="true" selection-start-line="79" selection-end-line="79" />
-              <folding>
-                <element signature="e#30#1116#0" expanded="true" />
-                <element signature="e#1827#2599#0" expanded="true" />
-                <element signature="e#2598#2599#0" expanded="true" />
-                <element signature="e#1672#2604#0" />
-                <element signature="e#2610#2847#0" />
-                <element signature="e#2853#3635#0" />
-                <element signature="e#3641#4003#0" />
-                <element signature="e#4009#4153#0" />
-                <element signature="e#4160#5149#0" />
-                <element signature="e#5155#5256#0" />
-                <element signature="e#5262#6088#0" />
-                <element signature="e#6093#6733#0" />
-                <element signature="e#6739#6907#0" />
-                <element signature="e#6913#7929#0" />
-                <element signature="e#7935#9093#0" />
-                <element signature="e#9099#9210#0" />
-                <element signature="e#9216#9639#0" />
-                <element signature="e#9645#11948#0" />
-                <element signature="e#11954#12877#0" />
-                <element signature="e#12883#13928#0" />
+                <element signature="method#onKeyDown#0;class#CreateEffectiveJob#0" />
+                <element signature="method#exitApplication#0;class#CreateEffectiveJob#0" />
+                <element signature="method#initViews#0;class#CreateEffectiveJob#0" />
+                <element signature="method#createJobCard#0;class#CreateEffectiveJob#0" />
+                <element signature="method#showToast#0;class#CreateEffectiveJob#0" />
+                <element signature="method#setDialog#0;class#CreateEffectiveJob#0" />
+                <element signature="method#apiFeedback#0;class#CreateEffectiveJob#0" />
+                <element signature="method#reload#0;class#CreateEffectiveJob#0" />
+                <element signature="method#validateInput#0;class#CreateEffectiveJob#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/UtilitiesActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="728" column="16" lean-forward="true" selection-start-line="728" selection-start-column="16" selection-end-line="728" selection-end-column="27" />
+            <state relative-caret-position="225">
+              <caret line="77" column="53" selection-start-line="77" selection-start-column="45" selection-end-line="77" selection-end-column="53" />
               <folding>
-                <element signature="e#13389#15296#0" />
-                <element signature="e#15299#18119#0" />
-                <element signature="e#18258#19985#0" />
-                <element signature="e#19990#21268#0" />
+                <element signature="method#onCreate#0;class#EffectiveCooling#0" />
+                <element signature="method#onCreateOptionsMenu#0;class#EffectiveCooling#0" />
+                <element signature="method#onOptionsItemSelected#0;class#EffectiveCooling#0" />
+                <element signature="method#onKeyDown#0;class#EffectiveCooling#0" />
+                <element signature="method#exitApplication#0;class#EffectiveCooling#0" />
+                <element signature="method#addField#0;class#EffectiveCooling#0" />
+                <element signature="method#removeField#0;class#EffectiveCooling#0" />
+                <element signature="method#timeIn#0;class#EffectiveCooling#0" />
+                <element signature="method#timeOut#0;class#EffectiveCooling#0" />
+                <element signature="method#upload#0;class#EffectiveCooling#0" />
+                <element signature="method#uploadInfo#0;class#EffectiveCooling#0" />
+                <element signature="method#materialJSON#0;class#EffectiveCooling#0" />
+                <element signature="method#showToast#0;class#EffectiveCooling#0" />
+                <element signature="method#apiFeedback#0;class#EffectiveCooling#0" />
+                <element signature="method#reload#0;class#EffectiveCooling#0" />
               </folding>
             </state>
           </provider>
@@ -144,15 +152,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/service/DownloadService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="30" column="39" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="39" />
+            <state relative-caret-position="238">
+              <caret line="56" column="51" lean-forward="true" selection-start-line="56" selection-start-column="51" selection-end-line="56" selection-end-column="51" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/UtilitiesActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="7327">
+              <caret line="728" column="16" selection-start-line="728" selection-start-column="16" selection-end-line="728" selection-end-column="27" />
               <folding>
-                <element signature="e#28#503#0" expanded="true" />
-                <element signature="e#409#410#0" expanded="true" />
-                <element signature="e#436#437#0" expanded="true" />
-                <element signature="e#1981#2188#0" expanded="true" />
-                <element signature="e#2187#2188#0" expanded="true" />
-                <element signature="e#4037#4148#0" />
+                <element signature="method#syncData#0;class#UtilitiesActivity#0" />
+                <element signature="method#syncRecord#0;class#UtilitiesActivity#0" />
+                <element signature="method#doInBackground#0;class#getPineUsers#0;class#UtilitiesActivity#0" />
+                <element signature="method#onPostExecute#0;class#getPineUsers#0;class#UtilitiesActivity#0" />
               </folding>
             </state>
           </provider>
@@ -162,16 +177,8 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_effective_cooling.xml">
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="43">
+            <state relative-caret-position="561">
               <caret line="33" column="44" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
-              <folding>
-                <element signature="e#637#1186#0" />
-                <element signature="e#1022#4187#0" />
-                <element signature="e#4353#5013#0" />
-                <element signature="e#5023#5773#0" />
-                <element signature="e#5803#7418#0" />
-                <element signature="e#7425#7782#0" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -179,7 +186,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
+            <state relative-caret-position="2788">
               <caret line="164" column="43" selection-start-line="164" selection-start-column="17" selection-end-line="164" selection-end-column="43" />
             </state>
           </provider>
@@ -249,17 +256,17 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/Project.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/MenuActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/entities/JobCard.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/records.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobActivity.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_effective_cooling.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/service/DownloadService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="1" />
     <option name="y" value="1" />
     <option name="width" value="1364" />
@@ -299,6 +306,7 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -365,7 +373,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -559,7 +566,6 @@
       <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Terminal" order="12" />
       <window_info anchor="bottom" id="Flutter Performance" order="13" side_tool="true" />
-      <window_info anchor="right" id="Assistant" weight="0.3297546" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -571,6 +577,7 @@
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info anchor="right" id="Flutter Inspector" order="9" />
       <window_info anchor="right" id="Flutter Outline" order="10" />
+      <window_info anchor="right" id="Assistant" order="11" weight="0.3297546" />
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
@@ -1003,29 +1010,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="164" column="43" selection-start-line="164" selection-start-column="17" selection-end-line="164" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_effective_cooling.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="33" column="44" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
-          <folding>
-            <element signature="e#637#1186#0" />
-            <element signature="e#1022#4187#0" />
-            <element signature="e#4353#5013#0" />
-            <element signature="e#5023#5773#0" />
-            <element signature="e#5803#7418#0" />
-            <element signature="e#7425#7782#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/UserList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4080">
@@ -1055,16 +1039,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.11.0/cf16b99519850b1adc3b259c90fd8566a0f592f3/okhttp-3.11.0-sources.jar!/okhttp3/Call.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="67" selection-start-line="67" selection-end-line="67" />
-          <folding>
-            <element signature="e#22478#23141#0" />
-            <element signature="e#23146#23344#0" />
-            <element signature="e#23349#24571#0" />
-            <element signature="e#24576#24896#0" />
-          </folding>
+        <state relative-caret-position="153">
+          <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -1073,93 +1051,125 @@
         <state relative-caret-position="68">
           <caret line="32" column="20" selection-start-line="32" selection-start-column="20" selection-end-line="32" selection-end-column="20" />
           <folding>
-            <element signature="e#1499#1861#0" />
-            <element signature="e#1867#2011#0" />
-            <element signature="e#2017#2258#0" />
-            <element signature="e#2264#3909#0" />
-            <element signature="e#3915#4026#0" />
-            <element signature="e#6347#6772#0" />
-            <element signature="e#6777#7567#0" />
-            <element signature="e#7572#7748#0" />
-            <element signature="e#7753#7928#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/Project.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="75" column="46" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
-          <folding>
-            <element signature="e#4915#5277#0" />
-            <element signature="e#5283#5432#0" />
-            <element signature="e#5438#5665#0" />
-            <element signature="e#6223#7002#0" />
-            <element signature="e#7008#7123#0" />
+            <element signature="method#onKeyDown#0;class#CreateEffectiveJob#0" />
+            <element signature="method#exitApplication#0;class#CreateEffectiveJob#0" />
+            <element signature="method#initViews#0;class#CreateEffectiveJob#0" />
+            <element signature="method#createJobCard#0;class#CreateEffectiveJob#0" />
+            <element signature="method#showToast#0;class#CreateEffectiveJob#0" />
+            <element signature="method#setDialog#0;class#CreateEffectiveJob#0" />
+            <element signature="method#apiFeedback#0;class#CreateEffectiveJob#0" />
+            <element signature="method#reload#0;class#CreateEffectiveJob#0" />
+            <element signature="method#validateInput#0;class#CreateEffectiveJob#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/UtilitiesActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="728" column="16" lean-forward="true" selection-start-line="728" selection-start-column="16" selection-end-line="728" selection-end-column="27" />
+        <state relative-caret-position="7327">
+          <caret line="728" column="16" selection-start-line="728" selection-start-column="16" selection-end-line="728" selection-end-column="27" />
           <folding>
-            <element signature="e#13389#15296#0" />
-            <element signature="e#15299#18119#0" />
-            <element signature="e#18258#19985#0" />
-            <element signature="e#19990#21268#0" />
+            <element signature="method#syncData#0;class#UtilitiesActivity#0" />
+            <element signature="method#syncRecord#0;class#UtilitiesActivity#0" />
+            <element signature="method#doInBackground#0;class#getPineUsers#0;class#UtilitiesActivity#0" />
+            <element signature="method#onPostExecute#0;class#getPineUsers#0;class#UtilitiesActivity#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.11.0/cf16b99519850b1adc3b259c90fd8566a0f592f3/okhttp-3.11.0-sources.jar!/okhttp3/Call.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_effective_cooling.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
+        <state relative-caret-position="561">
+          <caret line="33" column="44" selection-start-line="33" selection-start-column="44" selection-end-line="33" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2788">
+          <caret line="164" column="43" selection-start-line="164" selection-start-column="17" selection-end-line="164" selection-end-column="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/service/DownloadService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="30" column="39" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="39" />
-          <folding>
-            <element signature="e#28#503#0" expanded="true" />
-            <element signature="e#409#410#0" expanded="true" />
-            <element signature="e#436#437#0" expanded="true" />
-            <element signature="e#1981#2188#0" expanded="true" />
-            <element signature="e#2187#2188#0" expanded="true" />
-            <element signature="e#4037#4148#0" />
-          </folding>
+        <state relative-caret-position="238">
+          <caret line="56" column="51" lean-forward="true" selection-start-line="56" selection-start-column="51" selection-end-line="56" selection-end-column="51" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="79" lean-forward="true" selection-start-line="79" selection-end-line="79" />
+        <state relative-caret-position="225">
+          <caret line="77" column="53" selection-start-line="77" selection-start-column="45" selection-end-line="77" selection-end-column="53" />
           <folding>
-            <element signature="e#30#1116#0" expanded="true" />
-            <element signature="e#1827#2599#0" expanded="true" />
-            <element signature="e#2598#2599#0" expanded="true" />
-            <element signature="e#1672#2604#0" />
-            <element signature="e#2610#2847#0" />
-            <element signature="e#2853#3635#0" />
-            <element signature="e#3641#4003#0" />
-            <element signature="e#4009#4153#0" />
-            <element signature="e#4160#5149#0" />
-            <element signature="e#5155#5256#0" />
-            <element signature="e#5262#6088#0" />
-            <element signature="e#6093#6733#0" />
-            <element signature="e#6739#6907#0" />
-            <element signature="e#6913#7929#0" />
-            <element signature="e#7935#9093#0" />
-            <element signature="e#9099#9210#0" />
-            <element signature="e#9216#9639#0" />
-            <element signature="e#9645#11948#0" />
-            <element signature="e#11954#12877#0" />
-            <element signature="e#12883#13928#0" />
+            <element signature="method#onCreate#0;class#EffectiveCooling#0" />
+            <element signature="method#onCreateOptionsMenu#0;class#EffectiveCooling#0" />
+            <element signature="method#onOptionsItemSelected#0;class#EffectiveCooling#0" />
+            <element signature="method#onKeyDown#0;class#EffectiveCooling#0" />
+            <element signature="method#exitApplication#0;class#EffectiveCooling#0" />
+            <element signature="method#addField#0;class#EffectiveCooling#0" />
+            <element signature="method#removeField#0;class#EffectiveCooling#0" />
+            <element signature="method#timeIn#0;class#EffectiveCooling#0" />
+            <element signature="method#timeOut#0;class#EffectiveCooling#0" />
+            <element signature="method#upload#0;class#EffectiveCooling#0" />
+            <element signature="method#uploadInfo#0;class#EffectiveCooling#0" />
+            <element signature="method#materialJSON#0;class#EffectiveCooling#0" />
+            <element signature="method#showToast#0;class#EffectiveCooling#0" />
+            <element signature="method#apiFeedback#0;class#EffectiveCooling#0" />
+            <element signature="method#reload#0;class#EffectiveCooling#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="34" column="108" selection-start-line="34" selection-start-column="108" selection-end-line="34" selection-end-column="108" />
+          <folding>
+            <element signature="e#2925#4274#1" />
+            <element signature="e#4773#4960#0" />
+            <element signature="e#5788#6320#1" />
+            <element signature="e#6471#7580#0" />
+            <element signature="e#7585#8162#0" />
+            <element signature="e#8167#8315#0" />
+            <element signature="e#8320#8503#0" />
+            <element signature="e#8508#8694#0" />
+            <element signature="e#8699#8970#0" />
+            <element signature="e#8975#9179#0" />
+            <element signature="e#9185#9267#0" />
+            <element signature="e#9185#10070#0" />
+            <element signature="e#10076#10764#0" />
+            <element signature="e#10771#10975#0" />
+            <element signature="e#10980#11775#0" />
+            <element signature="e#11782#12184#0" />
+            <element signature="e#12189#12955#0" />
+            <element signature="e#12960#13164#0" />
+            <element signature="e#13169#13346#0" />
+            <element signature="e#13371#14063#0" />
+            <element signature="e#14068#14506#0" />
+            <element signature="e#14511#15100#0" />
+            <element signature="e#15105#15292#0" />
+            <element signature="e#15297#16319#0" />
+            <element signature="e#22478#23141#0" />
+            <element signature="e#23146#23344#0" />
+            <element signature="e#23349#24571#0" />
+            <element signature="e#24576#24896#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/Project.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="75" column="46" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
+          <folding>
+            <element signature="method#onKeyDown#0;class#Project#0" />
+            <element signature="method#exitApplication#0;class#Project#0" />
+            <element signature="method#onCreateOptionsMenu#0;class#Project#0" />
+            <element signature="method#deleteDialog#0;class#Project#0" />
+            <element signature="method#reload#0;class#Project#0" />
           </folding>
         </state>
       </provider>
