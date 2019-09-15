@@ -2,6 +2,7 @@ package com.fgtit.fingermap;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -19,9 +20,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fgtit.service.DownloadService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,6 +57,42 @@ public class EffectiveCooling extends AppCompatActivity {
     String currentDateTime,status;
     JobDB jobDB = new JobDB(this);
     HashMap<String, String> queryValues;
+
+
+
+    //Receiving Downloaded info
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle bundle = intent.getExtras();
+
+                String filter = bundle.getString(DownloadService.FILTER);
+                int resultCode = bundle.getInt(DownloadService.RESULT);
+                //String latest_rate = bundle.getDouble(DownloadService.LATEST_RATE);
+                if (resultCode == RESULT_OK && filter == DownloadService.PRODUCTS) {
+                   String response = bundle.getString(DownloadService.CALL_RESPONSE);
+                    Log.d(TAG, "onReceive: "+response);
+
+                    try {
+                        JSONArray arr = new JSONArray(response);
+                        if(arr.length() != 0){
+
+                        }
+
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+
+                } else {
+                    showToast("");
+                }
+
+
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -298,6 +337,11 @@ public class EffectiveCooling extends AppCompatActivity {
         }else{
             dialog.cancel();
         }
+
+    }
+
+    public void downloadProduct(View v){
+
 
     }
 

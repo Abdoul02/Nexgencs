@@ -9,21 +9,37 @@
     android:padding="8dp"
     tools:context="com.fgtit.fingermap.EffectiveCooling">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/txt_input_work"
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:hint="Work Undertaken"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edt_work"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_input_work"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
+            android:hint="Work Undertaken"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-            />
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_work"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
 
-    </android.support.design.widget.TextInputLayout>
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/btn_ec_product"
+            android:onClick="downloadProduct"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/primary_dark_material_dark"
+            android:src="@drawable/download">
+
+        </ImageView>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -105,15 +121,10 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
 
         <android.support.design.widget.TextInputLayout
             android:layout_marginTop="10dp"
