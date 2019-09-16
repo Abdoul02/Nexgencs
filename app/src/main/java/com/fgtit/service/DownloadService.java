@@ -42,7 +42,7 @@ public class DownloadService extends IntentService {
         @Override
         public void handleMessage(Message msg) {
 
-            showToast("Something went wrong: " +  msg.obj);
+            showToast("Something went wrong: ");
         }
     };
 
@@ -52,6 +52,8 @@ public class DownloadService extends IntentService {
         final String json = intent.getStringExtra(POST_JSON);
         //final String url = intent.getStringExtra(EC_DATA_URL);
         final String filter = intent.getStringExtra(FILTER);
+        Log.d(TAG, json);
+        Log.d(TAG, filter);
 
         try {
             post(EC_DATA_URL,json, new Callback() {
@@ -76,6 +78,7 @@ public class DownloadService extends IntentService {
                         String responseStr = response.body().string();
                         response.body().close();
                         result = Activity.RESULT_OK;
+                        Log.d(TAG, "Result =>"+result);
                         publishResults(filter,result,responseStr);
 
                     } else {
@@ -97,7 +100,7 @@ public class DownloadService extends IntentService {
         Call call;
 
         RequestBody body = new FormBody.Builder()
-                .add(filter,"")
+                .add(filter,filter)
                 .build();
         OkHttpClient client = builder.build();
         Request request = new Request.Builder()

@@ -1,21 +1,15 @@
 package com.fgtit.fingermap;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.hardware.usb.UsbConstants;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbEndpoint;
 import android.hardware.usb.UsbInterface;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
 import android.app.Activity;
 import android.support.v4.app.ActivityCompat;
@@ -23,8 +17,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.zyapi.CommonApi;
@@ -34,7 +26,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import fgtit.fpengine.constants;
 import fgtit.fpengine.fpdevice;
 
 import android.app.PendingIntent;
@@ -44,13 +35,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.support.v7.app.AppCompatActivity;
 
 
-import com.fgtit.entities.DashboardView;
-import com.fgtit.entities.HighlightCR;
-
-import fgtit.fpengine.fpdevice;
+import com.fgtit.models.DashboardView;
+import com.fgtit.models.HighlightCR;
 
 public class Alcohol extends Activity {
 

@@ -23,7 +23,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fgtit.entities.User;
+import com.fgtit.models.User;
 import com.fgtit.fpcore.FPMatch;
 import com.fgtit.utils.ExtApi;
 

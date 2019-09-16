@@ -1,8 +1,7 @@
 package com.fgtit.fingermap;
 
-import com.fgtit.data.GlobalData;
-import com.fgtit.entities.JobCard;
-import com.fgtit.entities.SessionManager;
+import com.fgtit.models.JobCard;
+import com.fgtit.models.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpClient;
@@ -16,10 +15,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.annotation.SuppressLint;
-import android.app.ActionBar.LayoutParams;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,9 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 

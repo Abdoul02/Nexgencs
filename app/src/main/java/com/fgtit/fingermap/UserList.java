@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -22,16 +21,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.Toast;
 import android.widget.EditText;
 
-import com.fgtit.entities.AdminData;
-import com.fgtit.entities.SessionManager;
-import com.fgtit.entities.User;
+import com.fgtit.models.AdminData;
+import com.fgtit.models.SessionManager;
+import com.fgtit.models.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

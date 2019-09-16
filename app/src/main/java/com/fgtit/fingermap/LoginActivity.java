@@ -1,8 +1,8 @@
 package com.fgtit.fingermap;
 
 import java.util.HashMap;
-import com.fgtit.entities.JSONParser;
-import com.fgtit.entities.SessionManager;
+import com.fgtit.models.JSONParser;
+import com.fgtit.models.SessionManager;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
@@ -14,10 +14,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;

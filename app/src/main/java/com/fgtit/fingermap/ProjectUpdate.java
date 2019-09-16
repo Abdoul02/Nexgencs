@@ -34,8 +34,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fgtit.entities.SessionManager;
-import com.fgtit.entities.User;
+import com.fgtit.models.SessionManager;
+import com.fgtit.models.User;
 import com.fgtit.fpcore.FPMatch;
 import com.fgtit.utils.ExtApi;
 import com.loopj.android.http.AsyncHttpClient;

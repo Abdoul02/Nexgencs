@@ -2,7 +2,10 @@ package com.fgtit.fingermap;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +17,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fgtit.service.DownloadService;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +36,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.fgtit.service.DownloadService.CUSTOMER;
+import static com.fgtit.service.DownloadService.PRODUCTS;
+
 public class CreateEffectiveJob extends AppCompatActivity {
 
     private static final String TAG = "CreateEffectiveJob";
@@ -41,6 +50,41 @@ public class CreateEffectiveJob extends AppCompatActivity {
     HashMap<String, String> queryValues;
     DBHandler userDb = new DBHandler(this);
 
+    //Receiving Downloaded info
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if(dialog != null && dialog.isShowing()){
+                dialog.dismiss();
+            }
+            Bundle bundle = intent.getExtras();
+            String filter = bundle.getString(DownloadService.FILTER);
+            int resultCode = bundle.getInt(DownloadService.RESULT);
+
+            if (resultCode == RESULT_OK && filter.equals(CUSTOMER)) {
+                String response = bundle.getString(DownloadService.CALL_RESPONSE);
+                Log.d(TAG, "onReceive: "+response);
+
+                try {
+                    JSONArray arr = new JSONArray(response);
+                    if(arr.length() != 0){
+
+                    }
+
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+
+            } else {
+                Log.d(TAG, "onReceive: "+filter);
+                showToast("Something went wrong");
+            }
+
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +94,19 @@ public class CreateEffectiveJob extends AppCompatActivity {
         setTitle("Create Job Card");
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(
+                DownloadService.NOTIFICATION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -127,6 +184,13 @@ public class CreateEffectiveJob extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    public void downloadClient(View view){
+        setDialog(true);
+        Intent client_intent = new Intent(this, DownloadService.class);
+        client_intent.putExtra(DownloadService.POST_JSON, "ec_clients");
+        client_intent.putExtra(DownloadService.FILTER, CUSTOMER);
+        startService(client_intent);
+    }
     public Object postRequest(String param) throws IOException {
 
         //System.out.println("PARAM==="+param);

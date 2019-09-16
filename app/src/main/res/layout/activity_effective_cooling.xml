@@ -31,12 +31,12 @@
 
         <ImageView
             android:id="@+id/btn_ec_product"
-            android:onClick="downloadProduct"
-            android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@color/primary_dark_material_dark"
-            android:src="@drawable/download">
+            android:layout_marginLeft="25dp"
+            android:onClick="downloadProduct"
+            android:src="@drawable/download"
+            android:tint="@color/primary_dark_material_dark">
 
         </ImageView>
     </LinearLayout>

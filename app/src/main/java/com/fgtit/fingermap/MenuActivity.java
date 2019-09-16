@@ -18,8 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.fgtit.entities.SessionManager;
-import com.fgtit.entities.User;
+import com.fgtit.models.SessionManager;
+import com.fgtit.models.User;
 
 import android.Manifest;
 import android.app.Dialog;

@@ -50,16 +50,15 @@ public class EffectiveCooling extends AppCompatActivity {
 
     private LinearLayout parentLinearLayout;
     TextView txt_time_in, txt_time_out;
-    EditText edt_work,edt_km,edt_travel_time;
+    EditText edt_work, edt_km, edt_travel_time;
     public static final String TAG = "EffectiveCooling";
     Dialog dialog;
-    String job_id,ec_id;
+    String job_id, ec_id;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String URL = "http://www.nexgencs.co.za/alos/capture_ec_job_info.php";
-    String currentDateTime,status;
+    String currentDateTime, status;
     JobDB jobDB = new JobDB(this);
     HashMap<String, String> queryValues;
-
 
 
     //Receiving Downloaded info
@@ -67,30 +66,32 @@ public class EffectiveCooling extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            if(dialog != null && dialog.isShowing()){
+                dialog.dismiss();
+            }
             Bundle bundle = intent.getExtras();
+            String filter = bundle.getString(DownloadService.FILTER);
+            int resultCode = bundle.getInt(DownloadService.RESULT);
+            //String latest_rate = bundle.getDouble(DownloadService.LATEST_RATE);
+            setDialog(false);
+            if (resultCode == RESULT_OK && filter.equals(PRODUCTS)) {
+                String response = bundle.getString(DownloadService.CALL_RESPONSE);
+                Log.d(TAG, "onReceive: " + response);
 
-                String filter = bundle.getString(DownloadService.FILTER);
-                int resultCode = bundle.getInt(DownloadService.RESULT);
-                //String latest_rate = bundle.getDouble(DownloadService.LATEST_RATE);
-                setDialog(false);
-                if (resultCode == RESULT_OK && filter == PRODUCTS) {
-                   String response = bundle.getString(DownloadService.CALL_RESPONSE);
-                    Log.d(TAG, "onReceive: "+response);
+                try {
+                    JSONArray arr = new JSONArray(response);
+                    if (arr.length() != 0) {
 
-                    try {
-                        JSONArray arr = new JSONArray(response);
-                        if(arr.length() != 0){
-
-                        }
-
-                    }catch (JSONException e){
-                        e.printStackTrace();
                     }
 
-
-                } else {
-                    showToast("");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
+
+            } else {
+                showToast("");
+            }
 
 
         }
@@ -120,7 +121,7 @@ public class EffectiveCooling extends AppCompatActivity {
             job_id = extras.getString("id");
             ec_id = extras.getString("db_job_id");
 
-        }else{
+        } else {
 
             finish();
         }
@@ -202,13 +203,12 @@ public class EffectiveCooling extends AppCompatActivity {
         TextInputLayout txt_price = (TextInputLayout) kid.getChildAt(2);
         EditText price = txt_price.getEditText();
 
-        if(quantity.getText().length() > 0 && material.getText().length() > 0 && price.getText().length() > 0){
+        if (quantity.getText().length() > 0 && material.getText().length() > 0 && price.getText().length() > 0) {
             // Add the new row.
             parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount());
-        }else{
+        } else {
             showToast("Please fill all details be adding a new material");
         }
-
 
 
     }
@@ -218,36 +218,35 @@ public class EffectiveCooling extends AppCompatActivity {
         parentLinearLayout.removeView((View) v.getParent());
     }
 
-    public void timeIn(View v){
+    public void timeIn(View v) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = dateFormat.format(new Date());
         currentDateTime = sdf.format(new Date());
         status = "IN";
 
-        if(parentLinearLayout.getChildCount() > 1){
+        if (parentLinearLayout.getChildCount() > 1) {
             showToast("Please upload first");
         }
 
-        if(jobDB.checkSignIn(status,date,ec_id) > 0){
+        if (jobDB.checkSignIn(status, date, ec_id) > 0) {
             showToast("You already Have a Time IN for today");
-        }else{
+        } else {
 
-            if(edt_km.getText().length() > 0 && edt_travel_time.getText().length() > 0){
+            if (edt_km.getText().length() > 0 && edt_travel_time.getText().length() > 0) {
                 txt_time_in.setText(currentDateTime);
                 txt_time_in.setVisibility(View.VISIBLE);
                 uploadInfo(status);
 
-            }else{
+            } else {
                 showToast("Please provide KM and Travel Time.");
             }
         }
 
 
-
-
     }
-    public void timeOut(View v){
+
+    public void timeOut(View v) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = dateFormat.format(new Date());
@@ -255,32 +254,32 @@ public class EffectiveCooling extends AppCompatActivity {
         status = "OUT";
 
 
-        if(parentLinearLayout.getChildCount() > 1){
+        if (parentLinearLayout.getChildCount() > 1) {
             showToast("Please upload first");
         }
 
-        if(jobDB.checkSignIn(status,date,ec_id) > 0){
+        if (jobDB.checkSignIn(status, date, ec_id) > 0) {
             showToast("You already Have a Time OUT for today");
-        }else{
-                txt_time_out.setText(currentDateTime);
-                txt_time_out.setVisibility(View.VISIBLE);
-                uploadInfo(status);
+        } else {
+            txt_time_out.setText(currentDateTime);
+            txt_time_out.setVisibility(View.VISIBLE);
+            uploadInfo(status);
         }
 
     }
 
-    public void upload(View v){
+    public void upload(View v) {
 
         String currentDateTime = sdf.format(new Date());
         uploadInfo("");
 
-       // Log.d(TAG, "Material: "+materialJSON());
+        // Log.d(TAG, "Material: "+materialJSON());
 
     }
 
-    public void uploadInfo(String status){
+    public void uploadInfo(String status) {
 
-        String work_undertaken,km,travel_time;
+        String work_undertaken, km, travel_time;
         work_undertaken = edt_work.getText().toString();
         km = edt_km.getText().toString();
         travel_time = edt_travel_time.getText().toString();
@@ -288,7 +287,7 @@ public class EffectiveCooling extends AppCompatActivity {
         String currentDateTime = sdf.format(new Date());
 
         JSONObject postDataParams = new JSONObject();
-        try{
+        try {
 
             postDataParams.accumulate("job_id", job_id);
             postDataParams.accumulate("work_undertaken", work_undertaken);
@@ -299,19 +298,19 @@ public class EffectiveCooling extends AppCompatActivity {
             postDataParams.accumulate("materials", materialJSON());
             postRequest(postDataParams.toString());
 
-            Log.d(TAG, "JSONObject: "+ postDataParams.toString());
+            Log.d(TAG, "JSONObject: " + postDataParams.toString());
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String materialJSON(){
+    public String materialJSON() {
 
         ArrayList<HashMap<String, String>> materialList;
         materialList = new ArrayList<>();
 
-        for (int i = 0; i < parentLinearLayout.getChildCount() ; i++) {
+        for (int i = 0; i < parentLinearLayout.getChildCount(); i++) {
 
             HashMap<String, String> map = new HashMap<String, String>();
 
@@ -326,9 +325,9 @@ public class EffectiveCooling extends AppCompatActivity {
             TextInputLayout txt_price = (TextInputLayout) kid.getChildAt(2);
             EditText price = txt_price.getEditText();
 
-            map.put("quantity",quantity.getText().toString());
-            map.put("material_used",material.getText().toString());
-            map.put("unit_price",price.getText().toString());
+            map.put("quantity", quantity.getText().toString());
+            map.put("material_used", material.getText().toString());
+            map.put("unit_price", price.getText().toString());
             materialList.add(map);
         }
 
@@ -337,26 +336,26 @@ public class EffectiveCooling extends AppCompatActivity {
         return gson.toJson(materialList);
     }
 
-    private void showToast(String message){
+    private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void setDialog(boolean show){
+    private void setDialog(boolean show) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater inflater = LayoutInflater.from(EffectiveCooling.this);
         View vl = inflater.inflate(R.layout.progress, null);
         builder.setView(vl);
         dialog = builder.create();
-        if(show) {
+        if (show) {
             dialog.show();
-        }else{
+        } else {
             dialog.cancel();
         }
 
     }
 
-    public void downloadProduct(View v){
+    public void downloadProduct(View v) {
 
         setDialog(true);
         Intent product_intent = new Intent(this, DownloadService.class);
@@ -372,24 +371,25 @@ public class EffectiveCooling extends AppCompatActivity {
         setDialog(true);
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
-                .add("ec_job_json",param)
+                .add("ec_job_json", param)
                 .build();
         Request request = new Request.Builder()
                 .url(URL)
                 .post(body)
                 .build();
         //Log.d("PARAM:+++",param[0]+ " "+param[1]);
-        Log.d(TAG, "ec_job_json: "+param);
+        Log.d(TAG, "ec_job_json: " + param);
 
 
         client.newCall(request).enqueue(new Callback() {
 
             Handler handler = new Handler(EffectiveCooling.this.getMainLooper());
+
             @Override
             public void onFailure(Call call, final IOException e) {
                 call.cancel();
 
-                if(dialog != null && dialog.isShowing()){
+                if (dialog != null && dialog.isShowing()) {
                     dialog.dismiss();
                 }
                 handler.post(new Runnable() {
@@ -406,23 +406,23 @@ public class EffectiveCooling extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        if(!response.isSuccessful()){
+                        if (!response.isSuccessful()) {
 
-                            if(dialog != null && dialog.isShowing()){
+                            if (dialog != null && dialog.isShowing()) {
                                 dialog.dismiss();
                             }
-                            showToast("Unexpected error: "+response.message());
+                            showToast("Unexpected error: " + response.message());
 
-                        }else{
+                        } else {
 
                             try {
 
                                 apiFeedback(response.body().string());
-                                if(dialog != null && dialog.isShowing()){
+                                if (dialog != null && dialog.isShowing()) {
                                     dialog.dismiss();
                                 }
 
-                            }catch (IOException e){
+                            } catch (IOException e) {
                                 e.printStackTrace();
                                 showToast("Something went wrong contact admin");
 
@@ -439,13 +439,13 @@ public class EffectiveCooling extends AppCompatActivity {
         return null;
     }
 
-    public void apiFeedback(String response){
+    public void apiFeedback(String response) {
 
         try {
             JSONObject object = new JSONObject(response);
             int success = object.getInt("success");
             String message = object.getString("message");
-            if(success == 1){
+            if (success == 1) {
 
                 queryValues.put("job_id", job_id);
                 queryValues.put("id", ec_id);
@@ -458,7 +458,7 @@ public class EffectiveCooling extends AppCompatActivity {
 
 
                 reload(message);
-            }else{
+            } else {
                 showToast(message);
             }
 
@@ -467,7 +467,7 @@ public class EffectiveCooling extends AppCompatActivity {
         }
     }
 
-    public void reload(String message){
+    public void reload(String message) {
         showToast(message);
         edt_travel_time.setText("");
         edt_km.setText("");
@@ -487,13 +487,13 @@ public class EffectiveCooling extends AppCompatActivity {
         txt_price.getEditText().setText("");
 
 
-        if(parentLinearLayout.getChildCount() > 1){
+        if (parentLinearLayout.getChildCount() > 1) {
 
-            int x = parentLinearLayout.getChildCount() -1;
-            do{
+            int x = parentLinearLayout.getChildCount() - 1;
+            do {
                 parentLinearLayout.removeView(parentLinearLayout.getChildAt(x));
                 x--;
-            }while(x > 0);
+            } while (x > 0);
 
         }
 

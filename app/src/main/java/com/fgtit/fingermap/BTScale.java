@@ -43,8 +43,8 @@ import android.widget.Toast;
 import com.fgtit.data.ImageSimpleAdapter;
 import com.fgtit.data.RecordItem;
 import com.fgtit.device.BluetoothReaderService;
-import com.fgtit.entities.SessionManager;
-import com.fgtit.entities.User;
+import com.fgtit.models.SessionManager;
+import com.fgtit.models.User;
 import com.fgtit.fpcore.FPMatch;
 import com.fgtit.utils.ExtApi;
 
@@ -55,7 +55,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;

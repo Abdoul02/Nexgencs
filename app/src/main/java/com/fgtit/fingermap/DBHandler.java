@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.fgtit.entities.User;
+import com.fgtit.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

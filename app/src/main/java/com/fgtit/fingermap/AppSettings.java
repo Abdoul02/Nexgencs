@@ -1,14 +1,7 @@
 package com.fgtit.fingermap;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
@@ -16,10 +9,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.fgtit.entities.AdminData;
+import com.fgtit.models.AdminData;
 
 
-import java.util.Calendar;
 import java.util.HashMap;
 
 public class AppSettings extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{

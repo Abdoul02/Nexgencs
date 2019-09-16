@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="co.za.nexgencs.clocking"
+    android:targetSandboxVersion="2"
+    android:versionCode="1"
+    android:versionName="1.6.2" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="28" />
+
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.usb.accessory" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- uses-permission android:name="android.permission.WRITE_SETTINGS" / -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application
+        android:name="com.fgtit.entities.App"
+        android:allowBackup="true"
+        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+        android:debuggable="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:testOnly="true"
+        android:theme="@style/Theme.Fgtit" >
+        <activity android:name="com.fgtit.fingermap.CreateEffectiveJob" />
+        <activity android:name="com.fgtit.fingermap.EffectiveCooling" />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="qkVpvhTCpxxV3ulT1XUYBuCo" /> <!-- Register MyService -->
+        <service
+            android:name="com.fgtit.entities.MyService"
+            android:enabled="true" /> <!-- Register BroadCase Receiver -->
+        <service
+            android:name="com.fgtit.service.DownloadService"
+            android:enabled="true" />
+
+        <receiver
+            android:name="com.fgtit.entities.SampleBC"
+            android:exported="true"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+        <!--
+        receiver
+            android:name="com.fgtit.fingermap.LocationBC"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <category android:name="android.intent.category.HOME" />
+
+            </intent-filter>
+        </receiver
+        -->
+        <!-- 服务 -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" /> <!-- USB连接指定接受广播的类 -->
+        <receiver android:name="com.fgtit.service.UsbBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="NotifyUsbStartNet" />
+                <action android:name="NotifyUsbStopNet" />
+            </intent-filter>
+        </receiver> <!-- USB虚拟网络指定服务类 -->
+        <service android:name="com.fgtit.service.ConnectService" /> <!-- Put startUP activity -->
+        <activity
+            android:name="com.fgtit.fingermap.MainActivity"
+            android:label="NexgenCS" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.fgtit.fingermap.LoginActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.fgtit.fingermap.MenuActivity"
+            android:label="@string/title_activity_menu" />
+        <activity
+            android:name="com.fgtit.fingermap.SignOnActivity"
+            android:label="@string/title_activity_sign_on" />
+        <activity
+            android:name="com.fgtit.fingermap.SignOffActivity"
+            android:label="@string/title_activity_sign_off" />
+        <activity
+            android:name="com.fgtit.fingermap.JobActivity"
+            android:label="@string/title_activity_records"
+            android:windowSoftInputMode="stateUnchanged" />
+        <activity
+            android:name="com.fgtit.fingermap.EmployeesActivity"
+            android:label="@string/title_activity_employees" />
+        <activity
+            android:name="com.fgtit.fingermap.EmployeeActivity"
+            android:label="@string/title_activity_employee" />
+        <activity
+            android:name="com.fgtit.fingermap.CameraExActivity"
+            android:label="@string/title_activity_capturephoto" />
+        <activity
+            android:name="com.fgtit.fingermap.UtilitiesActivity"
+            android:label="@string/title_activity_utilities" />
+        <activity
+            android:name="com.fgtit.fingermap.SystemActivity"
+            android:label="@string/title_activity_system" />
+        <activity
+            android:name="com.fgtit.fingermap.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name="android.scanner.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="com.fgtit.fingermap.DeviceListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_select_device" />
+        <activity
+            android:name="com.fgtit.fingermap.EnrollActivity"
+            android:label="@string/title_activity_enroluser"
+            android:windowSoftInputMode="stateUnchanged" />
+        <activity
+            android:name="com.fgtit.fingermap.CameraActivity"
+            android:label="@string/title_activity_capturephoto" />
+        <activity
+            android:name="com.fgtit.fingermap.PrinterActivity"
+            android:label="@string/title_printer_test" />
+        <activity android:name="com.fgtit.fingermap.RecordList" />
+        <activity android:name="com.fgtit.fingermap.RecDetails" />
+        <activity
+            android:name="com.fgtit.fingermap.UserList"
+            android:label="@string/title_activity_user_list" />
+        <activity android:name="com.fgtit.fingermap.EmpUpdate" /> <!-- Google Maps -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAqJ3Adr0xBDsprJROw7O68cFCEUxWA7zU" />
+        <!--
+         Mapbox
+
+         To get free Mapbox maps for your app, please visit https://www.mapbox.com/signup/
+        -->
+        <meta-data
+            android:name="com.mapbox.ACCESS_TOKEN"
+            android:value="pk.eyJ1IjoiYWJkb3VsayIsImEiOiJjaXFhbDE2MmcwMDV5aHNrcWJxeWlnNjhzIn0.in8KUEhAuqB5LkG4JpwKMA" />
+        <meta-data
+            android:name="com.mapbox.MAP_ID"
+            android:value="mapbox.streets" /> <!-- service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" / -->
+        <activity android:name="com.fgtit.fingermap.JobDetail" />
+        <activity android:name="com.fgtit.fingermap.AppSettings" />
+        <activity android:name="com.fgtit.fingermap.Signature" />
+        <activity android:name="com.fgtit.fingermap.Timesheet" />
+        <activity android:name="com.fgtit.fingermap.Tsign" />
+        <activity
+            android:name="com.fgtit.fingermap.Project"
+            android:label="Projects" />
+        <activity
+            android:name="com.fgtit.fingermap.ProjectDetail"
+            android:label="Create Project" />
+        <activity
+            android:name="com.fgtit.fingermap.ProjectUpdate"
+            android:label="Project Detail" />
+        <activity android:name="com.fgtit.fingermap.PinneReport" />
+        <activity android:name="com.fgtit.fingermap.PineDetail" />
+        <activity android:name="com.fgtit.fingermap.BTScale" />
+        <activity android:name="com.fgtit.fingermap.PineCapture" />
+
+        <!--
+        To make the activity like a dialog
+        android:theme="@android:style/Theme.Dialog"
+        -->
+        <activity
+            android:name="com.fgtit.fingermap.Alcohol"
+            android:label="Alcohol Test" />
+
+        <service
+            android:name="net.gotev.uploadservice.UploadService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+
+</manifest>

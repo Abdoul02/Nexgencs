@@ -15,9 +15,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.fgtit.entities.SessionManager;
+import com.fgtit.models.SessionManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -163,8 +162,14 @@ public class Project extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_add) {
 
-            Intent intent = new Intent(Project.this, ProjectDetail.class);
-            startActivity(intent);
+            if (companyID == 3 || companyID == 116) {
+
+                Intent intent = new Intent(Project.this, CreateEffectiveJob.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(Project.this, ProjectDetail.class);
+                startActivity(intent);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);

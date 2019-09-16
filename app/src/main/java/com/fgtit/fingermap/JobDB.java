@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.fgtit.entities.JobCard;
+import com.fgtit.models.JobCard;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

@@ -9,19 +9,35 @@
     tools:context="com.fgtit.fingermap.CreateEffectiveJob">
 
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/txt_input_name"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:hint="Name">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edt_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_input_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:hint="Name">
 
-    </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/btn_ec_client"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:onClick="downloadClient"
+            android:src="@drawable/download"
+            android:tint="@color/primary_dark_material_dark"/>
+    </LinearLayout>
+
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/txt_input_address"
