@@ -97,7 +97,7 @@ public class EmployeeActivity extends AppCompatActivity {
 				GlobalData.getInstance().userList.remove(pos);
 				GlobalData.getInstance().SaveUsersList();
 				Intent resultIntent = new Intent();  
-				//resultIntent.putExtra("reload", 1);  
+				//resultIntent.putExtra("gotoProject", 1);
 				setResult(0, resultIntent);  
 				this.finish();
 			}

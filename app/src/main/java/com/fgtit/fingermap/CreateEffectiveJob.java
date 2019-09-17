@@ -14,9 +14,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.fgtit.models.EcCustomer;
 import com.fgtit.service.DownloadService;
 
 import org.json.JSONArray;
@@ -25,8 +28,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,14 +42,16 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.fgtit.service.DownloadService.CUSTOMER;
-import static com.fgtit.service.DownloadService.PRODUCTS;
 
 public class CreateEffectiveJob extends AppCompatActivity {
 
     private static final String TAG = "CreateEffectiveJob";
-    EditText edt_name,edt_address,edt_order,edt_id_number;
-    String name,address,order,idNumber,user_id;
+    EditText edt_order, edt_technician;
+    AutoCompleteTextView edt_name;
+    String name, order, technician, user_id;
     Dialog dialog;
+    String[] customersArray;
+    private ArrayList<EcCustomer> customerList;
     public static final String JOBURL = "http://www.nexgencs.co.za/alos/create_update_job.php";
     JobDB jobDB = new JobDB(this);
     HashMap<String, String> queryValues;
@@ -55,33 +62,41 @@ public class CreateEffectiveJob extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(dialog != null && dialog.isShowing()){
-                dialog.dismiss();
-            }
             Bundle bundle = intent.getExtras();
             String filter = bundle.getString(DownloadService.FILTER);
             int resultCode = bundle.getInt(DownloadService.RESULT);
 
             if (resultCode == RESULT_OK && filter.equals(CUSTOMER)) {
                 String response = bundle.getString(DownloadService.CALL_RESPONSE);
-                Log.d(TAG, "onReceive: "+response);
+                Log.d(TAG, "onReceive: " + response);
 
                 try {
                     JSONArray arr = new JSONArray(response);
-                    if(arr.length() != 0){
-
+                    if (arr.length() != 0) {
+                        jobDB.deleteAllCustomer();
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject obj = (JSONObject) arr.get(i);
+                            EcCustomer customer = new EcCustomer();
+                            customer.setId(obj.getInt("id"));
+                            customer.setName(obj.getString("name"));
+                            jobDB.insertCustomers(customer);
+                            refresh("Customers saved successfully");
+                        }
                     }
 
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
 
             } else {
-                Log.d(TAG, "onReceive: "+filter);
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
                 showToast("Something went wrong");
             }
-
 
         }
     };
@@ -92,7 +107,6 @@ public class CreateEffectiveJob extends AppCompatActivity {
         setContentView(R.layout.activity_create_effective_job);
         initViews();
         setTitle("Create Job Card");
-
 
     }
 
@@ -125,72 +139,80 @@ public class CreateEffectiveJob extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void initViews(){
+    private void initViews() {
         edt_name = findViewById(R.id.edt_name);
-        edt_address = findViewById(R.id.edt_address);
         edt_order = findViewById(R.id.edt_order);
-        edt_id_number = findViewById(R.id.edt_id_number);
+        edt_technician = findViewById(R.id.edt_technician);
+
+        List<String> allCustomers = new ArrayList<>();
+        customerList = jobDB.getAllCustomers();
+        if (customerList.isEmpty()) {
+            showToast("Please Download customers by clicking the cloud icon");
+        } else {
+
+            List<EcCustomer> customers = customerList;
+            for (EcCustomer customer : customers) {
+                allCustomers.add(customer.getName());
+            }
+            customersArray = allCustomers.toArray(new String[0]);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, customersArray);
+            edt_name.setThreshold(1);
+            edt_name.setAdapter(adapter);
+        }
     }
 
-    public void createJobCard(View v){
+    public void createJobCard(View v) {
 
         name = edt_name.getText().toString();
-        address = edt_address.getText().toString();
         order = edt_order.getText().toString();
-        idNumber = edt_id_number.getText().toString();
+        technician = edt_technician.getText().toString();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateTime = sdf.format(new Date());
+        int company_id = -1;
+        if (validateInput(name) && validateInput(order) && validateInput(technician)) {
 
-        if(validateInput(name) && validateInput(address) && validateInput(order) && validateInput(idNumber) ){
+            company_id = jobDB.getCustomerId(name);
+            if (company_id != -1) {
 
-            Cursor user = userDb.getUserId(idNumber);
-            if(user != null){
-                user.moveToFirst();
-                if(user.getCount() > 0){
-                    user_id = user.getString(user.getColumnIndex("userId"));
-                    JSONObject postDataParams = new JSONObject();
-                    try{
+                JSONObject postDataParams = new JSONObject();
+                try {
 
-                        postDataParams.accumulate("company_name", name);
-                        postDataParams.accumulate("address", address);
-                        postDataParams.accumulate("order_no", order);
-                        postDataParams.accumulate("date", currentDateTime);
-                        postDataParams.accumulate("user_id", user_id);
+                    postDataParams.accumulate("company_id", company_id);
+                    postDataParams.accumulate("order_no", order);
+                    postDataParams.accumulate("date", currentDateTime);
+                    postDataParams.accumulate("user_id", technician);
 
-                        postRequest(postDataParams.toString());
+                    postRequest(postDataParams.toString());
 
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-
-                }else{
-
-                    showToast("This ID number is not in the device");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
-            }else{
-                //Log.d(TAG, "createJobCard: Cursor is null");
+            } else {
+
+                showToast("This Company is not in the device");
             }
 
-        }else{
+
+        } else {
             showToast("Please provide all fields");
         }
 
 
     }
 
-    private void showToast(String message){
+    private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void downloadClient(View view){
+    public void downloadClient(View view) {
         setDialog(true);
         Intent client_intent = new Intent(this, DownloadService.class);
         client_intent.putExtra(DownloadService.POST_JSON, "ec_clients");
         client_intent.putExtra(DownloadService.FILTER, CUSTOMER);
         startService(client_intent);
     }
+
     public Object postRequest(String param) throws IOException {
 
         //System.out.println("PARAM==="+param);
@@ -199,24 +221,25 @@ public class CreateEffectiveJob extends AppCompatActivity {
 
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
-                .add("ec_job_json",param)
+                .add("ec_job_json", param)
                 .build();
         Request request = new Request.Builder()
                 .url(JOBURL)
                 .post(body)
                 .build();
         //Log.d("PARAM:+++",param[0]+ " "+param[1]);
-        Log.d(TAG, "ec_job_json: "+param);
+        Log.d(TAG, "ec_job_json: " + param);
 
 
         client.newCall(request).enqueue(new Callback() {
 
             Handler handler = new Handler(CreateEffectiveJob.this.getMainLooper());
+
             @Override
             public void onFailure(Call call, final IOException e) {
                 call.cancel();
 
-                if(dialog != null && dialog.isShowing()){
+                if (dialog != null && dialog.isShowing()) {
                     dialog.dismiss();
                 }
                 handler.post(new Runnable() {
@@ -233,23 +256,23 @@ public class CreateEffectiveJob extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        if(!response.isSuccessful()){
+                        if (!response.isSuccessful()) {
 
-                            if(dialog != null && dialog.isShowing()){
+                            if (dialog != null && dialog.isShowing()) {
                                 dialog.dismiss();
                             }
-                            showToast("Unexpected error: "+response.message());
+                            showToast("Unexpected error: " + response.message());
 
-                        }else{
+                        } else {
 
                             try {
 
                                 apiFeedback(response.body().string());
-                                if(dialog != null && dialog.isShowing()){
+                                if (dialog != null && dialog.isShowing()) {
                                     dialog.dismiss();
                                 }
 
-                            }catch (IOException e){
+                            } catch (IOException e) {
                                 e.printStackTrace();
                                 showToast("Something went wrong contact admin");
 
@@ -265,37 +288,39 @@ public class CreateEffectiveJob extends AppCompatActivity {
 
         return null;
     }
-    private void setDialog(boolean show){
+
+    private void setDialog(boolean show) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final LayoutInflater inflater = LayoutInflater.from(CreateEffectiveJob.this);
         View vl = inflater.inflate(R.layout.progress, null);
         builder.setView(vl);
         dialog = builder.create();
-        if(show) {
+        if (show) {
             dialog.show();
-        }else{
+        } else {
             dialog.cancel();
         }
 
     }
-    public void apiFeedback(String response){
+
+    public void apiFeedback(String response) {
 
         try {
             JSONObject object = new JSONObject(response);
             int success = object.getInt("success");
             String message = object.getString("message");
-            if(success == 1){
-                String company_name = object.getString("company");
+            if (success == 1) {
+                String company_id = object.getString("company");
                 String jobId = object.getString("job_id");
 
-                queryValues = new HashMap<String, String>();
+                queryValues = new HashMap<>();
 
                 queryValues.put("job_id", jobId);
-                queryValues.put("company", company_name);
+                queryValues.put("company", jobDB.getCustomerName(company_id));
                 jobDB.insert_ec_Job(queryValues);
-                reload(message);
-            }else{
+                gotoProject(message);
+            } else {
                 showToast(message);
             }
 
@@ -304,15 +329,23 @@ public class CreateEffectiveJob extends AppCompatActivity {
         }
 
     }
-    public void reload(String message){
+
+    public void gotoProject(String message) {
         showToast(message);
         Intent intent = new Intent(CreateEffectiveJob.this, Project.class);
         startActivity(intent);
     }
-    private boolean validateInput(String input){
+
+    public void refresh(String message) {
+        showToast(message);
+        Intent intent = new Intent(this, CreateEffectiveJob.class);
+        startActivity(intent);
+    }
+
+    private boolean validateInput(String input) {
         boolean status = false;
 
-        if(input.length() > 0){
+        if (input.length() > 0) {
             status = true;
         }
         return status;

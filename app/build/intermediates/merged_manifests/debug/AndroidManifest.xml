@@ -60,7 +60,7 @@
         android:required="true" />
 
     <application
-        android:name="com.fgtit.entities.App"
+        android:name="com.fgtit.models.App"
         android:allowBackup="true"
         android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
         android:debuggable="true"
@@ -75,14 +75,14 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="qkVpvhTCpxxV3ulT1XUYBuCo" /> <!-- Register MyService -->
         <service
-            android:name="com.fgtit.entities.MyService"
+            android:name="com.fgtit.models.MyService"
             android:enabled="true" /> <!-- Register BroadCase Receiver -->
         <service
             android:name="com.fgtit.service.DownloadService"
             android:enabled="true" />
 
         <receiver
-            android:name="com.fgtit.entities.SampleBC"
+            android:name="com.fgtit.models.SampleBC"
             android:exported="true"
             android:process=":remote" >
             <intent-filter>

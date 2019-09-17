@@ -231,7 +231,7 @@ MERGED from [com.google.maps.android:android-maps-utils:0.4] C:\Users\Abdoul\.gr
 	android:theme
 		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:62:9-43
 	android:name
-		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:58:9-46
+		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:58:9-44
 activity#com.fgtit.fingermap.CreateEffectiveJob
 ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:63:9-65
 	android:name
@@ -246,26 +246,26 @@ ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifes
 		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:68:13-53
 	android:name
 		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:67:13-52
-service#com.fgtit.entities.MyService
+service#com.fgtit.models.MyService
 ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:69:9-71:38
 	android:enabled
 		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:71:13-35
 	android:name
-		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:70:13-56
+		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:70:13-54
 service#com.fgtit.service.DownloadService
 ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:72:9-73:46
 	android:enabled
 		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:73:13-35
 	android:name
 		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:72:18-66
-receiver#com.fgtit.entities.SampleBC
+receiver#com.fgtit.models.SampleBC
 ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:74:9-83:20
 	android:process
 		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:77:13-38
 	android:exported
 		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:76:13-36
 	android:name
-		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:75:13-55
+		ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:75:13-53
 intent-filter#action:name:android.intent.action.BOOT_COMPLETED+category:name:android.intent.category.HOME
 ADDED from C:\Users\Abdoul\Documents\Mobile\Nexgencs\app\src\main\AndroidManifest.xml:78:13-82:29
 action#android.intent.action.BOOT_COMPLETED

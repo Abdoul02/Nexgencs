@@ -21,7 +21,7 @@
             android:layout_height="60dp"
             android:hint="Name">
 
-            <android.support.design.widget.TextInputEditText
+            <AutoCompleteTextView
                 android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -38,21 +38,6 @@
             android:tint="@color/primary_dark_material_dark"/>
     </LinearLayout>
 
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/txt_input_address"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="15dp"
-        android:hint="Address">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edt_address"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/txt_input_order"
@@ -75,11 +60,11 @@
         android:layout_marginTop="15dp"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:hint="ID Number"
+        android:hint="Name and Surname"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/edt_id_number"
+            android:id="@+id/edt_technician"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />

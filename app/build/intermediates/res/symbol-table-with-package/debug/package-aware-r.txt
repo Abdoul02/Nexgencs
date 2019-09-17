@@ -1633,13 +1633,12 @@ id edtUPid
 id edtUPname
 id edtVehicleReg
 id edtWorkReq
-id edt_address
-id edt_id_number
 id edt_km
 id edt_material
 id edt_name
 id edt_order
 id edt_qty
+id edt_technician
 id edt_travel_time
 id edt_unit_price
 id edt_work
@@ -1901,7 +1900,6 @@ id txtStatus
 id txtTime
 id txtWeight
 id txt_display_code
-id txt_input_address
 id txt_input_id
 id txt_input_km
 id txt_input_material
