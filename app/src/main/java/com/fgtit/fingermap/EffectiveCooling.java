@@ -16,11 +16,16 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fgtit.models.EcCustomer;
+import com.fgtit.models.EcProduct;
 import com.fgtit.service.DownloadService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -50,10 +56,14 @@ public class EffectiveCooling extends AppCompatActivity {
 
     private LinearLayout parentLinearLayout;
     TextView txt_time_in, txt_time_out;
-    EditText edt_work, edt_km, edt_travel_time;
+    EditText edt_work, edt_km, edt_travel_time,edt_price;
+    AutoCompleteTextView edt_product;
     public static final String TAG = "EffectiveCooling";
     Dialog dialog;
     String job_id, ec_id;
+    String[] productsArray;
+    private ArrayList<EcProduct> productList;
+    List<String> allProducts = new ArrayList<>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String URL = "http://www.nexgencs.co.za/alos/capture_ec_job_info.php";
     String currentDateTime, status;
@@ -81,7 +91,17 @@ public class EffectiveCooling extends AppCompatActivity {
                 try {
                     JSONArray arr = new JSONArray(response);
                     if (arr.length() != 0) {
+                    jobDB.deleteAllProduct();
 
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject obj = (JSONObject) arr.get(i);
+                            EcProduct product = new EcProduct();
+                            product.setId(obj.getInt("id"));
+                            product.setName(obj.getString("name"));
+                            product.setPrice(obj.getString("price"));
+                            jobDB.insertProduct(product);
+                        }
+                        refresh("Products saved successfully");
                     }
 
                 } catch (JSONException e) {
@@ -90,7 +110,7 @@ public class EffectiveCooling extends AppCompatActivity {
 
 
             } else {
-                showToast("");
+                showToast("Something went wrong");
             }
 
 
@@ -103,6 +123,7 @@ public class EffectiveCooling extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_effective_cooling);
         setTitle("Job Card Info");
+
         parentLinearLayout = findViewById(R.id.linearLayoutMaterial);
         txt_time_in = findViewById(R.id.txt_time_in);
         txt_time_out = findViewById(R.id.txt_time_out);
@@ -110,16 +131,43 @@ public class EffectiveCooling extends AppCompatActivity {
         edt_travel_time = findViewById(R.id.edt_travel_time);
         edt_work = findViewById(R.id.edt_work);
 
-        queryValues = new HashMap<String, String>();
+        edt_product = findViewById(R.id.edt_material);
+        edt_price = findViewById(R.id.edt_unit_price);
+
+        queryValues = new HashMap<>();
 
         txt_time_in.setVisibility(View.INVISIBLE);
         txt_time_out.setVisibility(View.INVISIBLE);
+
+
+        productList = jobDB.getAllProducts();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
 
             job_id = extras.getString("id");
             ec_id = extras.getString("db_job_id");
+
+            if (productList.isEmpty()) {
+                showToast("Please Download Products by clicking the cloud icon");
+            } else {
+
+                List<EcProduct> products = productList;
+                for (EcProduct product : products) {
+                    allProducts.add(product.getName());
+                }
+                productsArray = allProducts.toArray(new String[0]);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, productsArray);
+                edt_product.setThreshold(1);
+                edt_product.setAdapter(adapter);
+                edt_product.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String selected = (String) parent.getItemAtPosition(position);
+                        edt_price.setText(jobDB.getProductPrice(selected));
+                    }
+                });
+            }
 
         } else {
 
@@ -320,7 +368,9 @@ public class EffectiveCooling extends AppCompatActivity {
             EditText quantity = txt_quantity.getEditText();
 
             TextInputLayout txt_material = (TextInputLayout) kid.getChildAt(1);
-            EditText material = txt_material.getEditText();
+            AutoCompleteTextView material = (AutoCompleteTextView) txt_material.getEditText();
+
+
 
             TextInputLayout txt_price = (TextInputLayout) kid.getChildAt(2);
             EditText price = txt_price.getEditText();
@@ -497,6 +547,12 @@ public class EffectiveCooling extends AppCompatActivity {
 
         }
 
+        Intent intent = new Intent(this, EffectiveCooling.class);
+        startActivity(intent);
+    }
+
+    public void refresh(String message) {
+        showToast(message);
         Intent intent = new Intent(this, EffectiveCooling.class);
         startActivity(intent);
     }

@@ -80,8 +80,8 @@ public class CreateEffectiveJob extends AppCompatActivity {
                             customer.setId(obj.getInt("id"));
                             customer.setName(obj.getString("name"));
                             jobDB.insertCustomers(customer);
-                            refresh("Customers saved successfully");
                         }
+                        refresh("Customers saved successfully");
                     }
 
                 } catch (JSONException e) {
