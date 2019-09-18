@@ -55,6 +55,7 @@ public class CreateEffectiveJob extends AppCompatActivity {
     public static final String JOBURL = "http://www.nexgencs.co.za/alos/create_update_job.php";
     JobDB jobDB = new JobDB(this);
     HashMap<String, String> queryValues;
+
     DBHandler userDb = new DBHandler(this);
 
     //Receiving Downloaded info
@@ -181,7 +182,6 @@ public class CreateEffectiveJob extends AppCompatActivity {
                     postDataParams.accumulate("order_no", order);
                     postDataParams.accumulate("date", currentDateTime);
                     postDataParams.accumulate("user_id", technician);
-
                     postRequest(postDataParams.toString());
 
                 } catch (Exception e) {

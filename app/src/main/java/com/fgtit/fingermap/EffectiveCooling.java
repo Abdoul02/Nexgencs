@@ -20,7 +20,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,9 +60,9 @@ public class EffectiveCooling extends AppCompatActivity {
 
     private LinearLayout parentLinearLayout;
     TextView txt_time_in, txt_time_out;
-    EditText edt_work, edt_km, edt_travel_time,edt_price;
+    EditText edt_work, edt_price, edt_quatity;
     AutoCompleteTextView edt_product;
-    public static final String TAG = "EffectiveCooling";
+    public static final String TAG = "EffectiveCooling_Test";
     Dialog dialog;
     String job_id, ec_id;
     String[] productsArray;
@@ -69,14 +73,14 @@ public class EffectiveCooling extends AppCompatActivity {
     String currentDateTime, status;
     JobDB jobDB = new JobDB(this);
     HashMap<String, String> queryValues;
-
-
+    HashMap<String, String> productqueryValues;
+    ArrayAdapter<String> adapter;
     //Receiving Downloaded info
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(dialog != null && dialog.isShowing()){
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             Bundle bundle = intent.getExtras();
@@ -91,7 +95,7 @@ public class EffectiveCooling extends AppCompatActivity {
                 try {
                     JSONArray arr = new JSONArray(response);
                     if (arr.length() != 0) {
-                    jobDB.deleteAllProduct();
+                        jobDB.deleteAllProduct();
 
                         for (int i = 0; i < arr.length(); i++) {
                             JSONObject obj = (JSONObject) arr.get(i);
@@ -107,13 +111,9 @@ public class EffectiveCooling extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             } else {
                 showToast("Something went wrong");
             }
-
-
         }
     };
 
@@ -127,14 +127,15 @@ public class EffectiveCooling extends AppCompatActivity {
         parentLinearLayout = findViewById(R.id.linearLayoutMaterial);
         txt_time_in = findViewById(R.id.txt_time_in);
         txt_time_out = findViewById(R.id.txt_time_out);
-        edt_km = findViewById(R.id.edt_km);
-        edt_travel_time = findViewById(R.id.edt_travel_time);
+//        edt_travel_time = findViewById(R.id.edt_travel_time);
         edt_work = findViewById(R.id.edt_work);
 
         edt_product = findViewById(R.id.edt_material);
+        edt_quatity = findViewById(R.id.edt_qty);
         edt_price = findViewById(R.id.edt_unit_price);
 
         queryValues = new HashMap<>();
+        productqueryValues = new HashMap<>();
 
         txt_time_in.setVisibility(View.INVISIBLE);
         txt_time_out.setVisibility(View.INVISIBLE);
@@ -157,7 +158,7 @@ public class EffectiveCooling extends AppCompatActivity {
                     allProducts.add(product.getName());
                 }
                 productsArray = allProducts.toArray(new String[0]);
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, productsArray);
+                adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, productsArray);
                 edt_product.setThreshold(1);
                 edt_product.setAdapter(adapter);
                 edt_product.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -167,14 +168,47 @@ public class EffectiveCooling extends AppCompatActivity {
                         edt_price.setText(jobDB.getProductPrice(selected));
                     }
                 });
+
+              /*  edt_material.setThreshold(1);
+                edt_material.setAdapter(adapter);
+                edt_material.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String selected = (String) parent.getItemAtPosition(position);
+                        edt_price.setText(jobDB.getProductPrice(selected));
+                    }
+                });*/
+
+               /* for (int i = 0; i < parentLinearLayout.getChildCount(); i++) {
+
+                    LinearLayout kid = (LinearLayout) parentLinearLayout.getChildAt(i);
+
+                    TextInputLayout txt_quantity = (TextInputLayout) kid.getChildAt(0);
+                    EditText quantity = txt_quantity.getEditText();
+
+                    TextInputLayout txt_material = (TextInputLayout) kid.getChildAt(1);
+                    AutoCompleteTextView material = (AutoCompleteTextView) txt_material.getEditText();
+
+
+
+                    TextInputLayout txt_price = (TextInputLayout) kid.getChildAt(2);
+                  final   EditText price = txt_price.getEditText();
+
+                    material.setThreshold(1);
+                    material.setAdapter(adapter);
+                    material.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String selected = (String) parent.getItemAtPosition(position);
+                            price.setText(jobDB.getProductPrice(selected));
+                        }
+                    });
+                }*/
             }
 
         } else {
-
             finish();
         }
-
-
     }
 
     @Override
@@ -234,10 +268,65 @@ public class EffectiveCooling extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void viewProducts(View v) {
+        ArrayList<HashMap<String, String>> productList = getSavedProducts();
+        final ListView myList = findViewById(R.id.product_list);
+
+        if (productList.size() != 0) {
+
+            ListAdapter adapter = new SimpleAdapter(this, productList, R.layout.product_entry, new String[]{"id", "name", "quantity"}, new int[]{R.id.product_id, R.id.Product_name, R.id.db_quantity});
+            myList.setAdapter(adapter);
+
+            myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    ImageView imageView = view.findViewById(R.id.imgDelete);
+                    TextView txt_id = view.findViewById(R.id.product_id);
+                    final String product_id = txt_id.getText().toString();
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showToast(product_id);
+                        }
+                    });
+                }
+            });
+        }else{
+            showToast("No Products have been captured");
+        }
+    }
+
+    public ArrayList<HashMap<String, String>> getSavedProducts() {
+        ArrayList<HashMap<String, String>> productList;
+        productList = new ArrayList<>();
+
+        JSONArray arr;
+        try {
+            arr = new JSONArray(jobDB.ec_material_JSON(job_id));
+            if (arr.length() != 0) {
+
+                for (int i = 0; i < arr.length(); i++) {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    JSONObject obj = (JSONObject) arr.get(i);
+                    map.put("name", obj.getString("material_used"));
+                    map.put("quantity", obj.getString("quantity"));
+                    map.put("id", obj.getString("id"));
+                   // map.put("price", obj.getString("unit_price"));
+                    productList.add(map);
+                    Log.d(TAG, obj.toString());
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d(TAG, e.getMessage());
+        }
+        return productList;
+    }
 
     public void addField(View v) {
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+     /*   LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.field, null);
 
         LinearLayout kid = (LinearLayout) v.getParent();
@@ -246,20 +335,45 @@ public class EffectiveCooling extends AppCompatActivity {
         EditText quantity = txt_quantity.getEditText();
 
         TextInputLayout txt_material = (TextInputLayout) kid.getChildAt(1);
-        EditText material = txt_material.getEditText();
+        AutoCompleteTextView material = (AutoCompleteTextView)txt_material.getEditText();
 
         TextInputLayout txt_price = (TextInputLayout) kid.getChildAt(2);
         EditText price = txt_price.getEditText();
 
+
+
         if (quantity.getText().length() > 0 && material.getText().length() > 0 && price.getText().length() > 0) {
             // Add the new row.
             parentLinearLayout.addView(rowView, parentLinearLayout.getChildCount());
+            setAdapter(adapter,material);
         } else {
             showToast("Please fill all details be adding a new material");
+        }*/
+        String quantity = edt_quatity.getText().toString();
+        String product = edt_product.getText().toString();
+        String price = edt_price.getText().toString();
+
+        if (quantity.length() > 0 && product.length() > 0 && price.length() > 0) {
+
+            if (jobDB.getProductId(product) > 0) {
+                productqueryValues.put("job_id", job_id);
+                productqueryValues.put("id", String.valueOf(jobDB.getProductId(product)));
+                productqueryValues.put("quantity", quantity);
+                productqueryValues.put("material_used", product);
+                jobDB.insert_ec_material(productqueryValues);
+                showToast("Product successfully captured");
+                edt_product.setText("");
+                edt_quatity.setText("");
+                edt_price.setText("");
+            } else {
+                showToast("This product is not in the device");
+            }
+
         }
 
 
     }
+
 
     public void removeField(View v) {
 
@@ -268,7 +382,7 @@ public class EffectiveCooling extends AppCompatActivity {
 
     public void timeIn(View v) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      /*  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = dateFormat.format(new Date());
         currentDateTime = sdf.format(new Date());
         status = "IN";
@@ -289,8 +403,10 @@ public class EffectiveCooling extends AppCompatActivity {
             } else {
                 showToast("Please provide KM and Travel Time.");
             }
-        }
+        }*/
 
+        String materials = jobDB.ec_material_JSON(job_id);
+        Log.d(TAG, materials);
 
     }
 
@@ -327,10 +443,9 @@ public class EffectiveCooling extends AppCompatActivity {
 
     public void uploadInfo(String status) {
 
-        String work_undertaken, km, travel_time;
+        String work_undertaken;// travel_time;
         work_undertaken = edt_work.getText().toString();
-        km = edt_km.getText().toString();
-        travel_time = edt_travel_time.getText().toString();
+        //travel_time = edt_travel_time.getText().toString();
 
         String currentDateTime = sdf.format(new Date());
 
@@ -341,8 +456,7 @@ public class EffectiveCooling extends AppCompatActivity {
             postDataParams.accumulate("work_undertaken", work_undertaken);
             postDataParams.accumulate("date_in", currentDateTime);
             postDataParams.accumulate("status", status);
-            postDataParams.accumulate("km", km);
-            postDataParams.accumulate("travelling_time", travel_time);
+            //postDataParams.accumulate("travelling_time", travel_time);
             postDataParams.accumulate("materials", materialJSON());
             postRequest(postDataParams.toString());
 
@@ -358,6 +472,7 @@ public class EffectiveCooling extends AppCompatActivity {
         ArrayList<HashMap<String, String>> materialList;
         materialList = new ArrayList<>();
 
+
         for (int i = 0; i < parentLinearLayout.getChildCount(); i++) {
 
             HashMap<String, String> map = new HashMap<String, String>();
@@ -369,7 +484,6 @@ public class EffectiveCooling extends AppCompatActivity {
 
             TextInputLayout txt_material = (TextInputLayout) kid.getChildAt(1);
             AutoCompleteTextView material = (AutoCompleteTextView) txt_material.getEditText();
-
 
 
             TextInputLayout txt_price = (TextInputLayout) kid.getChildAt(2);
@@ -500,10 +614,10 @@ public class EffectiveCooling extends AppCompatActivity {
                 queryValues.put("job_id", job_id);
                 queryValues.put("id", ec_id);
                 queryValues.put("work_undertaken", "");
+                queryValues.put("km", "");
                 queryValues.put("clock_time", currentDateTime);
                 queryValues.put("status", status);
-                queryValues.put("km", edt_km.getText().toString());
-                queryValues.put("travelling_time", edt_travel_time.getText().toString());
+                queryValues.put("travelling_time", "");
                 jobDB.insert_job_info(queryValues);
 
 
@@ -519,8 +633,6 @@ public class EffectiveCooling extends AppCompatActivity {
 
     public void reload(String message) {
         showToast(message);
-        edt_travel_time.setText("");
-        edt_km.setText("");
         edt_work.setText("");
         txt_time_out.setText("");
         txt_time_in.setText("");

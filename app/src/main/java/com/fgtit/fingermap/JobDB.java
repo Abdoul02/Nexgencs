@@ -365,17 +365,17 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
     }
 
-    public void delete_ec_material(String id) {
+    public void delete_ec_material(String product,String quantity,String job_id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("ec_material", "id = ?", new String[]{id});
+        db.delete("ec_material", "material_used=? AND quantity=? AND job_id=?", new String[]{product,quantity,job_id});
         db.close();
     }
 
-    public String ec_material_JSON() {
+    public String ec_material_JSON(String job_id) {
         ArrayList<HashMap<String, String>> materialList;
-        materialList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  * FROM ec_material";
+        materialList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM ec_material WHERE job_id ='" + job_id + "'";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -386,7 +386,7 @@ public class JobDB extends SQLiteOpenHelper {
                 map.put("job_id", cursor.getString(2));
                 map.put("quantity", cursor.getString(3));
                 map.put("material_used", cursor.getString(4));
-                map.put("unit_price", cursor.getString(5));
+              //  map.put("unit_price", cursor.getString(5));
                 materialList.add(map);
             } while (cursor.moveToNext());
         }
@@ -426,21 +426,21 @@ public class JobDB extends SQLiteOpenHelper {
         return customerList;
     }
 
-    public int getCustomerId(String name){
+    public int getCustomerId(String name) {
         int id = -1;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT  * FROM ec_customer WHERE name ='"+name+"'", null );
-        if(res.moveToFirst()){
+        Cursor res = db.rawQuery("SELECT  * FROM ec_customer WHERE name ='" + name + "'", null);
+        if (res.moveToFirst()) {
             id = res.getInt((res.getColumnIndex("id")));
         }
         return id;
     }
 
-    public String getCustomerName(String id){
+    public String getCustomerName(String id) {
         String name = "";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT  * FROM ec_customer WHERE id ='"+id+"'", null );
-        if(res.moveToFirst()){
+        Cursor res = db.rawQuery("SELECT  * FROM ec_customer WHERE id ='" + id + "'", null);
+        if (res.moveToFirst()) {
             name = res.getString((res.getColumnIndex("name")));
         }
         return name;
@@ -484,21 +484,21 @@ public class JobDB extends SQLiteOpenHelper {
         return productList;
     }
 
-    public int getProductId(String name){
+    public int getProductId(String name) {
         int id = -1;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT  * FROM ec_product WHERE name ='"+name+"'", null );
-        if(res.moveToFirst()){
+        Cursor res = db.rawQuery("SELECT  * FROM ec_product WHERE name ='" + name + "'", null);
+        if (res.moveToFirst()) {
             id = res.getInt((res.getColumnIndex("id")));
         }
         return id;
     }
 
-    public String getProductPrice(String name){
+    public String getProductPrice(String name) {
         String price = "";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT  * FROM ec_product WHERE name ='"+name+"'", null );
-        if(res.moveToFirst()){
+        Cursor res = db.rawQuery("SELECT  * FROM ec_product WHERE name ='" + name + "'", null);
+        if (res.moveToFirst()) {
             price = res.getString((res.getColumnIndex("price")));
         }
         return price;

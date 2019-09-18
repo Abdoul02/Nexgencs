@@ -1333,6 +1333,7 @@ drawable ic_action_refresh
 drawable ic_add
 drawable ic_camera
 drawable ic_close
+drawable ic_delete
 drawable ic_launcher
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
@@ -1438,6 +1439,7 @@ id JobLayout
 id Job_code
 id Linner
 id META
+id Product_name
 id SHIFT
 id SYM
 id action0
@@ -1510,6 +1512,7 @@ id btnSign
 id btnSignature
 id btnUpd
 id btnUpdatePass
+id btnView
 id btn_cancel
 id btn_ec_client
 id btn_ec_product
@@ -1544,6 +1547,7 @@ id clear
 id clientName
 id clip_horizontal
 id clip_vertical
+id clockLayout
 id code
 id collapseActionView
 id container
@@ -1558,6 +1562,7 @@ id customPanel
 id customer
 id dark
 id dashboard_view
+id db_quantity
 id decode
 id decode_failed
 id decode_succeeded
@@ -1633,6 +1638,7 @@ id edtUPid
 id edtUPname
 id edtVehicleReg
 id edtWorkReq
+id edt_field_material
 id edt_km
 id edt_material
 id edt_name
@@ -1681,6 +1687,7 @@ id imageView5
 id imageView6
 id img
 id imgCam
+id imgDelete
 id imgFinger1
 id imgFinger2
 id imgNeutral
@@ -1768,6 +1775,8 @@ id parent_matrix
 id pin
 id pineList
 id productSpinner
+id product_id
+id product_list
 id progress
 id progressBar
 id progress_circular
@@ -1900,6 +1909,7 @@ id txtStatus
 id txtTime
 id txtWeight
 id txt_display_code
+id txt_display_quantity
 id txt_input_id
 id txt_input_km
 id txt_input_material
@@ -1926,6 +1936,7 @@ id webview
 id wide
 id window
 id withText
+id workLayout
 id wrap
 id wrap_content
 integer abc_config_activityDefaultDur
@@ -2062,6 +2073,7 @@ layout notification_template_part_time
 layout password
 layout pine_capture
 layout pine_entry
+layout product_entry
 layout progress
 layout project_entry
 layout select_dialog_item_material
