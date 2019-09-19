@@ -365,10 +365,21 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
     }
 
-    public void delete_ec_material(String product,String quantity,String job_id) {
+/*    public void delete_ec_material(String product,String quantity,String job_id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("ec_material", "material_used=? AND quantity=? AND job_id=?", new String[]{product,quantity,job_id});
+        db.close();
+    }*/
+    public void deleteAllMaterials(String job_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("ec_material", "job_id=? ", new String[]{job_id});
+        db.close();
+    }
+
+    public void delete_ec_material(String material_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("ec_material", "material_id=? ", new String[]{material_id});
         db.close();
     }
 
@@ -382,11 +393,12 @@ public class JobDB extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
+                map.put("material_id", cursor.getString(0));
                 map.put("id", cursor.getString(1));
                 map.put("job_id", cursor.getString(2));
                 map.put("quantity", cursor.getString(3));
                 map.put("material_used", cursor.getString(4));
-              //  map.put("unit_price", cursor.getString(5));
+                map.put("unit_price", cursor.getString(5));
                 materialList.add(map);
             } while (cursor.moveToNext());
         }

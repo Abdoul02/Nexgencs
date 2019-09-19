@@ -168,42 +168,6 @@ public class EffectiveCooling extends AppCompatActivity {
                         edt_price.setText(jobDB.getProductPrice(selected));
                     }
                 });
-
-              /*  edt_material.setThreshold(1);
-                edt_material.setAdapter(adapter);
-                edt_material.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String selected = (String) parent.getItemAtPosition(position);
-                        edt_price.setText(jobDB.getProductPrice(selected));
-                    }
-                });*/
-
-               /* for (int i = 0; i < parentLinearLayout.getChildCount(); i++) {
-
-                    LinearLayout kid = (LinearLayout) parentLinearLayout.getChildAt(i);
-
-                    TextInputLayout txt_quantity = (TextInputLayout) kid.getChildAt(0);
-                    EditText quantity = txt_quantity.getEditText();
-
-                    TextInputLayout txt_material = (TextInputLayout) kid.getChildAt(1);
-                    AutoCompleteTextView material = (AutoCompleteTextView) txt_material.getEditText();
-
-
-
-                    TextInputLayout txt_price = (TextInputLayout) kid.getChildAt(2);
-                  final   EditText price = txt_price.getEditText();
-
-                    material.setThreshold(1);
-                    material.setAdapter(adapter);
-                    material.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String selected = (String) parent.getItemAtPosition(position);
-                            price.setText(jobDB.getProductPrice(selected));
-                        }
-                    });
-                }*/
             }
 
         } else {
@@ -274,7 +238,7 @@ public class EffectiveCooling extends AppCompatActivity {
 
         if (productList.size() != 0) {
 
-            ListAdapter adapter = new SimpleAdapter(this, productList, R.layout.product_entry, new String[]{"id", "name", "quantity"}, new int[]{R.id.product_id, R.id.Product_name, R.id.db_quantity});
+            ListAdapter adapter = new SimpleAdapter(this, productList, R.layout.product_entry, new String[]{"material_id", "name", "quantity"}, new int[]{R.id.product_id, R.id.Product_name, R.id.db_quantity});
             myList.setAdapter(adapter);
 
             myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -287,12 +251,13 @@ public class EffectiveCooling extends AppCompatActivity {
                     imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            showToast(product_id);
+                            jobDB.delete_ec_material(product_id);
+                            refresh("Material deleted");
                         }
                     });
                 }
             });
-        }else{
+        } else {
             showToast("No Products have been captured");
         }
     }
@@ -312,7 +277,8 @@ public class EffectiveCooling extends AppCompatActivity {
                     map.put("name", obj.getString("material_used"));
                     map.put("quantity", obj.getString("quantity"));
                     map.put("id", obj.getString("id"));
-                   // map.put("price", obj.getString("unit_price"));
+                    map.put("material_id", obj.getString("material_id"));
+                    // map.put("price", obj.getString("unit_price"));
                     productList.add(map);
                     Log.d(TAG, obj.toString());
                 }
@@ -360,6 +326,7 @@ public class EffectiveCooling extends AppCompatActivity {
                 productqueryValues.put("id", String.valueOf(jobDB.getProductId(product)));
                 productqueryValues.put("quantity", quantity);
                 productqueryValues.put("material_used", product);
+                productqueryValues.put("unit_price", price);
                 jobDB.insert_ec_material(productqueryValues);
                 showToast("Product successfully captured");
                 edt_product.setText("");
@@ -374,7 +341,6 @@ public class EffectiveCooling extends AppCompatActivity {
 
     }
 
-
     public void removeField(View v) {
 
         parentLinearLayout.removeView((View) v.getParent());
@@ -382,31 +348,20 @@ public class EffectiveCooling extends AppCompatActivity {
 
     public void timeIn(View v) {
 
-      /*  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = dateFormat.format(new Date());
         currentDateTime = sdf.format(new Date());
         status = "IN";
-
-        if (parentLinearLayout.getChildCount() > 1) {
-            showToast("Please upload first");
-        }
-
         if (jobDB.checkSignIn(status, date, ec_id) > 0) {
             showToast("You already Have a Time IN for today");
         } else {
 
-            if (edt_km.getText().length() > 0 && edt_travel_time.getText().length() > 0) {
+         //   if (edt_km.getText().length() > 0 && edt_travel_time.getText().length() > 0) {
                 txt_time_in.setText(currentDateTime);
                 txt_time_in.setVisibility(View.VISIBLE);
                 uploadInfo(status);
+        }
 
-            } else {
-                showToast("Please provide KM and Travel Time.");
-            }
-        }*/
-
-        String materials = jobDB.ec_material_JSON(job_id);
-        Log.d(TAG, materials);
 
     }
 
@@ -457,11 +412,9 @@ public class EffectiveCooling extends AppCompatActivity {
             postDataParams.accumulate("date_in", currentDateTime);
             postDataParams.accumulate("status", status);
             //postDataParams.accumulate("travelling_time", travel_time);
-            postDataParams.accumulate("materials", materialJSON());
+            postDataParams.accumulate("materials", jobDB.ec_material_JSON(job_id));
             postRequest(postDataParams.toString());
-
             Log.d(TAG, "JSONObject: " + postDataParams.toString());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -543,16 +496,11 @@ public class EffectiveCooling extends AppCompatActivity {
                 .build();
         //Log.d("PARAM:+++",param[0]+ " "+param[1]);
         Log.d(TAG, "ec_job_json: " + param);
-
-
         client.newCall(request).enqueue(new Callback() {
-
             Handler handler = new Handler(EffectiveCooling.this.getMainLooper());
-
             @Override
             public void onFailure(Call call, final IOException e) {
                 call.cancel();
-
                 if (dialog != null && dialog.isShowing()) {
                     dialog.dismiss();
                 }
@@ -563,7 +511,6 @@ public class EffectiveCooling extends AppCompatActivity {
                     }
                 });
             }
-
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 handler.post(new Runnable() {
@@ -619,9 +566,8 @@ public class EffectiveCooling extends AppCompatActivity {
                 queryValues.put("status", status);
                 queryValues.put("travelling_time", "");
                 jobDB.insert_job_info(queryValues);
-
-
-                reload(message);
+                jobDB.deleteAllMaterials(job_id);
+                refresh(message);
             } else {
                 showToast(message);
             }
@@ -665,8 +611,12 @@ public class EffectiveCooling extends AppCompatActivity {
 
     public void refresh(String message) {
         showToast(message);
-        Intent intent = new Intent(this, EffectiveCooling.class);
-        startActivity(intent);
+       /* Intent intent = new Intent(this, EffectiveCooling.class);
+        startActivity(intent);*/
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
     }
 
 
