@@ -25,6 +25,8 @@ public class JobDB extends SQLiteOpenHelper {
 
 
     private static final String TAG = "JobDB";
+    String ERD_TABLE ="erd_job";
+    String SUB_TASK_TABLE = "";
 
     public JobDB(Context applicationcontext) {
         super(applicationcontext, "androidsqlite.db", null, 6);
@@ -33,7 +35,8 @@ public class JobDB extends SQLiteOpenHelper {
     //Creates Table
     @Override
     public void onCreate(SQLiteDatabase database) {
-        String query, query2, query3, btScale, pine, ec_job, ec_job_info, ec_material, ec_customer, ec_product;
+        String query, query2, query3, btScale, pine, ec_job,
+                ec_job_info, ec_material, ec_customer, ec_product,erd_job_card,sub_task;
         query = "CREATE TABLE jobcard ( jobID INTEGER PRIMARY KEY, name TEXT, description TEXT, " +
                 "location TEXT, assignee TEXT, approvedBy TEXT,customer TEXT, progress INTEGER, start TEXT, end TEXT,jobCode TEXT,attachment TEXT," +
                 "office TEXT)";
@@ -59,6 +62,9 @@ public class JobDB extends SQLiteOpenHelper {
 
         ec_customer = "CREATE TABLE ec_customer(customer_id INTEGER PRIMARY KEY,id INTEGER,name TEXT)";
         ec_product = "CREATE TABLE ec_product(product_id INTEGER PRIMARY KEY, id INTEGER, name TEXT, price TEXT)";
+        erd_job_card="CREATE TABLE erd_job(local_id INTEGER PRIMARY KEY, id INTEGER, supervisorId INTEGER," +
+                "name TEXT, job_no TEXT, description TEXT, address TEXT, progress TEXT, from_date TEXT, to_date TEXT)";
+        sub_task = "CREATE TABLE sub_task_table(task_id INTEGER PRIMARY KEY,id INTEGER, job_card_id INTEGER, name TEXT)";
 
         database.execSQL(query);
         database.execSQL(query2);
@@ -70,6 +76,8 @@ public class JobDB extends SQLiteOpenHelper {
         database.execSQL(ec_material);
         database.execSQL(ec_customer);
         database.execSQL(ec_product);
+        database.execSQL(erd_job_card);
+        database.execSQL(sub_task);
     }
 
     @Override
@@ -92,6 +100,7 @@ public class JobDB extends SQLiteOpenHelper {
                     "travelling_time INTEGER)");
             database.execSQL("CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
                     "unit_price TEXT)");
+
         } else if (current_version > 2 && current_version < 4) {
             //record columns were added in version 2, so version 3, just add the new tables btScale and Pine.
 
@@ -120,6 +129,9 @@ public class JobDB extends SQLiteOpenHelper {
 
             database.execSQL("CREATE TABLE ec_customer(customer_id INTEGER PRIMARY KEY,id INTEGER,name TEXT)");
             database.execSQL("CREATE TABLE ec_product(product_id INTEGER PRIMARY KEY, id INTEGER, name TEXT, price TEXT)");
+            database.execSQL("CREATE TABLE erd_job(local_id INTEGER PRIMARY KEY, id INTEGER, supervisorId INTEGER," +
+                    "name TEXT, job_no TEXT, description TEXT, address TEXT, progress TEXT, from_date TEXT, to_date TEXT)");
+            database.execSQL("CREATE TABLE sub_task_table(task_id INTEGER PRIMARY KEY,id INTEGER, job_card_id INTEGER, name TEXT)");
         }
 
 
@@ -279,6 +291,8 @@ public class JobDB extends SQLiteOpenHelper {
         return wordList;
     }
 
+    //ERD Job Card
+
 
     //Effective Cooling Job
     public void insert_ec_Job(HashMap<String, String> queryValues) {
@@ -366,7 +380,6 @@ public class JobDB extends SQLiteOpenHelper {
     }
 
 /*    public void delete_ec_material(String product,String quantity,String job_id) {
-
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("ec_material", "material_used=? AND quantity=? AND job_id=?", new String[]{product,quantity,job_id});
         db.close();

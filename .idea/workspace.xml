@@ -19,39 +19,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f462af32-b8b8-45fd-8e13-c95e5c1e2b24" name="Default" comment="Commit includes, search function for job card, alcohol test, nfc card.">
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/json2java.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fgtit/models/ERDSubTask.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/fgtit/models/ERDjobCard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/blame/res/debug/single/debug.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/blame/res/debug/single/debug.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeDebugResources/compile-file-map.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/vSMgMDuiZIX_nT2teKTfgIXHGiE=" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/packageDebug/tmp/debug/zip-cache/vSMgMDuiZIX_nT2teKTfgIXHGiE=" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$3$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$4$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$4$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$4$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$4$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/EffectiveCooling.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/JobDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/com/fgtit/fingermap/JobDB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/processed_res/debug/processDebugResources/out/resources-debug.ap_" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/processed_res/debug/processDebugResources/out/resources-debug.ap_" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/layout_activity_effective_cooling.xml.flat" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/res/merged/debug/layout_activity_effective_cooling.xml.flat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$3$1.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$3$1.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$3.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$3.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$4$1.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$4$1.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$4$2.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$4$2.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$4.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling$4.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/EffectiveCooling.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/JobDB.dex" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/transforms/dexBuilder/debug/0/com/fgtit/fingermap/JobDB.dex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/outputs/apk/debug/app-debug.apk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_effective_cooling.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_effective_cooling.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -62,7 +37,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="0123456789ABCDEF" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_5_API_22_x86" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -90,115 +65,107 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/models/ERDSubTask.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="35" column="5" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1853">
-              <caret line="169" column="19" selection-start-line="169" selection-start-column="19" selection-end-line="169" selection-end-column="19" />
-              <folding>
-                <element signature="e#8173#8347#0" />
-                <element signature="e#8353#8462#0" />
-                <element signature="e#8468#8705#0" />
-                <element signature="e#8711#9493#0" />
-                <element signature="e#9048#9437#1" />
-                <element signature="e#9499#9861#0" />
-                <element signature="e#9867#10011#0" />
-                <element signature="e#10017#11299#0" />
-                <element signature="e#10960#11175#0" expanded="true" />
-                <element signature="e#11174#11175#0" expanded="true" />
-                <element signature="e#11305#12342#0" />
-                <element signature="e#12348#14362#0" />
-                <element signature="e#14369#14470#0" />
-                <element signature="e#14695#15521#0" />
-                <element signature="e#15093#15167#1" />
-                <element signature="e#15062#15419#1" />
-                <element signature="e#15413#16050#0" />
-                <element signature="e#16056#16226#0" />
-                <element signature="e#16232#17166#0" />
-                <element signature="e#17172#18370#0" />
-                <element signature="e#18504#18616#0" />
-                <element signature="e#18494#18921#0" />
-                <element signature="e#18927#19250#0" />
-                <element signature="e#19256#21577#0" />
-                <element signature="e#21583#22452#0" />
-                <element signature="e#22458#23445#0" />
-                <element signature="e#23451#23619#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/UtilitiesActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
-              <caret line="777" column="48" selection-start-line="777" selection-start-column="48" selection-end-line="777" selection-end-column="48" />
-              <folding>
-                <element signature="method#updateSQLite#0;class#UtilitiesActivity#0" />
-                <element signature="method#updateMySQLSyncSts#0;class#UtilitiesActivity#0" />
-                <element signature="method#gotoUserList#0;class#UtilitiesActivity#0" />
-                <element signature="method#syncRecord#0;class#UtilitiesActivity#0" />
-                <element signature="class#getPineUsers#0;class#UtilitiesActivity#0" />
-                <element signature="method#onPostExecute#0;class#getPineUsers#0;class#UtilitiesActivity#0" />
-                <element signature="method#onResponse#0;class#21967:22980" />
-                <element signature="method#displayResponse#0;class#UtilitiesActivity#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/CreateEffectiveJob.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="164" column="38" selection-start-line="164" selection-start-column="38" selection-end-line="164" selection-end-column="38" />
-              <folding>
-                <element signature="e#1819#3449#0" expanded="true" />
-                <element signature="e#3448#3449#0" expanded="true" />
-                <element signature="method#onCreate#0;class#CreateEffectiveJob#0" />
-                <element signature="method#onResume#0;class#CreateEffectiveJob#0" />
-                <element signature="method#onPause#0;class#CreateEffectiveJob#0" />
-                <element signature="method#onKeyDown#0;class#CreateEffectiveJob#0" />
-                <element signature="method#exitApplication#0;class#CreateEffectiveJob#0" />
-                <element signature="method#initViews#0;class#CreateEffectiveJob#0" />
-                <element signature="method#createJobCard#0;class#CreateEffectiveJob#0" />
-                <element signature="method#showToast#0;class#CreateEffectiveJob#0" />
-                <element signature="method#downloadClient#0;class#CreateEffectiveJob#0" />
-                <element signature="method#postRequest#0;class#CreateEffectiveJob#0" />
-                <element signature="method#setDialog#0;class#CreateEffectiveJob#0" />
-                <element signature="method#apiFeedback#0;class#CreateEffectiveJob#0" />
-                <element signature="method#gotoProject#0;class#CreateEffectiveJob#0" />
-                <element signature="method#refresh#0;class#CreateEffectiveJob#0" />
-                <element signature="method#validateInput#0;class#CreateEffectiveJob#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="373" column="34" selection-start-line="373" selection-start-column="16" selection-end-line="373" selection-end-column="34" />
+            <state relative-caret-position="408">
+              <caret line="293" column="18" selection-start-line="293" selection-start-column="18" selection-end-line="293" selection-end-column="18" />
               <folding>
                 <element signature="e#7185#8305#0" />
                 <element signature="e#8311#8891#0" />
                 <element signature="e#8897#9046#0" />
                 <element signature="e#9052#9236#0" />
                 <element signature="e#9242#9429#0" />
+                <element signature="e#9435#9707#0" />
+                <element signature="e#9713#9919#0" />
+                <element signature="e#9925#10014#0" />
+                <element signature="e#9925#10818#0" />
+                <element signature="e#10824#11514#0" />
                 <element signature="e#11521#11727#0" />
                 <element signature="e#11733#12529#0" />
                 <element signature="e#12536#12939#0" />
                 <element signature="e#12945#13712#0" />
+                <element signature="e#13718#13924#0" />
+                <element signature="e#13930#14108#0" />
                 <element signature="e#14133#14826#0" />
                 <element signature="e#14832#15283#0" />
                 <element signature="e#15289#15879#0" />
-                <element signature="e#15881#16336#0" />
-                <element signature="e#16172#17219#0" />
-                <element signature="e#17225#17586#0" />
-                <element signature="e#17592#18417#0" />
-                <element signature="e#18423#18761#0" />
-                <element signature="e#18767#19118#0" />
+                <element signature="e#15881#16170#0" />
+                <element signature="e#15881#16372#0" />
+                <element signature="e#16378#16590#0" />
+                <element signature="e#16596#17702#0" />
+                <element signature="e#17708#18069#0" />
+                <element signature="e#18075#18900#0" />
+                <element signature="e#18906#19244#0" />
+                <element signature="e#19250#19601#0" />
+                <element signature="e#19607#19768#0" />
+                <element signature="e#19774#20176#0" />
+                <element signature="e#20183#21079#0" />
+                <element signature="e#21085#21421#0" />
+                <element signature="e#21427#21787#0" />
+                <element signature="e#21793#21952#0" />
+                <element signature="e#21958#22792#0" />
+                <element signature="e#22798#22984#0" />
+                <element signature="e#22990#23189#0" />
+                <element signature="e#23195#24067#0" />
+                <element signature="e#24073#25354#0" />
+                <element signature="e#25360#25675#0" />
+                <element signature="e#25681#26147#0" />
+                <element signature="e#26153#26360#0" />
+                <element signature="e#26366#27169#0" />
+                <element signature="e#27175#27706#0" />
+                <element signature="e#27712#28148#0" />
+                <element signature="e#28155#28821#0" />
+                <element signature="e#28827#29028#0" />
+                <element signature="e#29034#30261#0" />
+                <element signature="e#30267#30588#0" />
+                <element signature="e#30595#31505#0" />
+                <element signature="e#31511#31577#0" />
+                <element signature="e#31511#31831#0" />
+                <element signature="e#31677#31750#1" />
+                <element signature="e#31837#31923#0" />
+                <element signature="e#31837#32286#0" />
+                <element signature="e#32292#32812#0" />
+                <element signature="e#32292#33155#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/models/ERDjobCard.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="20" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="20" />
+              <folding>
+                <element signature="e#284#774#0" />
+                <element signature="e#852#853#0" expanded="true" />
+                <element signature="e#884#885#0" expanded="true" />
+                <element signature="e#926#927#0" expanded="true" />
+                <element signature="e#960#961#0" expanded="true" />
+                <element signature="e#1014#1015#0" expanded="true" />
+                <element signature="e#1060#1061#0" expanded="true" />
+                <element signature="e#1106#1107#0" expanded="true" />
+                <element signature="e#1144#1145#0" expanded="true" />
+                <element signature="e#1197#1198#0" expanded="true" />
+                <element signature="e#1245#1246#0" expanded="true" />
+                <element signature="e#1278#1279#0" expanded="true" />
+                <element signature="e#1306#1307#0" expanded="true" />
+                <element signature="e#1354#1355#0" expanded="true" />
+                <element signature="e#1394#1395#0" expanded="true" />
+                <element signature="e#1442#1443#0" expanded="true" />
+                <element signature="e#1482#1483#0" expanded="true" />
+                <element signature="e#1526#1527#0" expanded="true" />
+                <element signature="e#1562#1563#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -211,8 +178,8 @@
       <list>
         <option value="layoutResourceFile_vertical" />
         <option value="resourceFile" />
-        <option value="Class" />
         <option value="layoutResourceFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -277,8 +244,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/CreateEffectiveJob.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/product_entry.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_effective_cooling.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/models/SubTask.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/models/ERDjobCard.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/models/ERDSubTask.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java" />
       </list>
     </option>
   </component>
@@ -321,6 +291,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -377,8 +349,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -566,7 +536,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49923313" weight="0.41403508" />
-      <window_info anchor="bottom" id="Android Profiler" order="8" />
+      <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50153375" side_tool="true" weight="0.32456142" />
       <window_info anchor="bottom" id="Logcat" order="10" weight="0.6070175" />
       <window_info anchor="bottom" id="Version Control" order="11" />
@@ -591,22 +561,8 @@
     <option name="LAST_COMMIT_MESSAGE" value="Commit includes, search function for job card, alcohol test, nfc card." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/out_button.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="40" selection-start-line="10" selection-start-column="40" selection-end-line="10" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_emp_update.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="467">
-          <caret line="99" column="32" selection-start-line="99" selection-start-column="32" selection-end-line="99" selection-end-column="32" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_logon.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="46" column="11" selection-start-line="46" selection-start-column="11" selection-end-line="46" selection-end-column="11" />
@@ -615,15 +571,14 @@
           </folding>
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/menu_drawing.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/SignOffActivity.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -666,16 +621,16 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/job_detail.xml">
-      <provider selected="true" editor-type-id="text-editor" />
       <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/project.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="35" lean-forward="true" selection-start-line="4" selection-start-column="5" selection-end-line="8" selection-end-column="35" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/Alcohol.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -716,12 +671,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/effective_cooling.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/ProjectDetail.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -785,44 +740,28 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/job_entry.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="17" column="30" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="30" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/models/JobCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
-          <folding>
-            <element signature="method#JobCard#1;class#JobCard#0" />
-            <element signature="e#326#327#0" expanded="true" />
-            <element signature="e#358#359#0" expanded="true" />
-            <element signature="e#391#392#0" expanded="true" />
-            <element signature="e#420#421#0" expanded="true" />
-            <element signature="e#464#465#0" expanded="true" />
-            <element signature="e#500#501#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/records.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="37" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="37" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/userslist.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="35" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobActivity.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -921,12 +860,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1224">
           <caret line="72" column="34" selection-start-line="72" selection-start-column="34" selection-end-line="72" selection-end-column="34" />
         </state>
       </provider>
+      <provider editor-type-id="android-manifest" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/models/User.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -999,12 +938,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/field.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
           <caret line="34" column="47" selection-start-line="34" selection-start-column="29" selection-end-line="34" selection-end-column="47" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/in_button.xml">
       <provider selected="true" editor-type-id="text-editor">
@@ -1014,12 +953,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/project_entry.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="11" selection-start-line="11" selection-end-line="56" selection-end-column="19" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/RecordList.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1029,21 +968,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/product_entry.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="867">
           <caret line="51" column="34" selection-start-line="51" selection-start-column="25" selection-end-line="51" selection-end-column="34" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/DBHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="123" column="34" selection-start-line="123" selection-start-column="34" selection-end-line="123" selection-end-column="34" />
-          <folding>
-            <element signature="method#insertUser#0;class#DBHandler#0" />
-            <element signature="method#getAllUsers#0;class#DBHandler#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1055,14 +983,15 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_create_effective_job.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="267">
           <caret line="23" column="12" selection-start-line="23" selection-start-column="12" selection-end-line="23" selection-end-column="12" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_effective_cooling.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="46" column="5" selection-start-line="46" selection-start-column="5" selection-end-line="46" selection-end-column="5" />
@@ -1077,11 +1006,10 @@
           </folding>
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/UtilitiesActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
+        <state relative-caret-position="6885">
           <caret line="777" column="48" selection-start-line="777" selection-start-column="48" selection-end-line="777" selection-end-column="48" />
           <folding>
             <element signature="method#updateSQLite#0;class#UtilitiesActivity#0" />
@@ -1096,40 +1024,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="373" column="34" selection-start-line="373" selection-start-column="16" selection-end-line="373" selection-end-column="34" />
-          <folding>
-            <element signature="e#7185#8305#0" />
-            <element signature="e#8311#8891#0" />
-            <element signature="e#8897#9046#0" />
-            <element signature="e#9052#9236#0" />
-            <element signature="e#9242#9429#0" />
-            <element signature="e#11521#11727#0" />
-            <element signature="e#11733#12529#0" />
-            <element signature="e#12536#12939#0" />
-            <element signature="e#12945#13712#0" />
-            <element signature="e#14133#14826#0" />
-            <element signature="e#14832#15283#0" />
-            <element signature="e#15289#15879#0" />
-            <element signature="e#15881#16336#0" />
-            <element signature="e#16172#17219#0" />
-            <element signature="e#17225#17586#0" />
-            <element signature="e#17592#18417#0" />
-            <element signature="e#18423#18761#0" />
-            <element signature="e#18767#19118#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/CreateEffectiveJob.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
+        <state relative-caret-position="1343">
           <caret line="164" column="38" selection-start-line="164" selection-start-column="38" selection-end-line="164" selection-end-column="38" />
           <folding>
-            <element signature="e#1819#3449#0" expanded="true" />
-            <element signature="e#3448#3449#0" expanded="true" />
             <element signature="method#onCreate#0;class#CreateEffectiveJob#0" />
             <element signature="method#onResume#0;class#CreateEffectiveJob#0" />
             <element signature="method#onPause#0;class#CreateEffectiveJob#0" />
@@ -1151,36 +1050,132 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/EffectiveCooling.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1853">
+        <state relative-caret-position="95">
           <caret line="169" column="19" selection-start-line="169" selection-start-column="19" selection-end-line="169" selection-end-column="19" />
           <folding>
-            <element signature="e#8173#8347#0" />
-            <element signature="e#8353#8462#0" />
-            <element signature="e#8468#8705#0" />
-            <element signature="e#8711#9493#0" />
-            <element signature="e#9048#9437#1" />
-            <element signature="e#9499#9861#0" />
-            <element signature="e#9867#10011#0" />
-            <element signature="e#10017#11299#0" />
-            <element signature="e#10960#11175#0" expanded="true" />
-            <element signature="e#11174#11175#0" expanded="true" />
-            <element signature="e#11305#12342#0" />
-            <element signature="e#12348#14362#0" />
-            <element signature="e#14369#14470#0" />
-            <element signature="e#14695#15521#0" />
-            <element signature="e#15093#15167#1" />
-            <element signature="e#15062#15419#1" />
-            <element signature="e#15413#16050#0" />
-            <element signature="e#16056#16226#0" />
-            <element signature="e#16232#17166#0" />
-            <element signature="e#17172#18370#0" />
-            <element signature="e#18504#18616#0" />
-            <element signature="e#18494#18921#0" />
-            <element signature="e#18927#19250#0" />
-            <element signature="e#19256#21577#0" />
-            <element signature="e#21583#22452#0" />
-            <element signature="e#22458#23445#0" />
-            <element signature="e#23451#23619#0" />
+            <element signature="e#5946#6321#0" expanded="true" />
+            <element signature="e#6320#6321#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/DBHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="123" column="34" selection-start-line="123" selection-start-column="34" selection-end-line="123" selection-end-column="34" />
+          <folding>
+            <element signature="method#insertUser#0;class#DBHandler#0" />
+            <element signature="method#getAllUsers#0;class#DBHandler#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/models/JobCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+          <folding>
+            <element signature="method#JobCard#1;class#JobCard#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/models/ERDjobCard.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="20" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="20" />
+          <folding>
+            <element signature="e#284#774#0" />
+            <element signature="e#852#853#0" expanded="true" />
+            <element signature="e#884#885#0" expanded="true" />
+            <element signature="e#926#927#0" expanded="true" />
+            <element signature="e#960#961#0" expanded="true" />
+            <element signature="e#1014#1015#0" expanded="true" />
+            <element signature="e#1060#1061#0" expanded="true" />
+            <element signature="e#1106#1107#0" expanded="true" />
+            <element signature="e#1144#1145#0" expanded="true" />
+            <element signature="e#1197#1198#0" expanded="true" />
+            <element signature="e#1245#1246#0" expanded="true" />
+            <element signature="e#1278#1279#0" expanded="true" />
+            <element signature="e#1306#1307#0" expanded="true" />
+            <element signature="e#1354#1355#0" expanded="true" />
+            <element signature="e#1394#1395#0" expanded="true" />
+            <element signature="e#1442#1443#0" expanded="true" />
+            <element signature="e#1482#1483#0" expanded="true" />
+            <element signature="e#1526#1527#0" expanded="true" />
+            <element signature="e#1562#1563#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/models/ERDSubTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="35" column="5" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/fgtit/fingermap/JobDB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="293" column="18" selection-start-line="293" selection-start-column="18" selection-end-line="293" selection-end-column="18" />
+          <folding>
+            <element signature="e#7185#8305#0" />
+            <element signature="e#8311#8891#0" />
+            <element signature="e#8897#9046#0" />
+            <element signature="e#9052#9236#0" />
+            <element signature="e#9242#9429#0" />
+            <element signature="e#9435#9707#0" />
+            <element signature="e#9713#9919#0" />
+            <element signature="e#9925#10014#0" />
+            <element signature="e#9925#10818#0" />
+            <element signature="e#10824#11514#0" />
+            <element signature="e#11521#11727#0" />
+            <element signature="e#11733#12529#0" />
+            <element signature="e#12536#12939#0" />
+            <element signature="e#12945#13712#0" />
+            <element signature="e#13718#13924#0" />
+            <element signature="e#13930#14108#0" />
+            <element signature="e#14133#14826#0" />
+            <element signature="e#14832#15283#0" />
+            <element signature="e#15289#15879#0" />
+            <element signature="e#15881#16170#0" />
+            <element signature="e#15881#16372#0" />
+            <element signature="e#16378#16590#0" />
+            <element signature="e#16596#17702#0" />
+            <element signature="e#17708#18069#0" />
+            <element signature="e#18075#18900#0" />
+            <element signature="e#18906#19244#0" />
+            <element signature="e#19250#19601#0" />
+            <element signature="e#19607#19768#0" />
+            <element signature="e#19774#20176#0" />
+            <element signature="e#20183#21079#0" />
+            <element signature="e#21085#21421#0" />
+            <element signature="e#21427#21787#0" />
+            <element signature="e#21793#21952#0" />
+            <element signature="e#21958#22792#0" />
+            <element signature="e#22798#22984#0" />
+            <element signature="e#22990#23189#0" />
+            <element signature="e#23195#24067#0" />
+            <element signature="e#24073#25354#0" />
+            <element signature="e#25360#25675#0" />
+            <element signature="e#25681#26147#0" />
+            <element signature="e#26153#26360#0" />
+            <element signature="e#26366#27169#0" />
+            <element signature="e#27175#27706#0" />
+            <element signature="e#27712#28148#0" />
+            <element signature="e#28155#28821#0" />
+            <element signature="e#28827#29028#0" />
+            <element signature="e#29034#30261#0" />
+            <element signature="e#30267#30588#0" />
+            <element signature="e#30595#31505#0" />
+            <element signature="e#31511#31577#0" />
+            <element signature="e#31511#31831#0" />
+            <element signature="e#31677#31750#1" />
+            <element signature="e#31837#31923#0" />
+            <element signature="e#31837#32286#0" />
+            <element signature="e#32292#32812#0" />
+            <element signature="e#32292#33155#0" />
           </folding>
         </state>
       </provider>
