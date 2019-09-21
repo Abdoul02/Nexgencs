@@ -33,6 +33,14 @@ public class ERDjobCard {
     public ERDjobCard() {
     }
 
+    public int getLocal_id() {
+        return local_id;
+    }
+
+    public void setLocal_id(int local_id) {
+        this.local_id = local_id;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

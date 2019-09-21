@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context="com.fgtit.fingermap.erd.ERDClock">
+
+    <RelativeLayout
+        android:id="@+id/rlJobInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_name_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Job Name: "
+                android:textColor="@color/black"></TextView>
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/txt_name_info"
+                android:text="Testing Job"
+                android:textColor="@color/black"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llName"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_code_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Job Code:  "
+                android:textColor="@color/black"></TextView>
+
+            <TextView
+                android:id="@+id/txt_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0001"
+                android:textColor="@color/black"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_code"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_address_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address:  "
+                android:textColor="@color/black"></TextView>
+
+            <TextView
+                android:id="@+id/txt_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123 Main Street"
+                android:textColor="@color/black"></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/ll_address"
+            android:id="@+id/ll_supervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_supervisor_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Supervisor :  ">
+            </TextView>
+
+            <TextView
+                android:id="@+id/txt_supervisor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="John Doe">
+            </TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/ll_supervisor"
+            android:id="@+id/ll_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_description_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Description :  ">
+            </TextView>
+
+            <TextView
+                android:id="@+id/txt_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="This is the description">
+            </TextView>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/separator"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/rlJobInfo"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
+        android:id="@+id/rL_clock">
+
+        <Spinner
+            android:id="@+id/trade_spinner"
+            android:background="@drawable/custom_spinner"
+            android:spinnerMode="dropdown"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            />
+
+        <Spinner
+            android:id="@+id/status_spinner"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/trade_spinner"
+            android:background="@drawable/custom_spinner"
+            android:spinnerMode="dropdown"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/erd_clock"
+            android:onClick="clockUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_fingerprint">
+
+        </android.support.design.widget.FloatingActionButton>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -324,22 +324,30 @@ public class JobDB extends SQLiteOpenHelper {
     //Get
     public ArrayList<ERDjobCard> getERDJobList() {
         ArrayList<ERDjobCard> jobList = new ArrayList<>();
-        String selectQuery = "SELECT  * FROM jobcard";
+        String selectQuery = "SELECT  * FROM erd_job";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
 
                 ERDjobCard jobCard = new ERDjobCard();
+                jobCard.setLocal_id(cursor.getInt(0));
                 jobCard.setId(cursor.getInt(1));
                 jobCard.setSupervisorId(cursor.getInt(2));
                 jobCard.setName(cursor.getString(3));
                 jobCard.setJobNo(cursor.getString(4));
+
                 jobList.add(jobCard);
             } while (cursor.moveToNext());
         }
         database.close();
         return jobList;
+    }
+
+    public Cursor getERDJobById(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from erd_job where id=" + id, null);
+        return res;
     }
 
     public List<ERDSubTask> getSubTasks(int job_id) {
@@ -373,7 +381,12 @@ public class JobDB extends SQLiteOpenHelper {
         db.close();
     }
 
-
+    public void deleteAllERD(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(ERD_TABLE, null, null);
+        db.delete(SUB_TASK_TABLE, null, null);
+        db.close();
+    }
 
     //Effective Cooling Job
     public void insert_ec_Job(HashMap<String, String> queryValues) {

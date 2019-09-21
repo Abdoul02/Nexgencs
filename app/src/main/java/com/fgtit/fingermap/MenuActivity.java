@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.fgtit.fingermap.erd.ERDJobActivity;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
 
@@ -125,8 +126,16 @@ public class MenuActivity extends AppCompatActivity {
 					}
 					break;
 				case 1:{
+
+					if(companyID == 117 || companyID == 3){
+
+						Intent intent = new Intent(MenuActivity.this, ERDJobActivity.class);
+						startActivity(intent);
+					}else{
 						Intent intent = new Intent(MenuActivity.this, JobActivity.class);
 						startActivity(intent);
+					}
+
 					}
 					break;
 				case 2:{
@@ -223,6 +232,7 @@ public class MenuActivity extends AppCompatActivity {
 			map.put("img", R.drawable.timesheet);
 			list.add(map);
 		}
+
 
 		map = new HashMap<String, Object>();
 		map.put("title", "Cloud Job Card");

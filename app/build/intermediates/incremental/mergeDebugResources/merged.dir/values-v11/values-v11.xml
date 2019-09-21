@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppBaseTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- API 11 theme customizations can go here. -->
+    </style>
+    <declare-styleable name="DashboardView">
+        <attr format="dimension" name="radius"/>
+        <attr format="integer" name="startAngle"/>
+        <attr format="integer" name="sweepAngle"/>
+        <attr format="integer" name="bigSliceCount"/>
+        <attr format="integer" name="sliceCountInOneBigSlice"/>
+        <attr format="color" name="arcColor"/>
+        <attr format="dimension" name="measureTextSize"/>
+        <attr format="color" name="textColor"/>
+        <attr format="string" name="headerTitle"/>
+        <attr format="string" name="headerTextSize"/>
+        <attr format="dimension" name="headerRadius"/>
+        <attr format="dimension" name="pointerRadius"/>
+        <attr format="dimension" name="circleRadius"/>
+        <attr format="integer" name="minValue"/>
+        <attr format="integer" name="maxValue"/>
+        <attr format="float" name="realTimeValue"/>
+        <attr format="dimension" name="stripeWidth"/>
+        <attr name="stripeMode">
+            <enum name="normal" value="0"/>
+            <enum name="inner" value="1"/>
+            <enum name="outer" value="2"/>
+        </attr>
+        <attr format="color" name="bgColor"/>
+    </declare-styleable>
+</resources>

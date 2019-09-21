@@ -224,6 +224,16 @@ public class DBHandler  extends SQLiteOpenHelper {
         return res;
     }
 
+    public String getUserName(int id){
+        String name = "Supervisor not found";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM users WHERE userId ="+id, null);
+        if (res.moveToFirst()) {
+            name = res.getString((res.getColumnIndex("name")));
+        }
+        return name;
+    }
+
     //Cost center
     public void insertCostCenter(int cost_center_id, String cost_center_name){
 

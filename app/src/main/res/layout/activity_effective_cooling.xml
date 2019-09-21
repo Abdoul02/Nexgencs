@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
-    tools:context="com.fgtit.fingermap.EffectiveCooling">
+    tools:context="com.fgtit.fingermap.effective_cooling.EffectiveCooling">
 
     <LinearLayout
         android:id="@+id/workLayout"
@@ -224,6 +224,7 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/clockLayout"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:background="@drawable/btncustom"

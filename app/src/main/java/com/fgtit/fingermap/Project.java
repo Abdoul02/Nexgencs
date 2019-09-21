@@ -16,6 +16,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.fgtit.fingermap.effective_cooling.CreateEffectiveJob;
+import com.fgtit.fingermap.effective_cooling.EffectiveCooling;
 import com.fgtit.models.SessionManager;
 
 import java.util.ArrayList;
