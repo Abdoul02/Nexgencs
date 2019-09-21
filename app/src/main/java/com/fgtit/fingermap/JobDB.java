@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.fgtit.models.ERDSubTask;
+import com.fgtit.models.ERDjobCard;
 import com.fgtit.models.EcCustomer;
 import com.fgtit.models.EcProduct;
 import com.fgtit.models.JobCard;
@@ -25,8 +27,8 @@ public class JobDB extends SQLiteOpenHelper {
 
 
     private static final String TAG = "JobDB";
-    String ERD_TABLE ="erd_job";
-    String SUB_TASK_TABLE = "";
+    String ERD_TABLE = "erd_job";
+    String SUB_TASK_TABLE = "sub_task_table";
 
     public JobDB(Context applicationcontext) {
         super(applicationcontext, "androidsqlite.db", null, 6);
@@ -36,7 +38,7 @@ public class JobDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         String query, query2, query3, btScale, pine, ec_job,
-                ec_job_info, ec_material, ec_customer, ec_product,erd_job_card,sub_task;
+                ec_job_info, ec_material, ec_customer, ec_product, erd_job_card, sub_task;
         query = "CREATE TABLE jobcard ( jobID INTEGER PRIMARY KEY, name TEXT, description TEXT, " +
                 "location TEXT, assignee TEXT, approvedBy TEXT,customer TEXT, progress INTEGER, start TEXT, end TEXT,jobCode TEXT,attachment TEXT," +
                 "office TEXT)";
@@ -62,7 +64,7 @@ public class JobDB extends SQLiteOpenHelper {
 
         ec_customer = "CREATE TABLE ec_customer(customer_id INTEGER PRIMARY KEY,id INTEGER,name TEXT)";
         ec_product = "CREATE TABLE ec_product(product_id INTEGER PRIMARY KEY, id INTEGER, name TEXT, price TEXT)";
-        erd_job_card="CREATE TABLE erd_job(local_id INTEGER PRIMARY KEY, id INTEGER, supervisorId INTEGER," +
+        erd_job_card = "CREATE TABLE erd_job(local_id INTEGER PRIMARY KEY, id INTEGER, supervisor_id INTEGER," +
                 "name TEXT, job_no TEXT, description TEXT, address TEXT, progress TEXT, from_date TEXT, to_date TEXT)";
         sub_task = "CREATE TABLE sub_task_table(task_id INTEGER PRIMARY KEY,id INTEGER, job_card_id INTEGER, name TEXT)";
 
@@ -129,7 +131,7 @@ public class JobDB extends SQLiteOpenHelper {
 
             database.execSQL("CREATE TABLE ec_customer(customer_id INTEGER PRIMARY KEY,id INTEGER,name TEXT)");
             database.execSQL("CREATE TABLE ec_product(product_id INTEGER PRIMARY KEY, id INTEGER, name TEXT, price TEXT)");
-            database.execSQL("CREATE TABLE erd_job(local_id INTEGER PRIMARY KEY, id INTEGER, supervisorId INTEGER," +
+            database.execSQL("CREATE TABLE erd_job(local_id INTEGER PRIMARY KEY, id INTEGER, supervisor_id INTEGER," +
                     "name TEXT, job_no TEXT, description TEXT, address TEXT, progress TEXT, from_date TEXT, to_date TEXT)");
             database.execSQL("CREATE TABLE sub_task_table(task_id INTEGER PRIMARY KEY,id INTEGER, job_card_id INTEGER, name TEXT)");
         }
@@ -245,7 +247,6 @@ public class JobDB extends SQLiteOpenHelper {
     }
 
     public ArrayList<JobCard> getJobList() {
-        ArrayList<HashMap<String, String>> wordList;
         ArrayList<JobCard> jobList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM jobcard";
         SQLiteDatabase database = this.getWritableDatabase();
@@ -292,6 +293,86 @@ public class JobDB extends SQLiteOpenHelper {
     }
 
     //ERD Job Card
+
+    //Insert
+    public void insertERDJob(ERDjobCard jobCard) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", jobCard.getId());
+        values.put("job_no", jobCard.getJobNo());
+        values.put("supervisor_id", jobCard.getSupervisorId());
+        values.put("name", jobCard.getName());
+        values.put("description", jobCard.getDescription());
+        values.put("address", jobCard.getAddress());
+        values.put("progress", jobCard.getProgress());
+        values.put("from_date", jobCard.getFromDate());
+        values.put("to_date", jobCard.getToDate());
+        database.insert(ERD_TABLE, null, values);
+        database.close();
+    }
+
+    public void insertERDSubTask(ERDSubTask subTask) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", subTask.getId());
+        values.put("job_card_id", subTask.getJobCardId());
+        values.put("name", subTask.getName());
+        database.insert(SUB_TASK_TABLE, null, values);
+        database.close();
+    }
+
+    //Get
+    public ArrayList<ERDjobCard> getERDJobList() {
+        ArrayList<ERDjobCard> jobList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM jobcard";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+
+                ERDjobCard jobCard = new ERDjobCard();
+                jobCard.setId(cursor.getInt(1));
+                jobCard.setSupervisorId(cursor.getInt(2));
+                jobCard.setName(cursor.getString(3));
+                jobCard.setJobNo(cursor.getString(4));
+                jobList.add(jobCard);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return jobList;
+    }
+
+    public List<ERDSubTask> getSubTasks(int job_id) {
+
+        List<ERDSubTask> subTaskList = new ArrayList<ERDSubTask>();
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery("select * from sub_task_table WHERE job_card_id = "+job_id, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ERDSubTask subTask = new ERDSubTask();
+                subTask.setId(cursor.getInt(1));
+                subTask.setJobCardId(cursor.getInt(2));
+                subTask.setName(cursor.getString(3));
+                subTaskList.add(subTask);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return subTaskList;
+    }
+
+    //Delete
+    public void delete_erd_job(String local_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(ERD_TABLE, "local_id=? ", new String[]{local_id});
+        db.close();
+    }
+
+    public void delete_erd_sub_task(String job_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(SUB_TASK_TABLE, "job_card_id=? ", new String[]{job_id});
+        db.close();
+    }
+
 
 
     //Effective Cooling Job
@@ -379,18 +460,18 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
     }
 
-/*    public void delete_ec_material(String product,String quantity,String job_id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("ec_material", "material_used=? AND quantity=? AND job_id=?", new String[]{product,quantity,job_id});
-        db.close();
-    }*/
-    public void deleteAllMaterials(String job_id){
+    /*    public void delete_ec_material(String product,String quantity,String job_id) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete("ec_material", "material_used=? AND quantity=? AND job_id=?", new String[]{product,quantity,job_id});
+            db.close();
+        }*/
+    public void deleteAllMaterials(String job_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("ec_material", "job_id=? ", new String[]{job_id});
         db.close();
     }
 
-    public void delete_ec_material(String material_id){
+    public void delete_ec_material(String material_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("ec_material", "material_id=? ", new String[]{material_id});
         db.close();
