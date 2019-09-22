@@ -26,13 +26,17 @@ public class DownloadService extends IntentService {
     public static final String TAG = "DownloadService";
     public static final String NOTIFICATION = "package com.fgtit.service";
     public static final String POST_JSON = "json";
+    public static final String JSON_VAL = "json_value";
 
     public static final String EC_DATA_URL = "http://nexgencs.co.za/alos/get_ec_data.php";
     public static final String ERD_DATA_URL="http://nexgencs.co.za/alos/get_erd_job.php";
+    public static final String ERD_CLOCK_URL="http://nexgencs.co.za/alos/erd_job_clock.php";
 
     public static final String CUSTOMER = "customer";
     public static final String PRODUCTS = "product";
     public static final String ERD = "erd_job";
+    public static final String ERD_CLOCK = "erd_clock";
+
     public static final String URL = "url";
     public static final String RESULT = "result";
     public static final String FILTER = "filter";
@@ -61,8 +65,13 @@ public class DownloadService extends IntentService {
         Log.d(TAG, json);
         Log.d(TAG, filter);
 
+        String jsonValue ="";
+        if(filter.equals(ERD_CLOCK)){
+            jsonValue = intent.getStringExtra(JSON_VAL);
+        }
+
         try {
-            post(url,json, new Callback() {
+            post(url,json,jsonValue, new Callback() {
                 Handler handler = new Handler(DownloadService.this.getMainLooper());
 
                 @Override
@@ -101,12 +110,12 @@ public class DownloadService extends IntentService {
     }
 
 
-    Call post(String url,String filter, Callback callback) throws IOException {
+    Call post(String url,String filter,String jsonVal, Callback callback) throws IOException {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         Call call;
 
         RequestBody body = new FormBody.Builder()
-                .add(filter,filter)
+                .add(filter,jsonVal)
                 .build();
         OkHttpClient client = builder.build();
         Request request = new Request.Builder()

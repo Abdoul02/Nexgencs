@@ -1,6 +1,7 @@
 package com.fgtit.fingermap.erd;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,13 +36,16 @@ import com.fgtit.fpcore.FPMatch;
 import com.fgtit.models.ERDSubTask;
 import com.fgtit.models.User;
 import com.fgtit.service.ClockService;
+import com.fgtit.service.DownloadService;
 import com.fgtit.utils.ExtApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
@@ -48,6 +53,12 @@ import java.util.TimerTask;
 
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
+
+import static com.fgtit.service.DownloadService.CUSTOMER;
+import static com.fgtit.service.DownloadService.ERD;
+import static com.fgtit.service.DownloadService.ERD_CLOCK;
+import static com.fgtit.service.DownloadService.ERD_CLOCK_URL;
+import static com.fgtit.service.DownloadService.ERD_DATA_URL;
 
 public class ERDClock extends AppCompatActivity {
 
@@ -71,7 +82,7 @@ public class ERDClock extends AppCompatActivity {
     private ImageView fpImage;
 
 
-
+    Dialog dialog;
     String trade_prompt = "--Trade--";
     String status_prompt = "--Status--";
 
@@ -88,6 +99,49 @@ public class ERDClock extends AppCompatActivity {
     List<String> trades = new ArrayList<>();
 
 
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle bundle = intent.getExtras();
+            String filter = bundle.getString(DownloadService.FILTER);
+            int resultCode = bundle.getInt(DownloadService.RESULT);
+
+            if (resultCode == RESULT_OK && filter.equals(ERD_CLOCK)) {
+                String response = bundle.getString(DownloadService.CALL_RESPONSE);
+                Log.d(TAG, "onReceive: " + response);
+                try {
+                    JSONArray arr = new JSONArray(response);
+                    if (arr.length() != 0) {
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject obj = (JSONObject) arr.get(i);
+                            int success = obj.getInt("success");
+                            String msg = obj.getString("message");
+                            if(success == 1){
+                                showToast(msg);
+                            }else{
+                                showToast(msg);
+                            }
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+
+            } else {
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                showToast("Something went wrong");
+            }
+
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,6 +187,23 @@ public class ERDClock extends AppCompatActivity {
         }else{
             finish();
         }
+
+        vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
+        FPInit();
+        FPProcess();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(
+                DownloadService.NOTIFICATION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
@@ -214,6 +285,20 @@ public class ERDClock extends AppCompatActivity {
     }
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+    private void setDialog(boolean show) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        View vl = inflater.inflate(R.layout.progress, null);
+        builder.setView(vl);
+        dialog = builder.create();
+        if (show) {
+            dialog.show();
+        } else {
+            dialog.cancel();
+        }
+
     }
 
     //Fingerprint methods
@@ -308,9 +393,8 @@ public class ERDClock extends AppCompatActivity {
 
                                 byte[] ref = ExtApi.Base64ToBytes(us.getFinger1());
                                 if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
-
                                     //Clock
-                                    Log.d(TAG, "onUpCharSuccess: "+us.getuName());
+                                    upload(us.getuId());
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
                                 }
@@ -322,6 +406,7 @@ public class ERDClock extends AppCompatActivity {
                                 if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
 
                                     //Clock
+                                    upload(us.getuId());
                                     Log.d(TAG, "onUpCharSuccess: "+us.getuName());
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
@@ -354,6 +439,37 @@ public class ERDClock extends AppCompatActivity {
                 TimerStart();
             }
         });
+
+    }
+
+    public void upload(int user_id){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDateandTime = sdf.format(new Date());
+        JSONObject postDataParams = new JSONObject();
+
+        String trade_id = spn_trade.getSelectedItem().toString();
+        int task_id = tradeMap.get(trade_id);
+
+        try {
+            postDataParams.accumulate("clock_date", currentDateandTime);
+            postDataParams.accumulate("status", spn_status.getSelectedItem().toString());
+            postDataParams.accumulate("user_id", user_id);
+            postDataParams.accumulate("task_id", task_id);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "upload: "+postDataParams);
+
+        setDialog(true);
+        Intent client_intent = new Intent(ERDClock.this, DownloadService.class);
+        client_intent.putExtra(DownloadService.POST_JSON, "erd_clock");
+        client_intent.putExtra(DownloadService.JSON_VAL,postDataParams.toString());
+        client_intent.putExtra(DownloadService.URL,ERD_CLOCK_URL);
+        client_intent.putExtra(DownloadService.FILTER, ERD_CLOCK);
+        startService(client_intent);
 
     }
 

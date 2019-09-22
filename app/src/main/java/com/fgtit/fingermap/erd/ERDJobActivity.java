@@ -188,7 +188,7 @@ public class ERDJobActivity extends AppCompatActivity {
 
         list_of_jobs = jobDB.getERDJobList();
         myList = findViewById(R.id.erd_job_list);
-        
+
         empList = userDB.getAllUsers();
 
         if (list_of_jobs.size() != 0) {
@@ -484,6 +484,7 @@ public class ERDJobActivity extends AppCompatActivity {
                                     dataBundle.putString("job_id", job_id);
                                     Intent intent = new Intent(getApplicationContext(), ERDClock.class);
                                     intent.putExtras(dataBundle);
+                                    workExit();
                                     startActivity(intent);
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
@@ -503,6 +504,7 @@ public class ERDJobActivity extends AppCompatActivity {
                                     dataBundle.putString("job_id", job_id);
                                     Intent intent = new Intent(getApplicationContext(), ERDClock.class);
                                     intent.putExtras(dataBundle);
+                                    workExit();
                                     startActivity(intent);
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
@@ -533,7 +535,6 @@ public class ERDJobActivity extends AppCompatActivity {
         });
 
     }
-
 
     @SuppressLint("HandlerLeak")
     public void TimerStart() {
