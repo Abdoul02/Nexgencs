@@ -1,11 +1,18 @@
 package com.fgtit.fingermap.erd;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,25 +26,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fgtit.fingermap.DBHandler;
 import com.fgtit.fingermap.JobDB;
+import com.fgtit.fingermap.JobDetail;
 import com.fgtit.fingermap.MenuActivity;
 import com.fgtit.fingermap.R;
+import com.fgtit.fpcore.FPMatch;
 import com.fgtit.models.ERDSubTask;
 import com.fgtit.models.ERDjobCard;
+import com.fgtit.models.User;
 import com.fgtit.service.DownloadService;
+import com.fgtit.utils.ExtApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android_serialport_api.AsyncFingerprint;
+import android_serialport_api.SerialPortManager;
 
 import static com.fgtit.service.DownloadService.ERD;
 import static com.fgtit.service.DownloadService.ERD_DATA_URL;
@@ -50,6 +70,30 @@ public class ERDJobActivity extends AppCompatActivity {
     private MyAppAdapter myAppAdapter;
     ArrayList<ERDjobCard> list_of_jobs;
     ListView myList;
+    int supervisor_id;
+    String job_id;
+
+
+    //Fingerprint
+    //Fingerprint
+    private AsyncFingerprint vFingerprint;
+    private boolean bIsCancel = false;
+    private boolean bfpWork = false;
+    private Dialog fpDialog;
+    private TextView tvFpStatus;
+    private boolean bcheck = false;
+    private boolean bIsUpImage = true;
+    private int iFinger = 0;
+    private int count;
+    private ArrayList<User> empList;
+
+
+    private Timer startTimer;
+    private TimerTask startTask;
+    private Handler startHandler;
+    private ImageView fpImage;
+
+
 
     //Receiving Downloaded info
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -144,6 +188,8 @@ public class ERDJobActivity extends AppCompatActivity {
 
         list_of_jobs = jobDB.getERDJobList();
         myList = findViewById(R.id.erd_job_list);
+        
+        empList = userDB.getAllUsers();
 
         if (list_of_jobs.size() != 0) {
             myAppAdapter = new MyAppAdapter(list_of_jobs, this);
@@ -154,19 +200,19 @@ public class ERDJobActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                     TextView txt_job_id =  view.findViewById(R.id.txt_job_id);
-                    String job_id = txt_job_id.getText().toString();
-
-                    Bundle dataBundle = new Bundle();
-                    dataBundle.putString("job_id", job_id);
-                    Intent intent = new Intent(getApplicationContext(), ERDClock.class);
-                    intent.putExtras(dataBundle);
-                    startActivity(intent);
+                    TextView txt_supervisor_id = view.findViewById(R.id.txt_supervisor_id);
+                    job_id = txt_job_id.getText().toString();
+                    supervisor_id = Integer.parseInt(txt_supervisor_id.getText().toString());
+                    FPDialog(1);
 
                 }
             });
         }else{
             showToast("No jobs");
         }
+
+        vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
+        FPInit();
     }
 
     @Override
@@ -185,6 +231,7 @@ public class ERDJobActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            workExit();
             Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
             return true;
@@ -300,11 +347,234 @@ public class ERDJobActivity extends AppCompatActivity {
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
+    private void workExit() {
+        if (SerialPortManager.getInstance().isOpen()) {
+            bIsCancel = true;
+            SerialPortManager.getInstance().closeSerialPort();
+            this.finish();
+        }
+    }
+    private void FPDialog(int i) {
+        iFinger = i;
+        AlertDialog.Builder builder = new AlertDialog.Builder(ERDJobActivity.this);
+        builder.setTitle("fingerprint Reader ");
+        final LayoutInflater inflater = LayoutInflater.from(ERDJobActivity.this);
+        View vl = inflater.inflate(R.layout.dialog_enrolfinger, null);
+        fpImage = vl.findViewById(R.id.imageView1);
+        tvFpStatus = vl.findViewById(R.id.textview1);
+        builder.setView(vl);
+        builder.setCancelable(false);
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //SerialPortManager.getInstance().closeSerialPort();
+                dialog.dismiss();
+            }
+        });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                //SerialPortManager.getInstance().closeSerialPort();
+                dialog.dismiss();
+            }
+        });
+
+        fpDialog = builder.create();
+        fpDialog.setCanceledOnTouchOutside(false);
+        fpDialog.show();
+        FPProcess();
+    }
+
+    private void FPProcess() {
+
+        if (!bfpWork) {
+            tvFpStatus.setText(getString(R.string.txt_fpplace));
+            try {
+                Thread.currentThread();
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            //imgFeed.setImageResource(R.drawable.green_trans);
+
+            vFingerprint.FP_GetImage();
+            bfpWork = true;
+        }
+    }
+
+    //Finger Print Registration
+    private void FPInit() {
+        vFingerprint.setOnGetImageListener(new AsyncFingerprint.OnGetImageListener() {
+            @Override
+            public void onGetImageSuccess() {
+                if (bIsUpImage) {
+                    vFingerprint.FP_UpImage();
+                    tvFpStatus.setText(getString(R.string.txt_fpdisplay));
+                } else {
+                    tvFpStatus.setText(getString(R.string.txt_fpprocess));
+                    vFingerprint.FP_GenChar(1);
+                }
+            }
+
+            @Override
+            public void onGetImageFail() {
+                if (!bIsCancel) {
+                    vFingerprint.FP_GetImage();
+                    //SignLocalActivity.this.AddStatus("Error");
+                } else {
+                   showToast("Cancel OK");
+                }
+            }
+        });
+
+        vFingerprint.setOnUpImageListener(new AsyncFingerprint.OnUpImageListener() {
+            @Override
+            public void onUpImageSuccess(byte[] data) {
+                Bitmap image = BitmapFactory.decodeByteArray(data, 0, data.length);
+                fpImage.setImageBitmap(image);
+                //fpImage.setBackgroundDrawable(new BitmapDrawable(image));
+                tvFpStatus.setText(getString(R.string.txt_fpprocess));
+                vFingerprint.FP_GenChar(1);
+            }
+
+            @Override
+            public void onUpImageFail() {
+                bfpWork = false;
+                TimerStart();
+            }
+        });
+
+        vFingerprint.setOnGenCharListener(new AsyncFingerprint.OnGenCharListener() {
+            @Override
+            public void onGenCharSuccess(int bufferId) {
+                tvFpStatus.setText(getString(R.string.txt_fpidentify));
+                vFingerprint.FP_UpChar();
+            }
+
+            @Override
+            public void onGenCharFail() {
+                tvFpStatus.setText(getString(R.string.txt_fpfail));
+            }
+        });
+
+        vFingerprint.setOnUpCharListener(new AsyncFingerprint.OnUpCharListener() {
+
+            @Override
+            public void onUpCharSuccess(byte[] model) {
+
+
+                //Check the fingerprints here
+                List<User> user = empList;
+                int count = 0;
+                if (empList.size() > 0) {
+
+                    //for(int i=0; i<emplist.size(); i++)
+                    for (User us : user) {
+
+                        if (us.getFinger1() != null && us.getFinger1().length() >= 512) {
+
+                            byte[] ref = ExtApi.Base64ToBytes(us.getFinger1());
+                            if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
+
+                                if (us.getuId() == supervisor_id) {
+                                    fpDialog.cancel();
+                                    Bundle dataBundle = new Bundle();
+                                    dataBundle.putString("job_id", job_id);
+                                    Intent intent = new Intent(getApplicationContext(), ERDClock.class);
+                                    intent.putExtras(dataBundle);
+                                    startActivity(intent);
+                                    tvFpStatus.setText(getString(R.string.txt_fpmatchok));
+                                    break;
+                                } else
+                                showToast("Wrong user");
+                            }
+                        }
+
+
+                        if (us.getFinger2() != null && us.getFinger2().length() >= 512) {
+
+                            byte[] ref = ExtApi.Base64ToBytes(us.getFinger2());
+                            if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
+                                if (us.getuId() == supervisor_id) {
+                                    fpDialog.cancel();
+                                    Bundle dataBundle = new Bundle();
+                                    dataBundle.putString("job_id", job_id);
+                                    Intent intent = new Intent(getApplicationContext(), ERDClock.class);
+                                    intent.putExtras(dataBundle);
+                                    startActivity(intent);
+                                    tvFpStatus.setText(getString(R.string.txt_fpmatchok));
+                                    break;
+                                } else
+                                    showToast("Wrong user");
+                            }
+                        }
+
+                        count++;
+                    }
+
+                    if (count == empList.size()) {
+                        Toast.makeText(getApplicationContext(), "fingerprint not found", Toast.LENGTH_SHORT).show();
+                    }
+                } else
+                    Toast.makeText(getApplicationContext(), "Please download employee information", Toast.LENGTH_SHORT).show();
+
+                bfpWork = false;
+                TimerStart();
+            }
+
+            @Override
+            public void onUpCharFail() {
+                tvFpStatus.setText("Reading Failed");
+                bfpWork = false;
+                TimerStart();
+            }
+        });
+
+    }
+
+
+    @SuppressLint("HandlerLeak")
+    public void TimerStart() {
+        if (startTimer == null) {
+            startTimer = new Timer();
+            startHandler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+
+                    TimeStop();
+                    FPProcess();
+                }
+            };
+            startTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Message message = new Message();
+                    message.what = 1;
+                    startHandler.sendMessage(message);
+                }
+            };
+            startTimer.schedule(startTask, 1000, 1000);
+        }
+    }
+
+    public void TimeStop() {
+        if (startTimer != null) {
+            startTimer.cancel();
+            startTimer = null;
+            startTask.cancel();
+            startTask = null;
+        }
+    }
+
+
     //Adapter
     public class MyAppAdapter extends BaseAdapter {
 
         public class ViewHolder {
-            TextView txt_job_name, txt_local_id,txt_supervisor,txt_job_code,txt_job_id;
+            TextView txt_job_name, txt_local_id,txt_supervisor,txt_job_code,txt_job_id,txt_supervisor_id;
         }
 
         public List<ERDjobCard> JobList;
@@ -352,6 +622,7 @@ public class ERDJobActivity extends AppCompatActivity {
                 viewHolder.txt_job_code = rowView.findViewById(R.id.erd_job_no);
                 viewHolder.txt_supervisor = rowView.findViewById(R.id.txt_supervisor);
                 viewHolder.txt_job_id = rowView.findViewById(R.id.txt_job_id);
+                viewHolder.txt_supervisor_id = rowView.findViewById(R.id.txt_supervisor_id);
                 rowView.setTag(viewHolder);
 
             } else {
@@ -363,6 +634,7 @@ public class ERDJobActivity extends AppCompatActivity {
             viewHolder.txt_job_code.setText(JobList.get(position).getJobNo()+"");
             viewHolder.txt_local_id.setText(JobList.get(position).getLocal_id()+ "");
             viewHolder.txt_job_id.setText(JobList.get(position).getId() + "");
+            viewHolder.txt_supervisor_id.setText(JobList.get(position).getSupervisorId()+"");
 
             return rowView;
 

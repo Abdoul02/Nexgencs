@@ -83,6 +83,9 @@
         <service
             android:name="com.fgtit.service.DownloadService"
             android:enabled="true" />
+        <service
+            android:name="com.fgtit.service.ClockService"
+            android:enabled="true" />
 
         <receiver
             android:name="com.fgtit.models.SampleBC"

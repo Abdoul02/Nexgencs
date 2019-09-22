@@ -1946,6 +1946,7 @@ id txt_local_id
 id txt_name
 id txt_name_info
 id txt_supervisor
+id txt_supervisor_id
 id txt_supervisor_info
 id txt_time_in
 id txt_time_out

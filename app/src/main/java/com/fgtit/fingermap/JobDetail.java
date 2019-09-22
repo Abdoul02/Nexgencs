@@ -1,6 +1,7 @@
 package com.fgtit.fingermap;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -67,10 +68,10 @@ public class JobDetail extends AppCompatActivity {
 
     JobDB jdb = new JobDB(this);
     DBHandler db = new DBHandler(this);
-    TextView jobName,location,description,customer,approved,start,end,jCode,down,ope,company,office;
-    LinearLayout lloffice,llSatis,llTime;
-    EditText comment,progress,startkm,endkm,edtTimeOnSite;
-    Button update,signature;
+    TextView jobName, location, description, customer, approved, start, end, jCode, down, ope, company, office;
+    LinearLayout lloffice, llSatis, llTime;
+    EditText comment, progress, startkm, endkm, edtTimeOnSite;
+    Button update, signature;
     ProgressDialog prgDialog;
     private int count;
     private ArrayList<User> empList;
@@ -83,19 +84,18 @@ public class JobDetail extends AppCompatActivity {
     private AsyncFingerprint vFingerprint;
     private Dialog fpDialog;
     ProgressDialog saveDialog;
-    private int	iFinger=0;
-    private ImageView fpImage,pict,camera,imgSmile,imgNeutral,imgSad;
-    private TextView  tvFpStatus;
-    private boolean bcheck=false;
-    private boolean	bIsUpImage=true;
-    private boolean	bIsCancel=false;
-    private boolean	bfpWork=false;
+    private int iFinger = 0;
+    private ImageView fpImage, pict, camera, imgSmile, imgNeutral, imgSad;
+    private TextView tvFpStatus;
+    private boolean bcheck = false;
+    private boolean bIsUpImage = true;
+    private boolean bIsCancel = false;
+    private boolean bfpWork = false;
     private Timer startTimer;
     private TimerTask startTask;
     private Handler startHandler;
-    private byte[] jpgbytes=null;
-    int clientSatisfaction=0;
-
+    private byte[] jpgbytes = null;
+    int clientSatisfaction = 0;
 
 
     @Override
@@ -110,38 +110,38 @@ public class JobDetail extends AppCompatActivity {
         session = new SessionManager(getApplicationContext());
         manager = session.getUserDetails();
         compId = Integer.parseInt(manager.get(SessionManager.KEY_COMPID));
-        jobName  = (TextView) findViewById(R.id.job_name);
-        location = (TextView) findViewById(R.id.location);
-        description = (TextView) findViewById(R.id.description);
-        customer = (TextView) findViewById(R.id.customer);
-        approved = (TextView) findViewById(R.id.approvedBy);
-        start = (TextView) findViewById(R.id.start);
-        end = (TextView) findViewById(R.id.end_date);
-        jCode = (TextView) findViewById(R.id.Job_code);
-        down = (TextView) findViewById(R.id.txtDownl);
-        ope =(TextView) findViewById(R.id.txtOpen);
-        comment = (EditText)findViewById(R.id.edtComment);
-        progress = (EditText)findViewById(R.id.edtProgress);
-        startkm = (EditText)findViewById(R.id.edtStart);
-        edtTimeOnSite = (EditText)findViewById(R.id.edtTime);
-        endkm = (EditText)findViewById(R.id.edtFinish);
-        update = (Button) findViewById(R.id.btnUpd);
-        signature = (Button)findViewById(R.id.btnSign);
-        pict = (ImageView) findViewById(R.id.imgPict);
-        camera = (ImageView) findViewById(R.id.imgCam);
-        company = (TextView) findViewById(R.id.cust);
-        lloffice = (LinearLayout) findViewById(R.id.llOffice);
-        llTime = (LinearLayout) findViewById(R.id.llTimeOnSite);
-        llSatis = (LinearLayout) findViewById(R.id.llClientSat);
-        office = (TextView) findViewById(R.id.office);
-        imgSmile = (ImageView) findViewById(R.id.imgSmile);
-        imgNeutral = (ImageView) findViewById(R.id.imgNeutral);
-        imgSad = (ImageView) findViewById(R.id.imgSad);
+        jobName = findViewById(R.id.job_name);
+        location = findViewById(R.id.location);
+        description = findViewById(R.id.description);
+        customer = findViewById(R.id.customer);
+        approved = findViewById(R.id.approvedBy);
+        start = findViewById(R.id.start);
+        end = findViewById(R.id.end_date);
+        jCode = findViewById(R.id.Job_code);
+        down = findViewById(R.id.txtDownl);
+        ope = findViewById(R.id.txtOpen);
+        comment = findViewById(R.id.edtComment);
+        progress = findViewById(R.id.edtProgress);
+        startkm = findViewById(R.id.edtStart);
+        edtTimeOnSite = findViewById(R.id.edtTime);
+        endkm = findViewById(R.id.edtFinish);
+        update = findViewById(R.id.btnUpd);
+        signature = findViewById(R.id.btnSign);
+        pict = findViewById(R.id.imgPict);
+        camera = findViewById(R.id.imgCam);
+        company = findViewById(R.id.cust);
+        lloffice = findViewById(R.id.llOffice);
+        llTime = findViewById(R.id.llTimeOnSite);
+        llSatis = findViewById(R.id.llClientSat);
+        office = findViewById(R.id.office);
+        imgSmile = findViewById(R.id.imgSmile);
+        imgNeutral = findViewById(R.id.imgNeutral);
+        imgSad = findViewById(R.id.imgSad);
 
-       // signature.setClickable(false);
-       // signature.setVisibility(View.GONE);
+        // signature.setClickable(false);
+        // signature.setVisibility(View.GONE);
 
-        if(compId == 63 || compId ==3){
+        if (compId == 63 || compId == 3) {
 
             signature.setClickable(true);
             signature.setVisibility(View.VISIBLE);
@@ -169,19 +169,19 @@ public class JobDetail extends AppCompatActivity {
                 Cursor rs = jdb.getData(value);
                 rs.moveToFirst();
 
-                final String jname,jloc,jdesc,jcust,japp,jstart,jend,code,prog,link,sOffice;
+                final String jname, jloc, jdesc, jcust, japp, jstart, jend, code, prog, link, sOffice;
 
-                jname   = rs.getString(rs.getColumnIndex("name"));
-                jloc    = rs.getString(rs.getColumnIndex("location"));
-                jdesc   = rs.getString(rs.getColumnIndex("description"));
-                jcust   = rs.getString(rs.getColumnIndex("customer"));
-                japp    = rs.getString(rs.getColumnIndex("approvedBy"));
-                jstart  = rs.getString(rs.getColumnIndex("start"));
-                jend    = rs.getString(rs.getColumnIndex("end"));
-                code    = rs.getString(rs.getColumnIndex("jobCode"));
-                prog    = rs.getString(rs.getColumnIndex("progress"));
-                link    = rs.getString(rs.getColumnIndex("attachment"));
-                sOffice  = rs.getString(rs.getColumnIndex("office"));
+                jname = rs.getString(rs.getColumnIndex("name"));
+                jloc = rs.getString(rs.getColumnIndex("location"));
+                jdesc = rs.getString(rs.getColumnIndex("description"));
+                jcust = rs.getString(rs.getColumnIndex("customer"));
+                japp = rs.getString(rs.getColumnIndex("approvedBy"));
+                jstart = rs.getString(rs.getColumnIndex("start"));
+                jend = rs.getString(rs.getColumnIndex("end"));
+                code = rs.getString(rs.getColumnIndex("jobCode"));
+                prog = rs.getString(rs.getColumnIndex("progress"));
+                link = rs.getString(rs.getColumnIndex("attachment"));
+                sOffice = rs.getString(rs.getColumnIndex("office"));
 
                 jobName.setText(jname);
                 location.setText(jloc);
@@ -207,12 +207,12 @@ public class JobDetail extends AppCompatActivity {
                             File test = Environment.getExternalStorageDirectory();
                             File myFile = new File(test.getAbsolutePath() + "/attach/" + value);
 
-                            if(myFile.exists()){
+                            if (myFile.exists()) {
 
                                 open(value);
-                            }else{
+                            } else {
                                 //Toast.makeText(getApplicationContext(), "Downloading, please wait...", Toast.LENGTH_LONG).show();
-                                download("http://nexgencs.co.za/nexgen"+link, value);
+                                download("http://nexgencs.co.za/nexgen" + link, value);
                             }
 
                         } else {
@@ -235,14 +235,12 @@ public class JobDetail extends AppCompatActivity {
                             File test = Environment.getExternalStorageDirectory();
                             File myFile = new File(test.getAbsolutePath() + "/attach/" + value);
 
-                            if(myFile.exists()){
+                            if (myFile.exists()) {
 
                                 open(value);
-                            }
+                            } else {
 
-                            else{
-
-                                Toast.makeText(getApplicationContext(),value + "  not found", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), value + "  not found", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -269,7 +267,7 @@ public class JobDetail extends AppCompatActivity {
                         imgSmile.setImageResource(R.drawable.happy_green);
                         imgNeutral.setImageResource(R.drawable.neutral_grey);
                         imgSad.setImageResource(R.drawable.sad_grey);
-                        Toast.makeText(JobDetail.this,"Satisfied",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(JobDetail.this, "Satisfied", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -280,7 +278,7 @@ public class JobDetail extends AppCompatActivity {
                         imgSmile.setImageResource(R.drawable.happy_grey);
                         imgNeutral.setImageResource(R.drawable.neutral_green);
                         imgSad.setImageResource(R.drawable.sad_grey);
-                        Toast.makeText(JobDetail.this,"Neutral",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(JobDetail.this, "Neutral", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -291,10 +289,9 @@ public class JobDetail extends AppCompatActivity {
                         imgSmile.setImageResource(R.drawable.happy_grey);
                         imgNeutral.setImageResource(R.drawable.neutral_grey);
                         imgSad.setImageResource(R.drawable.sad_green);
-                        Toast.makeText(JobDetail.this,"Not satisfied",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(JobDetail.this, "Not satisfied", Toast.LENGTH_SHORT).show();
                     }
                 });
-
 
 
                 update.setOnClickListener(new View.OnClickListener() {
@@ -312,18 +309,16 @@ public class JobDetail extends AppCompatActivity {
 
                         if (pro.equals("100")) {
 
-                            if(clientSatisfaction == 0 && compId == 63){
+                            if (clientSatisfaction == 0 && compId == 63) {
                                 Toast.makeText(getApplicationContext(), "Please select client satisfaction and press finish", Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 Toast.makeText(getApplicationContext(), "Please press finish", Toast.LENGTH_SHORT).show();
                             }
 
 
-                        }
+                        } else {
 
-                        else {
-
-                            if(Integer.parseInt(pro) > 100){
+                            if (Integer.parseInt(pro) > 100) {
 
                                 Toast.makeText(getApplicationContext(), "Progress cannot be over 100%", Toast.LENGTH_SHORT).show();
                             }
@@ -334,17 +329,15 @@ public class JobDetail extends AppCompatActivity {
                             } else {
 
                                 File extf = Environment.getExternalStorageDirectory();
-                                File myFile = new File(extf.getAbsolutePath()+ "/fgtit/"+ code +"_"+ pro + ".jpg");
-                                if(myFile.exists()){
+                                File myFile = new File(extf.getAbsolutePath() + "/fgtit/" + code + "_" + pro + ".jpg");
+                                if (myFile.exists()) {
 
-                                    String path ="/sdcard/fgtit/"+ code +"_"+ pro + ".jpg";
-                                    String name = code +"_"+ pro + ".jpg";
+                                    String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
+                                    String name = code + "_" + pro + ".jpg";
 
-                                    upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code,startK,endK,clientSatisfaction,timeOnSite);
-                                }
-
-                                else{
-                                    nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code,startK,endK,clientSatisfaction,timeOnSite);
+                                    upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, startK, endK, clientSatisfaction, timeOnSite);
+                                } else {
+                                    nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, startK, endK, clientSatisfaction, timeOnSite);
                                     //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -387,36 +380,35 @@ public class JobDetail extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        switch(resultCode){
-            case 1:{
-                Bundle bl= data.getExtras();
-                String barcode=bl.getString("barcode");
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case 1: {
+                Bundle bl = data.getExtras();
+                String barcode = bl.getString("barcode");
             }
             break;
             case 2:
                 break;
-            case 3:{
-                Bundle bl= data.getExtras();
-                String id=bl.getString("id");
+            case 3: {
+                Bundle bl = data.getExtras();
+                String id = bl.getString("id");
                 Toast.makeText(JobDetail.this, "Pictures Finish", Toast.LENGTH_SHORT).show();
-                byte[] photo=bl.getByteArray("photo");
-                if(photo!=null){
-                    try{
+                byte[] photo = bl.getByteArray("photo");
+                if (photo != null) {
+                    try {
                         Matrix matrix = new Matrix();
                         Bitmap bm = BitmapFactory.decodeByteArray(photo, 0, photo.length);
                         matrix.preRotate(270);
-                        Bitmap nbm=Bitmap.createBitmap(bm ,0,0, bm .getWidth(), bm .getHeight(),matrix,true);
+                        Bitmap nbm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
 
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
                         nbm.compress(Bitmap.CompressFormat.JPEG, 80, out);
-                        jpgbytes= out.toByteArray();
+                        jpgbytes = out.toByteArray();
 
-                        Bitmap bitmap =BitmapFactory.decodeByteArray(jpgbytes, 0, jpgbytes.length);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(jpgbytes, 0, jpgbytes.length);
                         pict.setImageBitmap(bitmap);
 
-                    }catch(Exception e){
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -425,20 +417,18 @@ public class JobDetail extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void gotoMap(View v)
-    {
+    public void gotoMap(View v) {
 
-        if(isAppInstalled("com.google.android.apps.maps")) {
+        if (isAppInstalled("com.google.android.apps.maps")) {
 
             String address = location.getText().toString();
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("geo:0,0?q="+address));
+                    Uri.parse("geo:0,0?q=" + address));
             intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
             startActivity(intent);
-        }
-        else{
+        } else {
 
-            Toast.makeText(getApplicationContext(),"You do not have google maps installed",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "You do not have google maps installed", Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -469,7 +459,7 @@ public class JobDetail extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        switch(id){
+        switch (id) {
             case android.R.id.home:
                 this.setResult(1);
                 this.finish();
@@ -477,18 +467,17 @@ public class JobDetail extends AppCompatActivity {
                 return true;
             case R.id.finish:
 
-                if(progress.getText().toString().equals("100")){
+                if (progress.getText().toString().equals("100")) {
 
-                    if(clientSatisfaction == 0 && compId == 63){
+                    if (clientSatisfaction == 0 && compId == 63) {
                         Toast.makeText(getApplicationContext(), "Please select client satisfaction", Toast.LENGTH_SHORT).show();
-                    }else{
+                    } else {
 
                         FPDialog(1);
                     }
 
 
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Progress must be 100%", Toast.LENGTH_SHORT).show();
                 }
                 return true;
@@ -496,14 +485,14 @@ public class JobDetail extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void FPDialog(int i){
-        iFinger=i;
+    private void FPDialog(int i) {
+        iFinger = i;
         AlertDialog.Builder builder = new AlertDialog.Builder(JobDetail.this);
         builder.setTitle("fingerprint Reader ");
         final LayoutInflater inflater = LayoutInflater.from(JobDetail.this);
         View vl = inflater.inflate(R.layout.dialog_enrolfinger, null);
-        fpImage = (ImageView) vl.findViewById(R.id.imageView1);
-        tvFpStatus= (TextView) vl.findViewById(R.id.textview1);
+        fpImage = vl.findViewById(R.id.imageView1);
+        tvFpStatus = vl.findViewById(R.id.textview1);
         builder.setView(vl);
         builder.setCancelable(false);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -527,35 +516,33 @@ public class JobDetail extends AppCompatActivity {
         FPProcess();
     }
 
-    private void FPProcess(){
+    private void FPProcess() {
 
-        if(!bfpWork){
+        if (!bfpWork) {
             tvFpStatus.setText(getString(R.string.txt_fpplace));
             try {
                 Thread.currentThread();
                 Thread.sleep(500);
-            }catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             //imgFeed.setImageResource(R.drawable.green_trans);
 
             vFingerprint.FP_GetImage();
-            bfpWork=true;
+            bfpWork = true;
         }
     }
 
     //Finger Print Registration
-    private void FPInit(){
-        //ָ�ƴ���
-        vFingerprint.setOnGetImageListener(new AsyncFingerprint.OnGetImageListener()  {
+    private void FPInit() {
+        vFingerprint.setOnGetImageListener(new AsyncFingerprint.OnGetImageListener() {
             @Override
             public void onGetImageSuccess() {
-                if(bIsUpImage){
+                if (bIsUpImage) {
                     vFingerprint.FP_UpImage();
                     tvFpStatus.setText(getString(R.string.txt_fpdisplay));
-                }else{
+                } else {
                     tvFpStatus.setText(getString(R.string.txt_fpprocess));
                     vFingerprint.FP_GenChar(1);
                 }
@@ -602,7 +589,6 @@ public class JobDetail extends AppCompatActivity {
             }
         });
 
-
         vFingerprint.setOnUpCharListener(new AsyncFingerprint.OnUpCharListener() {
 
             @Override
@@ -643,10 +629,10 @@ public class JobDetail extends AppCompatActivity {
                                     if (myFile.exists()) {
                                         String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
                                         String name = code + "_" + pro + ".jpg";
-                                        upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh,clientSatisfaction,timeOnSite);
+                                        upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
 
                                     } else {
-                                        nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt,fnsh,clientSatisfaction,timeOnSite);
+                                        nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
                                         //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
                                     }
 
@@ -668,10 +654,10 @@ public class JobDetail extends AppCompatActivity {
                                     if (myFile.exists()) {
                                         String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
                                         String name = code + "_" + pro + ".jpg";
-                                        upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt,fnsh,clientSatisfaction,timeOnSite);
+                                        upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
 
                                     } else {
-                                        nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh,clientSatisfaction,timeOnSite);
+                                        nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
 
                                         //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
                                     }
@@ -692,14 +678,14 @@ public class JobDetail extends AppCompatActivity {
                 } else
                     Toast.makeText(getApplicationContext(), "Please download employee information", Toast.LENGTH_SHORT).show();
 
-                bfpWork=false;
+                bfpWork = false;
                 TimerStart();
             }
 
             @Override
             public void onUpCharFail() {
                 tvFpStatus.setText("Reading Failed");
-                bfpWork=false;
+                bfpWork = false;
                 TimerStart();
             }
         });
@@ -707,8 +693,9 @@ public class JobDetail extends AppCompatActivity {
     }
 
 
-    public void TimerStart(){
-        if(startTimer==null){
+    @SuppressLint("HandlerLeak")
+    public void TimerStart() {
+        if (startTimer == null) {
             startTimer = new Timer();
             startHandler = new Handler() {
                 @Override
@@ -731,13 +718,12 @@ public class JobDetail extends AppCompatActivity {
         }
     }
 
-    public void TimeStop(){
-        if (startTimer!=null)
-        {
+    public void TimeStop() {
+        if (startTimer != null) {
             startTimer.cancel();
             startTimer = null;
             startTask.cancel();
-            startTask=null;
+            startTask = null;
         }
     }
 
@@ -748,7 +734,7 @@ public class JobDetail extends AppCompatActivity {
     }
 
 
-    public void upload(String path,String name,String com,String currentDateandTime,int pro,String code,String strt,String finish,int cs,String timeOnSite ){
+    public void upload(String path, String name, String com, String currentDateandTime, int pro, String code, String strt, String finish, int cs, String timeOnSite) {
 
         Bitmap bm = BitmapFactory.decodeFile(path);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
@@ -757,13 +743,13 @@ public class JobDetail extends AppCompatActivity {
         ba1 = Base64.encodeToString(ba, Base64.DEFAULT);
 
         // Upload image to server
-        updateJob(name, com, currentDateandTime, currentDateandTime, pro, code, strt, finish,cs,timeOnSite);
-       // new uploadToServer().execute(name);
+        updateJob(name, com, currentDateandTime, currentDateandTime, pro, code, strt, finish, cs, timeOnSite);
+        // new uploadToServer().execute(name);
     }
 
-    public void updateJob(final String name,final String comment,final String dat,final String time,final int progres, final String job_code,final String strt,final String fnsh,final int cs,final String timeOnSite){
+    public void updateJob(final String name, final String comment, final String dat, final String time, final int progres, final String job_code, final String strt, final String fnsh, final int cs, final String timeOnSite) {
 
-        try{
+        try {
 
             //Create AsycHttpClient object
             AsyncHttpClient client = new AsyncHttpClient();
@@ -781,8 +767,8 @@ public class JobDetail extends AppCompatActivity {
             jsonObject.accumulate("progress", progres);
             jsonObject.accumulate("start", strt);
             jsonObject.accumulate("finish", fnsh);
-            jsonObject.accumulate("cs",cs);
-            jsonObject.accumulate("timeOnSite",timeOnSite);
+            jsonObject.accumulate("cs", cs);
+            jsonObject.accumulate("timeOnSite", timeOnSite);
 
 
             json = jsonObject.toString();
@@ -798,11 +784,11 @@ public class JobDetail extends AppCompatActivity {
                     System.out.println("+++++++++++++++++++++++++");
                     prgDialog.hide();
                     Toast.makeText(getApplicationContext(), "Job card updated", Toast.LENGTH_LONG).show();
-                    if(Integer.parseInt(response) == 100){
+                    if (Integer.parseInt(response) == 100) {
                         jdb.deletejobcard(job_code);
                         jdb.deleteJinfo(job_code);
                         reloadActivity();
-                    }else {
+                    } else {
                         jdb.updateJob(job_code, progres);
                     }
                 }
@@ -814,22 +800,22 @@ public class JobDetail extends AppCompatActivity {
                     System.out.println(content);
                     prgDialog.hide();
                     //controller.insertRecord(idN, name, dat, lat, lon, id, "IN");
-                    jdb.insertJInfo(comment, time, dat, job_code,strt,fnsh);
+                    jdb.insertJInfo(comment, time, dat, job_code, strt, fnsh);
                     //jdb.updateJob(job_code, progres);
-                    Toast.makeText(getApplicationContext(), "Network error "+ String.valueOf(statusCode), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Network error " + statusCode, Toast.LENGTH_LONG).show();
 
                 }
             });
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
     }
 
-    public void nopict(final String comment,final String dat,final String time,final int progres, final String job_code,final String strt,final String fnsh,final int cs,final String timeOnSite){
+    public void nopict(final String comment, final String dat, final String time, final int progres, final String job_code, final String strt, final String fnsh, final int cs, final String timeOnSite) {
 
-        try{
+        try {
 
             //Create AsycHttpClient object
             AsyncHttpClient client = new AsyncHttpClient();
@@ -845,8 +831,8 @@ public class JobDetail extends AppCompatActivity {
             jsonObject.accumulate("progress", progres);
             jsonObject.accumulate("start", strt);
             jsonObject.accumulate("finish", fnsh);
-            jsonObject.accumulate("cs",cs);
-            jsonObject.accumulate("timeOnSite",timeOnSite);
+            jsonObject.accumulate("cs", cs);
+            jsonObject.accumulate("timeOnSite", timeOnSite);
 
             json = jsonObject.toString();
             prgDialog.show();
@@ -861,11 +847,11 @@ public class JobDetail extends AppCompatActivity {
                     System.out.println("+++++++++++++++++++++++++");*/
                     prgDialog.hide();
                     Toast.makeText(getApplicationContext(), "Job card updated", Toast.LENGTH_LONG).show();
-                    if(Integer.parseInt(response) == 100100){
+                    if (Integer.parseInt(response) == 100100) {
                         jdb.deletejobcard(job_code);
                         jdb.deleteJinfo(job_code);
                         reloadActivity();
-                    }else {
+                    } else {
                         jdb.updateJob(job_code, progres);
                     }
                 }
@@ -877,40 +863,39 @@ public class JobDetail extends AppCompatActivity {
                     System.out.println(content);
                     prgDialog.hide();
                     //controller.insertRecord(idN, name, dat, lat, lon, id, "IN");
-                    jdb.insertJInfo(comment,time,dat,job_code,strt,fnsh);
+                    jdb.insertJInfo(comment, time, dat, job_code, strt, fnsh);
                     Toast.makeText(getApplicationContext(), "Network error, please check your internet connection.", Toast.LENGTH_LONG).show();
 
                 }
             });
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
     }
 
-
-    public void open(String nam)
-    {
+    public void open(String nam) {
         File pdfFile = new File(Environment.getExternalStorageDirectory() + "/attach/" + nam);  // -> filename = maven.pdf
         Uri path = Uri.fromFile(pdfFile);
         Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
         pdfIntent.setDataAndType(path, "application/pdf");
         pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        try{
+        try {
             startActivity(pdfIntent);
-        }catch(ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(JobDetail.this, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void download(String url, String nam)
-    {
+    public void download(String url, String nam) {
         new DownloadFile().execute(url);
     }
+
     private class DownloadFile extends AsyncTask<String, Integer, String> {
-         ProgressDialog pDialog;
+        ProgressDialog pDialog;
+
         @Override
         protected void onPreExecute() {
 
@@ -919,7 +904,7 @@ public class JobDetail extends AppCompatActivity {
             pDialog.setMessage("Downloading Attachment...");
             pDialog.setIndeterminate(false);
             pDialog.setMax(100);
-            pDialog.setProgressStyle(pDialog.STYLE_HORIZONTAL);
+            pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             pDialog.setCancelable(true);
             pDialog.show();
 
@@ -963,7 +948,7 @@ public class JobDetail extends AppCompatActivity {
                 OutputStream output = new FileOutputStream(folder + "/"
                         + fileName);
 
-                byte data[] = new byte[1024];
+                byte[] data = new byte[1024];
                 long total = 0;
                 int count;
                 while ((count = input.read(data)) != -1) {
