@@ -144,6 +144,7 @@
         android:layout_marginRight="10dp"/>
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -169,7 +170,6 @@
             />
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/erd_clock"
-            android:onClick="clockUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -178,8 +178,17 @@
         </android.support.design.widget.FloatingActionButton>
 
     </RelativeLayout>
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_below="@+id/rL_clock"
+        android:layout_above="@+id/fingerprintImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
 
     <LinearLayout
+        android:id="@+id/fingerprintImage"
+        android:layout_alignParentBottom="true"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

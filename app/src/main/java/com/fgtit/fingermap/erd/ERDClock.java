@@ -21,11 +21,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fgtit.adapter.CustomSpinnerAdapter;
+import com.fgtit.data.ImageSimpleAdapter;
 import com.fgtit.device.BluetoothReaderService;
 import com.fgtit.fingermap.BTScale;
 import com.fgtit.fingermap.DBHandler;
@@ -90,7 +93,7 @@ public class ERDClock extends AppCompatActivity {
     JobDB jobDB = new JobDB(this);
 
     //Spinners
-    Spinner spn_trade,spn_status;
+    //Spinner spn_trade,spn_status;
     //TextView
     TextView txt_job_name,txt_job_code,txt_address,txt_supervisor,txt_description;
     int job_id;
@@ -98,6 +101,10 @@ public class ERDClock extends AppCompatActivity {
     List<ERDSubTask>subTaskList;
     List<String> trades = new ArrayList<>();
 
+    //users who clocked
+    private ListView listView1;
+    private ArrayList<HashMap<String, Object>> mData1;
+    private SimpleAdapter adapter1;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -106,6 +113,7 @@ public class ERDClock extends AppCompatActivity {
             Bundle bundle = intent.getExtras();
             String filter = bundle.getString(DownloadService.FILTER);
             int resultCode = bundle.getInt(DownloadService.RESULT);
+            clearInfo();
 
             if (resultCode == RESULT_OK && filter.equals(ERD_CLOCK)) {
                 String response = bundle.getString(DownloadService.CALL_RESPONSE);
@@ -181,16 +189,12 @@ public class ERDClock extends AppCompatActivity {
                 }
 
                 //Trade
-                initAllSpinner(this,trade_prompt,trades,spn_trade);
+                //initAllSpinner(this,trade_prompt,trades,spn_trade);
             }
 
         }else{
             finish();
         }
-
-        vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
-        FPInit();
-        FPProcess();
     }
 
     @Override
@@ -218,21 +222,11 @@ public class ERDClock extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-    public void clockUser(View v){
-
-       /* String trade_id = spn_trade.getSelectedItem().toString();
-        int key = tradeMap.get(trade_id);
-        Toast.makeText(this,"Trade: "+key,Toast.LENGTH_SHORT).show();*/
-        Toast.makeText(this,"Please clock",Toast.LENGTH_SHORT).show();
-        vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
-        FPInit();
-        FPProcess();
-    }
     private void initViews(){
 
         empList = userDB.getAllUsers();
-        spn_status = findViewById(R.id.status_spinner);
-        spn_trade = findViewById(R.id.trade_spinner);
+       // spn_status = findViewById(R.id.status_spinner);
+       // spn_trade = findViewById(R.id.trade_spinner);
 
         txt_address = findViewById(R.id.txt_address);
         txt_description= findViewById(R.id.txt_description);
@@ -253,8 +247,16 @@ public class ERDClock extends AppCompatActivity {
         statuses.add("IN");
         statuses.add("OUT");
 
+
+        listView1 = (ListView) findViewById(R.id.listView1);
+        mData1 = new ArrayList<HashMap<String, Object>>();
+        adapter1 = new ImageSimpleAdapter(this, mData1, R.layout.listview_signitem,
+                new String[]{"title", "info", "dts", "img"},
+                new int[]{R.id.title, R.id.info, R.id.dts, R.id.img});
+        listView1.setAdapter(adapter1);
+
         //status
-        initAllSpinner(this,status_prompt,statuses,spn_status);
+        //initAllSpinner(this,status_prompt,statuses,spn_status);
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
         FPInit();
         FPProcess();
@@ -282,6 +284,41 @@ public class ERDClock extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void AddPersonItem(User user) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(new Date());
+
+        upload(user.getuId(),currentTime);
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("title", user.getuName());
+        map.put("info", user.getIdNum());
+        map.put("dts", currentTime);
+        mData1.add(map);
+        adapter1.notifyDataSetChanged();
+        ScrollListViewToBottom();
+    }
+    private void ScrollListViewToBottom() {
+        listView1.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                listView1.setSelection(adapter1.getCount() - 1);
+            }
+        });
+    }
+    public void clearInfo(){
+
+        final Handler tOut = new Handler();
+        tOut.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mData1.clear();
+                adapter1.notifyDataSetChanged();
+            }
+        },2000);
     }
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -377,12 +414,8 @@ public class ERDClock extends AppCompatActivity {
             @Override
             public void onUpCharSuccess(byte[] model) {
 
-                String trade = spn_trade.getSelectedItem().toString();
-                String status = spn_status.getSelectedItem().toString();
-
-                if(trade.equals(trade_prompt) || status.equals(status_prompt)){
-                    showToast("Please select a trade and a status");
-                }else{
+                //String trade = spn_trade.getSelectedItem().toString();
+               // String status = spn_status.getSelectedItem().toString();
                     List<User> user = empList;
                     int count = 0;
                     if (empList.size() > 0) {
@@ -394,7 +427,7 @@ public class ERDClock extends AppCompatActivity {
                                 byte[] ref = ExtApi.Base64ToBytes(us.getFinger1());
                                 if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
                                     //Clock
-                                    upload(us.getuId());
+                                    AddPersonItem(us);
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
                                 }
@@ -406,7 +439,7 @@ public class ERDClock extends AppCompatActivity {
                                 if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
 
                                     //Clock
-                                    upload(us.getuId());
+                                    AddPersonItem(us);
                                     Log.d(TAG, "onUpCharSuccess: "+us.getuName());
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
@@ -424,7 +457,7 @@ public class ERDClock extends AppCompatActivity {
                         showToast("Please download employee information");
 
                     }
-                }
+
 
 
 
@@ -442,20 +475,18 @@ public class ERDClock extends AppCompatActivity {
 
     }
 
-    public void upload(int user_id){
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentDateandTime = sdf.format(new Date());
+    public void upload(int user_id,String date){
         JSONObject postDataParams = new JSONObject();
 
-        String trade_id = spn_trade.getSelectedItem().toString();
-        int task_id = tradeMap.get(trade_id);
+       // String trade_id = spn_trade.getSelectedItem().toString();
+       // int task_id = tradeMap.get(trade_id);
 
         try {
-            postDataParams.accumulate("clock_date", currentDateandTime);
-            postDataParams.accumulate("status", spn_status.getSelectedItem().toString());
+            postDataParams.accumulate("clock_date", date);
+           // postDataParams.accumulate("status", spn_status.getSelectedItem().toString());
             postDataParams.accumulate("user_id", user_id);
-            postDataParams.accumulate("task_id", task_id);
+            postDataParams.accumulate("job_id", job_id);
+          //  postDataParams.accumulate("task_id", task_id);
 
         } catch (JSONException e) {
             e.printStackTrace();

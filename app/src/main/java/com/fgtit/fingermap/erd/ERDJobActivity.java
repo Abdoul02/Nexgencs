@@ -51,6 +51,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -214,6 +215,7 @@ public class ERDJobActivity extends AppCompatActivity {
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
         FPInit();
     }
+
 
     @Override
     protected void onResume() {
