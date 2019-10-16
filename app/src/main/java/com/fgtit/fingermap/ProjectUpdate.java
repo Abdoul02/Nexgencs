@@ -10,12 +10,14 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -27,13 +29,18 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fgtit.adapter.ImageListAdapter;
+import com.fgtit.data.CommonFunction;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
 import com.fgtit.fpcore.FPMatch;
@@ -46,6 +53,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,6 +70,8 @@ import android_serialport_api.SerialPortManager;
 public class ProjectUpdate extends AppCompatActivity {
 
     EditText location,asset,requestedBy,criticalAsset,dateRequired,workRequired,site,trade,date,dt,progress,comment;
+    LinearLayout llImageView;
+    RelativeLayout RlGridView;
     private ImageView camBtn,pImage,fpImage;
     private Spinner statusSpinner;
     ProgressDialog prgDialog;
@@ -96,11 +106,18 @@ public class ProjectUpdate extends AppCompatActivity {
     private int count;
     private ArrayList<User> empList;
 
+    String currentPhotoPath;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private GridView grid;
+    private  List<String> listOfImagesPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_project_detail);
 
+
+        listOfImagesPath = new ArrayList<>();
         //EditTexts
         location = (EditText) findViewById(R.id.edtPlocation);
         asset = (EditText) findViewById(R.id.edtAsset);
@@ -117,6 +134,9 @@ public class ProjectUpdate extends AppCompatActivity {
         dt = (EditText) findViewById(R.id.edtDT);
         comment = (EditText) findViewById(R.id.edtPComment);
         progress = (EditText) findViewById(R.id.edtPprogress);
+        grid = findViewById(R.id.imgGridView);
+        llImageView = findViewById(R.id.lPict);
+        RlGridView = findViewById(R.id.RlGridView);
 
         statusSpinner = (Spinner) findViewById(R.id.statusSpinner);
         List<String>statusList = new ArrayList<String>();
@@ -128,8 +148,8 @@ public class ProjectUpdate extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         statusSpinner.setAdapter(dataAdapter);
 
-        txtProgress = (TextView) findViewById(R.id.txtProgress);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        txtProgress = findViewById(R.id.txtProgress);
+        progressBar =  findViewById(R.id.progressBar);
         //progressBar.setProgress(0);
         progressBar.setSecondaryProgress(100);
         progressBar.setMax(100);
@@ -167,8 +187,8 @@ public class ProjectUpdate extends AppCompatActivity {
         }
 
         //ImageView
-        camBtn = (ImageView) findViewById(R.id.imgPCam);
-        pImage = (ImageView) findViewById(R.id.imgPPict);
+        camBtn = findViewById(R.id.imgPCam);
+        pImage = findViewById(R.id.imgPPict);
 
         //Progress Dialog
         prgDialog = new ProgressDialog(this);
@@ -299,12 +319,13 @@ public class ProjectUpdate extends AppCompatActivity {
                 Random r = new Random();
                 int random = r.nextInt(100-1)+1;
                 if(criticalAsset.length() > 0){
-                    pictName = criticalAsset.getText().toString() +"_"+String.valueOf(random);
+/*                    pictName = criticalAsset.getText().toString() +"_"+String.valueOf(random);
                     Intent intent = new Intent(ProjectUpdate.this, CameraExActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("id", pictName);
                     intent.putExtras(bundle);
-                    startActivityForResult(intent, 0);
+                    startActivityForResult(intent, 0);*/
+                    dispatchTakePictureIntent();
 
                 }else
                     Toast.makeText(getApplicationContext(), "Please Provide the Critical Asset first", Toast.LENGTH_SHORT).show();
@@ -318,43 +339,24 @@ public class ProjectUpdate extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        switch(resultCode){
-            case 1:{
-                Bundle bl= data.getExtras();
-            }
-            break;
-            case 2:
-                break;
-            case 3:{
-                Bundle bl= data.getExtras();
-                String id=bl.getString("id");
-                Toast.makeText(ProjectUpdate.this, "Pictures Finish", Toast.LENGTH_SHORT).show();
-                byte[] photo=bl.getByteArray("photo");
-                if(photo!=null){
-                    try{
-                        Matrix matrix = new Matrix();
-                        Bitmap bm = BitmapFactory.decodeByteArray(photo, 0, photo.length);
-                        matrix.preRotate(90);
-                        Bitmap nbm=Bitmap.createBitmap(bm ,0,0, bm .getWidth(), bm .getHeight(),matrix,true);
 
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        nbm.compress(Bitmap.CompressFormat.JPEG, 80, out);
-                        jpgbytes= out.toByteArray();
-
-                        Bitmap bitmap =BitmapFactory.decodeByteArray(jpgbytes, 0, jpgbytes.length);
-                        pImage.setImageBitmap(bitmap);
-
-                    }catch(Exception e){
-                    }
-                }
-            }
-            break;
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            setPic();
+            listOfImagesPath.add(currentPhotoPath);
+            Toast.makeText(ProjectUpdate.this,"I =>"+listOfImagesPath.size(),Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void showGrid(View v){
+        if(listOfImagesPath.size() > 0){
+            grid.setAdapter(new ImageListAdapter(this,listOfImagesPath));
+            llImageView.setVisibility(View.GONE);
+            RlGridView.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -960,6 +962,65 @@ public class ProjectUpdate extends AppCompatActivity {
         }
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                ex.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "co.za.nexgencs.clocking.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JC_" + timeStamp;
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = pImage.getWidth();
+        int targetH = pImage.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        pImage.setImageBitmap(bitmap);
+    }
     // Reload ProjectActivity
     public void reloadActivity() {
         Intent objIntent = new Intent(getApplicationContext(), Project.class);

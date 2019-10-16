@@ -21,6 +21,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -49,6 +51,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -79,7 +82,8 @@ public class JobDetail extends AppCompatActivity {
     SessionManager session;
     HashMap<String, String> manager;
     int compId;
-
+    String currentPhotoPath;
+    static final int REQUEST_TAKE_PHOTO = 1;
 
     private AsyncFingerprint vFingerprint;
     private Dialog fpDialog;
@@ -251,12 +255,13 @@ public class JobDetail extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
-                        String pictName = jCode.getText().toString() + "_" + progress.getText().toString();
+                       /* String pictName = jCode.getText().toString() + "_" + progress.getText().toString();
                         Intent intent = new Intent(JobDetail.this, CameraExActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("id", pictName);
                         intent.putExtras(bundle);
-                        startActivityForResult(intent, 0);
+                        startActivityForResult(intent, 0);*/
+                        dispatchTakePictureIntent();
                     }
                 });
 
@@ -381,7 +386,7 @@ public class JobDetail extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode) {
+/*        switch (resultCode) {
             case 1: {
                 Bundle bl = data.getExtras();
                 String barcode = bl.getString("barcode");
@@ -413,6 +418,12 @@ public class JobDetail extends AppCompatActivity {
                 }
             }
             break;
+        }*/
+
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            pict.setImageBitmap(imageBitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -893,6 +904,43 @@ public class JobDetail extends AppCompatActivity {
         new DownloadFile().execute(url);
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                ex.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.fgtit.fingermap.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JC_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
     private class DownloadFile extends AsyncTask<String, Integer, String> {
         ProgressDialog pDialog;
 
@@ -929,7 +977,7 @@ public class JobDetail extends AppCompatActivity {
                 String value = val.substring(nxtSla);
                 String fileName = value;
 
-                // Detect the file lenghth
+                // Detect the file length
                 int fileLength = connection.getContentLength();
 
                 // Locate storage location

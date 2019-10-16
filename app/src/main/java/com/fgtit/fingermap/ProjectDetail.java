@@ -9,10 +9,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -41,6 +44,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,6 +92,8 @@ public class ProjectDetail extends AppCompatActivity {
     private int	iFinger=0;
     private int count;
     private ArrayList<User> empList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +153,8 @@ public class ProjectDetail extends AppCompatActivity {
         }*/
 
         //ImageView
-        camBtn = (ImageView) findViewById(R.id.imgPCam);
-        pImage = (ImageView) findViewById(R.id.imgPPict);
+        camBtn =  findViewById(R.id.imgPCam);
+        pImage =  findViewById(R.id.imgPPict);
 
         //Progress Dialog
         prgDialog = new ProgressDialog(this);
@@ -223,12 +229,13 @@ public class ProjectDetail extends AppCompatActivity {
                 Random r = new Random();
                 int random = r.nextInt(100-1)+1;
                 if(criticalAsset.length() > 0){
-                    pictName = criticalAsset.getText().toString() +"_"+String.valueOf(random);
+                    pictName = criticalAsset.getText().toString() +"_"+ random;
                     Intent intent = new Intent(ProjectDetail.this, CameraExActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("id", pictName);
                     intent.putExtras(bundle);
                     startActivityForResult(intent, 0);
+
 
                 }else
                     Toast.makeText(getApplicationContext(), "Please Provide the Critical Asset first", Toast.LENGTH_SHORT).show();
@@ -263,7 +270,6 @@ public class ProjectDetail extends AppCompatActivity {
                         Bitmap bm = BitmapFactory.decodeByteArray(photo, 0, photo.length);
                         matrix.preRotate(90);
                         Bitmap nbm=Bitmap.createBitmap(bm ,0,0, bm .getWidth(), bm .getHeight(),matrix,true);
-
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
                         nbm.compress(Bitmap.CompressFormat.JPEG, 80, out);
                         jpgbytes= out.toByteArray();
@@ -843,6 +849,8 @@ public class ProjectDetail extends AppCompatActivity {
             Log.d("InputStream", e.getLocalizedMessage());
         }
     }
+
+
 
     // Reload ProjectActivity
     public void reloadActivity() {

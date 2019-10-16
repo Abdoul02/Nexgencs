@@ -55,9 +55,12 @@
     <application
         android:name="com.fgtit.models.App"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Fgtit">
+        android:theme="@style/Theme.Fgtit"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".erd.ERDClock"></activity>
         <activity android:name=".erd.ERDJobActivity" />
         <activity android:name=".effective_cooling.CreateEffectiveJob" />
@@ -72,9 +75,9 @@
         <service
             android:name="com.fgtit.service.DownloadService"
             android:enabled="true" />
-        <service android:name="com.fgtit.service.ClockService"
-            android:enabled="true"
-            ></service>
+        <service
+            android:name="com.fgtit.service.ClockService"
+            android:enabled="true" />
         <receiver
             android:name="com.fgtit.models.SampleBC"
             android:exported="true"
@@ -85,6 +88,16 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="co.za.nexgencs.clocking.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <!--
         receiver
             android:name="com.fgtit.fingermap.LocationBC"
