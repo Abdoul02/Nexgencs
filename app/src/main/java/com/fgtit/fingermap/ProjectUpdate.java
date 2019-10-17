@@ -80,6 +80,7 @@ public class ProjectUpdate extends AppCompatActivity {
     String ba1;
     TabHost mTabHost;
     DBHandler mydb = new DBHandler(this);
+    JobDB jobDB = new JobDB(this);
     SessionManager session;
     HashMap<String, String> queryValues;
     private byte[] jpgbytes=null;
@@ -119,26 +120,26 @@ public class ProjectUpdate extends AppCompatActivity {
 
         listOfImagesPath = new ArrayList<>();
         //EditTexts
-        location = (EditText) findViewById(R.id.edtPlocation);
-        asset = (EditText) findViewById(R.id.edtAsset);
-        requestedBy = (EditText) findViewById(R.id.edtPrequest);
-        criticalAsset = (EditText) findViewById(R.id.edtCAsset);
-        dateRequired = (EditText) findViewById(R.id.edtDateReq);
-        workRequired = (EditText) findViewById(R.id.edtWorkReq);
-        site = (EditText) findViewById(R.id.edtPsite);
-        trade = (EditText) findViewById(R.id.edtPTrade);
+        location = findViewById(R.id.edtPlocation);
+        asset = findViewById(R.id.edtAsset);
+        requestedBy = findViewById(R.id.edtPrequest);
+        criticalAsset =  findViewById(R.id.edtCAsset);
+        dateRequired = findViewById(R.id.edtDateReq);
+        workRequired = findViewById(R.id.edtWorkReq);
+        site = findViewById(R.id.edtPsite);
+        trade = findViewById(R.id.edtPTrade);
         //date = (EditText) findViewById(R.id.edtPdate);
         //nt = (EditText) findViewById(R.id.edtNT);
         //ot1 = (EditText) findViewById(R.id.edtOT1);
         //ot2 = (EditText) findViewById(R.id.edtOT2);
-        dt = (EditText) findViewById(R.id.edtDT);
-        comment = (EditText) findViewById(R.id.edtPComment);
-        progress = (EditText) findViewById(R.id.edtPprogress);
+        dt = findViewById(R.id.edtDT);
+        comment = findViewById(R.id.edtPComment);
+        progress = findViewById(R.id.edtPprogress);
         grid = findViewById(R.id.imgGridView);
         llImageView = findViewById(R.id.lPict);
         RlGridView = findViewById(R.id.RlGridView);
 
-        statusSpinner = (Spinner) findViewById(R.id.statusSpinner);
+        statusSpinner = findViewById(R.id.statusSpinner);
         List<String>statusList = new ArrayList<String>();
         statusList.add(selectStatus);
         statusList.add("Start");
@@ -178,7 +179,7 @@ public class ProjectUpdate extends AppCompatActivity {
 
         for(int i =0; i<mTabHost.getTabWidget().getChildCount();i++){
 
-            TextView tv = (TextView) mTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            TextView tv = mTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             tv.setTextColor(Color.WHITE);
             //tv.setPadding(10,10,10,15);
             tv.setTextSize((float) 10.0);
@@ -345,17 +346,23 @@ public class ProjectUpdate extends AppCompatActivity {
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             setPic();
-            listOfImagesPath.add(currentPhotoPath);
-            Toast.makeText(ProjectUpdate.this,"I =>"+listOfImagesPath.size(),Toast.LENGTH_SHORT).show();
+            jobDB.insertPictPath(0,currentPhotoPath,criticalAsset.getText().toString());
+            Toast.makeText(this, "Picture saved, press camera to take another", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Something went wrong, could not save picture", Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void showGrid(View v){
+        listOfImagesPath = jobDB.getPictures(criticalAsset.getText().toString());
         if(listOfImagesPath.size() > 0){
             grid.setAdapter(new ImageListAdapter(this,listOfImagesPath));
             llImageView.setVisibility(View.GONE);
             RlGridView.setVisibility(View.VISIBLE);
+            Log.d("Pictures",listOfImagesPath.toString());
+        }else{
+            Toast.makeText(this, "No pictures to display", Toast.LENGTH_SHORT).show();
         }
     }
 

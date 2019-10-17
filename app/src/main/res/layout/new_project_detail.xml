@@ -481,45 +481,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
-
-                            <!--LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginTop="10dp">
-
-                                <View
-                                    android:layout_width="8dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginLeft="14dp"
-                                    android:background="@drawable/custom_view" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:background="@drawable/rounded_background_white_30"
-                                    android:orientation="vertical" >
-
-                                    <EditText
-                                        android:id="@+id/edtPdate"
-                                        android:layout_width="300dp"
-                                        android:layout_height="match_parent"
-                                        android:gravity="top"
-                                        android:paddingBottom="26dp"
-                                        android:paddingLeft="14dp"
-                                        android:paddingRight="14dp"
-                                        android:paddingTop="5dp"
-                                        android:background="@drawable/ovalborder"
-                                        android:hint="Date"
-                                        android:textColorHint="#000"
-                                        android:padding="8dp" />
-
-                                </LinearLayout>
-
-                            </LinearLayout-->
-
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -670,12 +631,13 @@
                                         android:layout_height="match_parent"
                                         android:layout_marginLeft="10dp"
                                         android:src="@drawable/ic_camera" />
+
                                     <Button
                                         android:id="@+id/btn_viewImg"
-                                        android:onClick="showGrid"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="10dp"
+                                        android:onClick="showGrid"
                                         android:text="Vew images">
 
                                     </Button>
@@ -703,26 +665,21 @@
 
                             <RelativeLayout
                                 android:id="@+id/RlGridView"
-                                android:visibility="gone"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="500dp"
+                                android:visibility="gone">
+
                                 <GridView
                                     android:id="@+id/imgGridView"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
                                     android:numColumns="3"
-                                    android:scrollbarStyle="outsideInset"
-                                    android:smoothScrollbar="true"
-                                    android:verticalSpacing="10dp"
-                                    android:paddingBottom="25dp"
                                     android:paddingTop="10dp"
-                                    />
+                                    android:stretchMode="spacingWidthUniform"
+                                    android:verticalSpacing="10dp" />
                             </RelativeLayout>
-
                         </LinearLayout>
-
-
                     </ScrollView>
 
 

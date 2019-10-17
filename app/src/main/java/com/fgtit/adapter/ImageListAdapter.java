@@ -63,7 +63,7 @@ public class ImageListAdapter extends BaseAdapter {
                 bm = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, bfOptions);
                 imageView.setImageBitmap(bm);
                 imageView.setId(position);
-                imageView.setLayoutParams(new GridView.LayoutParams(200, 160));
+                imageView.setLayoutParams(new GridView.LayoutParams(250, 200));
             }
         } catch (IOException e) {
             e.printStackTrace();
