@@ -636,7 +636,7 @@
                                         android:id="@+id/btn_viewImg"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginLeft="25dp"
                                         android:onClick="showGrid"
                                         android:text="Vew images">
 
