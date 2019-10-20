@@ -33,7 +33,8 @@ public class UploadService extends IntentService {
     public static final String POST_JSON = "json";
     public static final String JSON_VAL = "json_value";
     public static final String PROJECT = "Project";
-    public static final String PROJECT_URL  ="http://www.nexgencs.co.za/api/project/update.php";
+    public static final String PROJECT_URL  ="http://www.nexgencs.co.za/alos/upload.php";
+    public static final String JOBCARD_URL  ="http://www.nexgencs.co.za/alos/jobCardPictures.php";
 
     public UploadService() {
         super( "UploadService");
@@ -42,7 +43,6 @@ public class UploadService extends IntentService {
     final Handler responseHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-
             showToast("Something went wrong: ");
         }
     };
@@ -68,7 +68,6 @@ public class UploadService extends IntentService {
                             showToast("Please check internet connection");
                         }
                     });
-
                 }
 
                 @Override

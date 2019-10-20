@@ -338,28 +338,32 @@
                 android:layout_height="wrap_content"
                 />
 
+            <Button
+                android:id="@+id/btn_viewImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:onClick="showGridView"
+                android:text="Vew all images"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lPict"
-            android:layout_width="350dp"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="5dp"
-            android:layout_marginLeft="25dp">
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imgPict"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="400dp"
+                android:layout_height="300dp"
                 android:padding="30dp"
                 android:src="@drawable/grey"/>
 
-
-
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="wrap_content"

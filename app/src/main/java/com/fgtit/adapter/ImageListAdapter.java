@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -46,7 +47,8 @@ public class ImageListAdapter extends BaseAdapter {
         bfOptions.inDither = false;                     //Disable Dithering mode
         bfOptions.inPurgeable = true;                   //Tell to gc that whether it needs free memory, the Bitmap can be cleared
         bfOptions.inInputShareable = true;              //Which kind of reference will be used to recover the Bitmap data after being clear, when it will be used in the future
-        //bfOptions.inTempStorage = new byte[32 * 1024];
+        bfOptions.inTempStorage = new byte[32 * 1024];
+        bfOptions.inSampleSize = 8;
         if (convertView == null) {
             imageView = new ImageView(context);
             imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -60,10 +62,11 @@ public class ImageListAdapter extends BaseAdapter {
             fs = new FileInputStream(new File(imgPic.get(position)));
 
             if (fs != null) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
                 bm = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, bfOptions);
                 imageView.setImageBitmap(bm);
                 imageView.setId(position);
-                imageView.setLayoutParams(new GridView.LayoutParams(250, 200));
+                //imageView.setLayoutParams(new GridView.LayoutParams(250, 200));
             }
         } catch (IOException e) {
             e.printStackTrace();

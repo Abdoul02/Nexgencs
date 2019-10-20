@@ -662,23 +662,6 @@
                                     android:src="@drawable/grey" />
 
                             </LinearLayout>
-
-                            <RelativeLayout
-                                android:id="@+id/RlGridView"
-                                android:layout_width="match_parent"
-                                android:layout_height="500dp"
-                                android:visibility="gone">
-
-                                <GridView
-                                    android:id="@+id/imgGridView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center"
-                                    android:numColumns="3"
-                                    android:paddingTop="10dp"
-                                    android:stretchMode="spacingWidthUniform"
-                                    android:verticalSpacing="10dp" />
-                            </RelativeLayout>
                         </LinearLayout>
                     </ScrollView>
 

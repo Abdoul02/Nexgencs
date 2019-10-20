@@ -237,9 +237,16 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
     }
 
+
     public void deletePictures(String job_id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("local_pict", "job_id = ?", new String[]{job_id});
+        db.close();
+    }
+
+    public void delePicturesByPath(String path){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("local_pict", "path = ?", new String[]{path});
         db.close();
     }
 
@@ -300,7 +307,6 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
         return jobList;
     }
-
 
     public Cursor getJinfo(int id) {
 

@@ -40,11 +40,17 @@ import android.widget.Toast;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
 import com.fgtit.fpcore.FPMatch;
+import com.fgtit.service.SingleUploadBroadcastReceiver;
 import com.fgtit.utils.ExtApi;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -54,6 +60,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -63,11 +70,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
-public class JobDetail extends AppCompatActivity {
+import static com.fgtit.service.UploadService.JOBCARD_URL;
+import static com.fgtit.service.UploadService.PROJECT_URL;
+
+public class JobDetail extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
 
     JobDB jdb = new JobDB(this);
     DBHandler db = new DBHandler(this);
@@ -82,12 +93,12 @@ public class JobDetail extends AppCompatActivity {
     SessionManager session;
     HashMap<String, String> manager;
     int compId;
-    String currentPhotoPath;
+    String currentPhotoPath, fileID, imgPath;
     static final int REQUEST_TAKE_PHOTO = 1;
 
     private AsyncFingerprint vFingerprint;
     private Dialog fpDialog;
-    ProgressDialog saveDialog;
+    ProgressDialog saveDialog, pDialog;
     private int iFinger = 0;
     private ImageView fpImage, pict, camera, imgSmile, imgNeutral, imgSad;
     private TextView tvFpStatus;
@@ -100,7 +111,10 @@ public class JobDetail extends AppCompatActivity {
     private Handler startHandler;
     private byte[] jpgbytes = null;
     int clientSatisfaction = 0;
-
+    String jobCode;
+    private List<String> listOfImagesPath;
+    private final SingleUploadBroadcastReceiver uploadReceiver =
+            new SingleUploadBroadcastReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +125,7 @@ public class JobDetail extends AppCompatActivity {
         this.getSupportActionBar().setBackgroundDrawable(new
                 ColorDrawable(Color.parseColor("#020969")));
 
+        listOfImagesPath = new ArrayList<>();
         session = new SessionManager(getApplicationContext());
         manager = session.getUserDetails();
         compId = Integer.parseInt(manager.get(SessionManager.KEY_COMPID));
@@ -145,6 +160,13 @@ public class JobDetail extends AppCompatActivity {
         // signature.setClickable(false);
         // signature.setVisibility(View.GONE);
 
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Uploading information...");
+        pDialog.setIndeterminate(false);
+        pDialog.setMax(100);
+        pDialog.setProgressStyle(pDialog.STYLE_HORIZONTAL);
+        pDialog.setCancelable(false);
+
         if (compId == 63 || compId == 3) {
 
             signature.setClickable(true);
@@ -172,7 +194,7 @@ public class JobDetail extends AppCompatActivity {
 
                 Cursor rs = jdb.getData(value);
                 rs.moveToFirst();
-
+                jobCode = value;
                 final String jname, jloc, jdesc, jcust, japp, jstart, jend, code, prog, link, sOffice;
 
                 jname = rs.getString(rs.getColumnIndex("name"));
@@ -254,13 +276,6 @@ public class JobDetail extends AppCompatActivity {
                 camera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                       /* String pictName = jCode.getText().toString() + "_" + progress.getText().toString();
-                        Intent intent = new Intent(JobDetail.this, CameraExActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("id", pictName);
-                        intent.putExtras(bundle);
-                        startActivityForResult(intent, 0);*/
                         dispatchTakePictureIntent();
                     }
                 });
@@ -335,12 +350,13 @@ public class JobDetail extends AppCompatActivity {
 
                                 File extf = Environment.getExternalStorageDirectory();
                                 File myFile = new File(extf.getAbsolutePath() + "/fgtit/" + code + "_" + pro + ".jpg");
-                                if (myFile.exists()) {
+                                listOfImagesPath = jdb.getPictures(jobCode);
+                                if (listOfImagesPath.size() > 0) {
 
                                     String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
                                     String name = code + "_" + pro + ".jpg";
-
-                                    upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, startK, endK, clientSatisfaction, timeOnSite);
+                                    pDialog.show();
+                                    uploadFunction(com,currentDateandTime,currentDateandTime,Integer.parseInt(pro),code,startK,endK,clientSatisfaction,timeOnSite);
                                 } else {
                                     nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, startK, endK, clientSatisfaction, timeOnSite);
                                     //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
@@ -386,46 +402,52 @@ public class JobDetail extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-/*        switch (resultCode) {
-            case 1: {
-                Bundle bl = data.getExtras();
-                String barcode = bl.getString("barcode");
-            }
-            break;
-            case 2:
-                break;
-            case 3: {
-                Bundle bl = data.getExtras();
-                String id = bl.getString("id");
-                Toast.makeText(JobDetail.this, "Pictures Finish", Toast.LENGTH_SHORT).show();
-                byte[] photo = bl.getByteArray("photo");
-                if (photo != null) {
-                    try {
-                        Matrix matrix = new Matrix();
-                        Bitmap bm = BitmapFactory.decodeByteArray(photo, 0, photo.length);
-                        matrix.preRotate(270);
-                        Bitmap nbm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
-
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        nbm.compress(Bitmap.CompressFormat.JPEG, 80, out);
-                        jpgbytes = out.toByteArray();
-
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(jpgbytes, 0, jpgbytes.length);
-                        pict.setImageBitmap(bitmap);
-
-                    } catch (Exception e) {
-                    }
-                }
-            }
-            break;
-        }*/
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            pict.setImageBitmap(imageBitmap);
+            setPic();
+            jdb.insertPictPath(0, currentPhotoPath, jobCode);
+            anotherPicture();
+        } else {
+            showToast("Something went wrong, could not save picture");
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = pict.getWidth();
+        int targetH = pict.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        pict.setImageBitmap(bitmap);
+    }
+
+    public void showGridView(View v) {
+        listOfImagesPath = jdb.getPictures(jobCode);
+        if (listOfImagesPath.size() > 0) {
+            Bundle dataBundle = new Bundle();
+            dataBundle.putString("asset", jobCode);
+            Intent intent = new Intent(getApplicationContext(), DisplayLocalPictures.class);
+            intent.putExtras(dataBundle);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "No pictures to display", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void gotoMap(View v) {
@@ -442,6 +464,27 @@ public class JobDetail extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "You do not have google maps installed", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    private void anotherPicture() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Picture Saved!");
+        dialog.setMessage("Would you like to take another picture?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dispatchTakePictureIntent();
+            }
+        });
+
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
     public boolean isAppInstalled(String uri) {
@@ -494,6 +537,18 @@ public class JobDetail extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        uploadReceiver.register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        uploadReceiver.unregister(this);
     }
 
     private void FPDialog(int i) {
@@ -615,14 +670,11 @@ public class JobDetail extends AppCompatActivity {
                 String timeOnSite = edtTimeOnSite.getText().toString();
                 File extf = Environment.getExternalStorageDirectory();
                 File myFile = new File(extf.getAbsolutePath() + "/fgtit/" + code + "_" + pro + ".jpg");
-
-
                 int userID = Integer.parseInt(manager.get(SessionManager.KEY_UID));
-
-
                 //Check the fingerprints here
                 List<User> user = empList;
                 int count = 0;
+                listOfImagesPath = jdb.getPictures(jobCode);
                 if (empList.size() > 0) {
 
                     //for(int i=0; i<emplist.size(); i++)
@@ -637,10 +689,12 @@ public class JobDetail extends AppCompatActivity {
 
                                     fpDialog.cancel();
 
-                                    if (myFile.exists()) {
+                                    if (listOfImagesPath.size() > 0) {
                                         String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
                                         String name = code + "_" + pro + ".jpg";
-                                        upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
+                                        //upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
+                                        pDialog.show();
+                                        uploadFunction(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
 
                                     } else {
                                         nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
@@ -662,10 +716,13 @@ public class JobDetail extends AppCompatActivity {
                             if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
                                 if (us.getuId() == userID) {
                                     fpDialog.cancel();
-                                    if (myFile.exists()) {
+                                    if (listOfImagesPath.size() > 0) {
                                         String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
                                         String name = code + "_" + pro + ".jpg";
-                                        upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
+                                        //upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
+                                        pDialog.show();
+                                        uploadFunction(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
+
 
                                     } else {
                                         nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
@@ -744,6 +801,39 @@ public class JobDetail extends AppCompatActivity {
         startActivity(objIntent);
     }
 
+    public void uploadFunction(final String comment, final String dat, final String time, final int progres, final String job_code, final String strt, final String fnsh, final int cs, final String timeOnSite) {
+        fileID = UUID.randomUUID().toString();
+        uploadReceiver.setDelegate(this);
+        uploadReceiver.setUploadID(fileID);
+
+        imgPath = listOfImagesPath.get(0).substring(0, listOfImagesPath.get(0).lastIndexOf("/") + 1);
+        try {
+            MultipartUploadRequest multipartUploadRequest = new MultipartUploadRequest(this, fileID, JOBCARD_URL);
+            multipartUploadRequest.addHeader("Accept", "application/json");
+            for (int i = 0; i < listOfImagesPath.size(); i++) {
+                String imageName = listOfImagesPath.get(i).substring(listOfImagesPath.get(i).lastIndexOf("/") + 1);
+                multipartUploadRequest.addParameter("name" + i, imageName);
+                multipartUploadRequest.addFileToUpload(listOfImagesPath.get(i), "document" + i);
+            }
+
+            multipartUploadRequest.addParameter("comment", comment);
+            multipartUploadRequest.addParameter("tim", time);
+            multipartUploadRequest.addParameter("dat", dat);
+            multipartUploadRequest.addParameter("jobCode", job_code);
+            multipartUploadRequest.addParameter("progress", String.valueOf(progres));
+            multipartUploadRequest.addParameter("start", strt);
+            multipartUploadRequest.addParameter("finish", fnsh);
+            multipartUploadRequest.addParameter("cs", String.valueOf(cs));
+            multipartUploadRequest.addParameter("timeOnSite", timeOnSite);
+            multipartUploadRequest.addParameter("numberOfPict", String.valueOf(listOfImagesPath.size()));
+            multipartUploadRequest.setNotificationConfig(new UploadNotificationConfig());
+            multipartUploadRequest.setMaxRetries(3);
+            multipartUploadRequest.startUpload();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 
     public void upload(String path, String name, String com, String currentDateandTime, int pro, String code, String strt, String finish, int cs, String timeOnSite) {
 
@@ -918,27 +1008,61 @@ public class JobDetail extends AppCompatActivity {
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.fgtit.fingermap.fileprovider",
+                        "co.za.nexgencs.clocking.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
     }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JC_" + timeStamp + "_";
+        String imageFileName = "JC_" + timeStamp;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,
+                ".jpg",
+                storageDir
         );
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    @Override
+    public void onProgress(int progress) {
+        pDialog.setProgress(progress);
+    }
+
+    @Override
+    public void onProgress(long uploadedBytes, long totalBytes) {
+
+    }
+
+    @Override
+    public void onError(Exception exception) {
+
+    }
+
+    @Override
+    public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
+        if (pDialog != null && pDialog.isShowing()) {
+            pDialog.dismiss();
+        }
+        try {
+            String response = new String(serverResponseBody, "UTF-8");
+            uploadResponse(response);
+        } catch (UnsupportedEncodingException e) {
+            Log.e("JobDetail", "UnsupportedEncodingException");
+        }
+    }
+
+    @Override
+    public void onCancelled() {
+
     }
 
     private class DownloadFile extends AsyncTask<String, Integer, String> {
@@ -1038,5 +1162,59 @@ public class JobDetail extends AppCompatActivity {
 
     }
 
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
+    public boolean deleteFile(String path) {
+        File fileToDelete = new File(path);
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public void uploadResponse(String response) {
+        Log.e("JobDetail",response);
+        try {
+            String databaseRes, message;
+            JSONObject result = new JSONObject(response);
+            databaseRes = result.getString("database");
+            JSONObject database = new JSONObject(databaseRes);
+            int count = 0;
+            int success = database.getInt("success");
+            String progress = database.getString("progress");
+            message = database.getString("message");
+            JSONArray pictures = result.getJSONArray("pictures");
+            if (pictures.length() > 0) {
+                for (int x = 0; x < pictures.length(); x++) {
+                    JSONObject obj = (JSONObject) pictures.get(x);
+                    String imageName = obj.getString("file_name");
+                    int imgSuccess = obj.getInt("success");
+                    if (imgSuccess == 1) {
+                        if (deleteFile(imgPath + imageName)) {
+                            jdb.delePicturesByPath(imgPath + imageName);
+                            count++;
+                        }
+                    }
+                }
+            }
+            if (success == 1) {
+                if (progress.equals("100")) {
+                    jdb.deletejobcard(jobCode);
+                    jdb.deleteJinfo(jobCode);
+                } else {
+                    jdb.updateJob(jobCode, Integer.parseInt(progress));
+                }
+            }
+            showToast(message + ", with " + count + " images uploaded");
+            reloadActivity();
+        } catch (JSONException e) {
+            Log.e("JobDetail", e.getMessage());
+        }
+    }
 }

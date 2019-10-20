@@ -445,6 +445,13 @@ public class DBHandler  extends SQLiteOpenHelper {
         db.update("project", values, "criticalAsset = ?", new String[]{criticalAsset});
 
     }
+
+    public void updateProgress(String ca,String progress){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("progress", progress);
+        db.update("project", values, "criticalAsset = ?", new String[]{ca});
+    }
     public ArrayList<HashMap<String, String>> getAllProjects() {
 
         ArrayList<HashMap<String, String>> wordList;

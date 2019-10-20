@@ -56,12 +56,13 @@
         android:name="com.fgtit.models.App"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/Theme.Fgtit"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".erd.ERDClock"></activity>
+        <activity android:name=".DisplayLocalPictures"></activity>
+        <activity android:name=".erd.ERDClock" />
         <activity android:name=".erd.ERDJobActivity" />
         <activity android:name=".effective_cooling.CreateEffectiveJob" />
         <activity android:name=".effective_cooling.EffectiveCooling" />
@@ -78,6 +79,10 @@
         <service
             android:name="com.fgtit.service.ClockService"
             android:enabled="true" />
+        <service
+            android:name="com.fgtit.service.UploadService"
+            android:enabled="true" />
+
         <receiver
             android:name="com.fgtit.models.SampleBC"
             android:exported="true"

@@ -32,34 +32,37 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fgtit.adapter.ImageListAdapter;
-import com.fgtit.data.CommonFunction;
+import com.fgtit.fpcore.FPMatch;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
-import com.fgtit.fpcore.FPMatch;
 import com.fgtit.service.DownloadService;
+import com.fgtit.service.SingleUploadBroadcastReceiver;
 import com.fgtit.service.UploadService;
 import com.fgtit.utils.ExtApi;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,6 +72,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
@@ -76,15 +80,14 @@ import android_serialport_api.SerialPortManager;
 import static com.fgtit.service.UploadService.PROJECT;
 import static com.fgtit.service.UploadService.PROJECT_URL;
 
-public class ProjectUpdate extends AppCompatActivity {
+public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
 
-    EditText location,asset,requestedBy,criticalAsset,dateRequired,workRequired,site,trade,date,dt,progress,comment;
+    EditText location, asset, requestedBy, criticalAsset, dateRequired, workRequired, site, trade, date, dt, progress, comment;
     LinearLayout llImageView;
-    RelativeLayout RlGridView;
-    private ImageView camBtn,pImage,fpImage;
+    private ImageView camBtn, pImage, fpImage;
     private Spinner statusSpinner;
     ProgressDialog prgDialog;
-    Calendar myCal,mycal2;
+    Calendar myCal, mycal2;
     String pictName;
     String ba1;
     TabHost mTabHost;
@@ -92,7 +95,7 @@ public class ProjectUpdate extends AppCompatActivity {
     JobDB jobDB = new JobDB(this);
     SessionManager session;
     HashMap<String, String> queryValues;
-    private byte[] jpgbytes=null;
+    private byte[] jpgbytes = null;
     String selectStatus = "Select status";
 
     //Progress Circle
@@ -105,32 +108,26 @@ public class ProjectUpdate extends AppCompatActivity {
     private AsyncFingerprint vFingerprint;
     private Dialog fpDialog;
     private TextView tvFpStatus;
-    private boolean bcheck=false;
-    private boolean	bIsUpImage=true;
-    private boolean	bIsCancel=false;
-    private boolean	bfpWork=false;
+    private boolean bcheck = false;
+    private boolean bIsUpImage = true;
+    private boolean bIsCancel = false;
+    private boolean bfpWork = false;
     private Timer startTimer;
     private TimerTask startTask;
     private Handler startHandler;
-    private int	iFinger=0;
+    private int iFinger = 0;
     private int count;
     private ArrayList<User> empList;
 
-    String currentPhotoPath;
+    String currentPhotoPath, fileID;
     static final int REQUEST_TAKE_PHOTO = 1;
-    private GridView grid;
-    private  List<String> listOfImagesPath;
+    private List<String> listOfImagesPath;
     Dialog dialog;
+    ProgressDialog pDialog;
+    String imgPath;
+    private final SingleUploadBroadcastReceiver uploadReceiver =
+            new SingleUploadBroadcastReceiver();
 
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            Bundle bundle = intent.getExtras();
-            handleResponse(bundle);
-        }
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,7 +139,7 @@ public class ProjectUpdate extends AppCompatActivity {
         location = findViewById(R.id.edtPlocation);
         asset = findViewById(R.id.edtAsset);
         requestedBy = findViewById(R.id.edtPrequest);
-        criticalAsset =  findViewById(R.id.edtCAsset);
+        criticalAsset = findViewById(R.id.edtCAsset);
         dateRequired = findViewById(R.id.edtDateReq);
         workRequired = findViewById(R.id.edtWorkReq);
         site = findViewById(R.id.edtPsite);
@@ -154,27 +151,32 @@ public class ProjectUpdate extends AppCompatActivity {
         dt = findViewById(R.id.edtDT);
         comment = findViewById(R.id.edtPComment);
         progress = findViewById(R.id.edtPprogress);
-        grid = findViewById(R.id.imgGridView);
         llImageView = findViewById(R.id.lPict);
-        RlGridView = findViewById(R.id.RlGridView);
 
         statusSpinner = findViewById(R.id.statusSpinner);
-        List<String>statusList = new ArrayList<String>();
+        List<String> statusList = new ArrayList<String>();
         statusList.add(selectStatus);
         statusList.add("Start");
         statusList.add("Finish");
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,statusList);
+        pDialog = new ProgressDialog(this);
+        pDialog.setMessage("Uploading information...");
+        pDialog.setIndeterminate(false);
+        pDialog.setMax(100);
+        pDialog.setProgressStyle(pDialog.STYLE_HORIZONTAL);
+        pDialog.setCancelable(false);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, statusList);
         dataAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         statusSpinner.setAdapter(dataAdapter);
 
         txtProgress = findViewById(R.id.txtProgress);
-        progressBar =  findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         //progressBar.setProgress(0);
         progressBar.setSecondaryProgress(100);
         progressBar.setMax(100);
 
-        mTabHost = (TabHost)findViewById(R.id.tabHost);
+        mTabHost = (TabHost) findViewById(R.id.tabHost);
         mTabHost.setup();
 
 
@@ -196,7 +198,7 @@ public class ProjectUpdate extends AppCompatActivity {
         mSpec.setIndicator("Progress");
         mTabHost.addTab(mSpec);
 
-        for(int i =0; i<mTabHost.getTabWidget().getChildCount();i++){
+        for (int i = 0; i < mTabHost.getTabWidget().getChildCount(); i++) {
 
             TextView tv = mTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             tv.setTextColor(Color.WHITE);
@@ -227,12 +229,12 @@ public class ProjectUpdate extends AppCompatActivity {
         if (extras != null) {
 
             String value = extras.getString("criticalA");
-            if(value != null){
+            if (value != null) {
 
                 Cursor rs = mydb.getProject(value);
                 rs.moveToFirst();
 
-                final String locatio,asse,requestedB,criticalAsse,dateRequire,workRequire,sit,pro;
+                final String locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, pro;
                 locatio = rs.getString(rs.getColumnIndex("location"));
                 asse = rs.getString(rs.getColumnIndex("asset"));
                 requestedB = rs.getString(rs.getColumnIndex("requestedBy"));
@@ -272,7 +274,7 @@ public class ProjectUpdate extends AppCompatActivity {
                 site.setClickable(false);
                 site.setEnabled(false);
                 progressBar.setProgress(Integer.parseInt(pro));
-                txtProgress.setText("Progress: "+pro + " %");
+                txtProgress.setText("Progress: " + pro + " %");
 
                 //updateProBar(Integer.parseInt(pro));
             }
@@ -294,21 +296,6 @@ public class ProjectUpdate extends AppCompatActivity {
 
         };
 
-        //Date
-      /*  final DatePickerDialog.OnDateSetListener date2 = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                mycal2.set(Calendar.YEAR, year);
-                mycal2.set(Calendar.MONTH, monthOfYear);
-                mycal2.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateDate();
-            }
-
-        };*/
-
         dateRequired.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -321,24 +308,13 @@ public class ProjectUpdate extends AppCompatActivity {
         });
 
 
-        /*date.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DatePickerDialog(ProjectUpdate.this, date2, mycal2
-                        .get(Calendar.YEAR), mycal2.get(Calendar.MONTH),
-                        mycal2.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });*/
-
         camBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Random r = new Random();
-                int random = r.nextInt(100-1)+1;
-                if(criticalAsset.length() > 0){
+                int random = r.nextInt(100 - 1) + 1;
+                if (criticalAsset.length() > 0) {
 /*                    pictName = criticalAsset.getText().toString() +"_"+String.valueOf(random);
                     Intent intent = new Intent(ProjectUpdate.this, CameraExActivity.class);
                     Bundle bundle = new Bundle();
@@ -347,11 +323,10 @@ public class ProjectUpdate extends AppCompatActivity {
                     startActivityForResult(intent, 0);*/
                     dispatchTakePictureIntent();
 
-                }else
+                } else
                     Toast.makeText(getApplicationContext(), "Please Provide the Critical Asset first", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
@@ -360,117 +335,77 @@ public class ProjectUpdate extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             setPic();
-            jobDB.insertPictPath(0,currentPhotoPath,criticalAsset.getText().toString());
-            Toast.makeText(this, "Picture saved, press camera to take another", Toast.LENGTH_SHORT).show();
-        }else{
+            jobDB.insertPictPath(0, currentPhotoPath, criticalAsset.getText().toString());
+            anotherPicture();
+        } else {
             Toast.makeText(this, "Something went wrong, could not save picture", Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void showGrid(View v){
+    public void showGrid(View v) {
         listOfImagesPath = jobDB.getPictures(criticalAsset.getText().toString());
-        if(listOfImagesPath.size() > 0){
-            grid.setAdapter(new ImageListAdapter(this,listOfImagesPath));
-            llImageView.setVisibility(View.GONE);
-            RlGridView.setVisibility(View.VISIBLE);
-            Log.d("Pictures",listOfImagesPath.toString());
-        }else{
+        if (listOfImagesPath.size() > 0) {
+            Bundle dataBundle = new Bundle();
+            dataBundle.putString("asset", criticalAsset.getText().toString());
+            Intent intent = new Intent(getApplicationContext(), DisplayLocalPictures.class);
+            intent.putExtras(dataBundle);
+            startActivity(intent);
+        } else {
             Toast.makeText(this, "No pictures to display", Toast.LENGTH_SHORT).show();
         }
     }
 
-
-    public void upload(String path,String imgName,String loc ,String asset,String rb,String ca,String dr,String wr,String sit,String nam,String trad,
-                       String dat,String dt, String com,int pro,String status){
-
-        Bitmap bm = BitmapFactory.decodeFile(path);
-        ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 50, bao);
-        byte[] ba = bao.toByteArray();
-        ba1 = Base64.encodeToString(ba, Base64.DEFAULT);
-
-        ///Upload image to server
-        createProject(imgName, loc, asset, rb, ca, dr, wr, sit, nam, trad, dat,dt, com, pro,status);
-
-    }
-
-    public List<String> getListOfBase64(List<String> paths){
-        List<String> listOfBase64 = new ArrayList<>();
-        for(int i =0; i<paths.size(); i++){
-            Bitmap bm = BitmapFactory.decodeFile(paths.get(i));
-            ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.JPEG, 50, bao);
-            byte[] ba = bao.toByteArray();
-            String base64 = Base64.encodeToString(ba, Base64.DEFAULT);
-            listOfBase64.add(base64);
-        }
-        return listOfBase64;
-    }
-    private void setDialog(boolean show) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final LayoutInflater inflater = LayoutInflater.from(this);
-        View vl = inflater.inflate(R.layout.progress, null);
-        builder.setView(vl);
-        dialog = builder.create();
-        if (show) {
-            dialog.show();
-        } else {
-            dialog.cancel();
-        }
-
-    }
-    private void uploadInfo(String userId, final String loc,final String asset,final String rb,final String ca,final String dr,final String wr,final String sit,String nam,String trad,
-                        String dat,String dt, String com,final int pro,final String status){
-        String json = "";
+    public void fileUploadFunction(String userId, final String loc, final String asset, final String rb, final String ca, final String dr, final String wr, final String sit, String nam, String trad,
+                                   String dat, String dt, String com, final int pro, final String status) {
+        fileID = UUID.randomUUID().toString();
+        uploadReceiver.setDelegate(this);
+        uploadReceiver.setUploadID(fileID);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String currentDateandTime = sdf.format(new Date());
-        //  build jsonObject
-        JSONObject jsonObject = null;
+        final String currentDateTime = sdf.format(new Date());
+        imgPath = listOfImagesPath.get(0).substring(0, listOfImagesPath.get(0).lastIndexOf("/") + 1);
         try {
-            jsonObject = new JSONObject();
-            jsonObject.accumulate("base64", getListOfBase64(listOfImagesPath));
-            jsonObject.accumulate("ImageName", asset);
-            jsonObject.accumulate("location", loc);
-            jsonObject.accumulate("asset", asset);
-            jsonObject.accumulate("rb", rb);
-            jsonObject.accumulate("ca", ca);
-            jsonObject.accumulate("dr", dr);
-            jsonObject.accumulate("wr", wr);
-            jsonObject.accumulate("site", sit);
-            jsonObject.accumulate("nam", nam);
-            jsonObject.accumulate("trade", trad);
-            jsonObject.accumulate("dat", dat);
-            jsonObject.accumulate("dt", dt);
-            jsonObject.accumulate("comment", com);
-            jsonObject.accumulate("progress",pro);
-            jsonObject.accumulate("status",status);
-            jsonObject.accumulate("id", userId);
-            jsonObject.accumulate("dateDone", currentDateandTime);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            MultipartUploadRequest multipartUploadRequest = new MultipartUploadRequest(this, fileID, PROJECT_URL);
+            multipartUploadRequest.addHeader("Accept", "application/json");
+
+            for (int i = 0; i < listOfImagesPath.size(); i++) {
+                String imageName = listOfImagesPath.get(i).substring(listOfImagesPath.get(i).lastIndexOf("/") + 1);
+/*                String extension = imageName.substring(listOfImagesPath.lastIndexOf(".")+1);
+                String actualName = listOfImagesPath.get(i).substring(listOfImagesPath.lastIndexOf("/")+1,listOfImagesPath.lastIndexOf("."));
+                String newName = actualName + "_"+i + "."+extension;*/
+                multipartUploadRequest.addParameter("name" + i, imageName);
+                multipartUploadRequest.addFileToUpload(listOfImagesPath.get(i), "document" + i);
+            }
+            multipartUploadRequest.addParameter("location", loc);
+            multipartUploadRequest.addParameter("asset", asset);
+            multipartUploadRequest.addParameter("rb", rb);
+            multipartUploadRequest.addParameter("ca", ca);
+            multipartUploadRequest.addParameter("dr", dr);
+            multipartUploadRequest.addParameter("wr", wr);
+            multipartUploadRequest.addParameter("site", sit);
+            multipartUploadRequest.addParameter("nam", nam);
+            multipartUploadRequest.addParameter("trade", trad);
+            multipartUploadRequest.addParameter("dat", dat);
+            multipartUploadRequest.addParameter("dt", dt);
+            multipartUploadRequest.addParameter("comment", com);
+            multipartUploadRequest.addParameter("progress", String.valueOf(pro));
+            multipartUploadRequest.addParameter("status", status);
+            multipartUploadRequest.addParameter("id", userId);
+            multipartUploadRequest.addParameter("numberOfPict", String.valueOf(listOfImagesPath.size()));
+            multipartUploadRequest.addParameter("dateDone", currentDateTime);
+            multipartUploadRequest.setNotificationConfig(new UploadNotificationConfig());
+            multipartUploadRequest.setMaxRetries(3);
+            multipartUploadRequest.startUpload();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
-        json = jsonObject.toString();
-
-        setDialog(true);
-        Intent client_intent = new Intent(this, UploadService.class);
-        client_intent.putExtra(DownloadService.POST_JSON, "projectJSON");
-        client_intent.putExtra(DownloadService.JSON_VAL,json);
-        client_intent.putExtra(DownloadService.URL,PROJECT_URL);
-        client_intent.putExtra(DownloadService.FILTER, PROJECT);
-        startService(client_intent);
     }
 
-    private void handleResponse(Bundle bundle){
-
-    }
-    public void updateProBar(final int progress){
+    public void updateProBar(final int progress) {
 
         new Thread(new Runnable() {
             @Override
@@ -480,7 +415,7 @@ public class ProjectUpdate extends AppCompatActivity {
                         @Override
                         public void run() {
                             progressBar.setProgress(pStatus);
-                            txtProgress.setText("Progress: "+pStatus + " %");
+                            txtProgress.setText("Progress: " + pStatus + " %");
                         }
                     });
                     try {
@@ -497,14 +432,13 @@ public class ProjectUpdate extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.project_detail, menu);
         return true;
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
 
             if (SerialPortManager.getInstance().isOpen()) {
                 bIsCancel = true;
@@ -512,13 +446,13 @@ public class ProjectUpdate extends AppCompatActivity {
             }
             exitApplication();
             return true;
-        } else if(keyCode == KeyEvent.KEYCODE_HOME){
+        } else if (keyCode == KeyEvent.KEYCODE_HOME) {
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    public void exitApplication(){
+    public void exitApplication() {
         Intent intent = new Intent(getApplicationContext(), Project.class);
         startActivity(intent);
     }
@@ -537,7 +471,7 @@ public class ProjectUpdate extends AppCompatActivity {
             String currentDateandTime = sdf.format(new Date());
 
 
-            String locatio,asse,requestedB,criticalAsse,dateRequire,workRequire,sit,nam,trad,dat,ntim,otim1,otim2,dtim,coment;
+            String locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat, ntim, otim1, otim2, dtim, coment;
             int progres;
             locatio = location.getText().toString();
             asse = asset.getText().toString();
@@ -558,33 +492,29 @@ public class ProjectUpdate extends AppCompatActivity {
 
 
             // int loc,asset,rb,ca,wr,sit,pro,dr;
-            if(location.length()>0 && asset.length()>0 && requestedBy.length()>0 && criticalAsset.length()>0 && workRequired.length()>0
-                    && site.length()>0 && progress.length()>0 &&dateRequired.length()>0){
+            if (location.length() > 0 && asset.length() > 0 && requestedBy.length() > 0 && criticalAsset.length() > 0 && workRequired.length() > 0
+                    && site.length() > 0 && progress.length() > 0 && dateRequired.length() > 0) {
 
-                if(progres == 0){
+                if (progres == 0) {
                     Toast.makeText(getApplicationContext(), "Please update the progress", Toast.LENGTH_SHORT).show();
                 }
-                if(progres > 100){
+                if (progres > 100) {
 
                     Toast.makeText(getApplicationContext(), "Progress can not be over 100%", Toast.LENGTH_SHORT).show();
                 }
 
-                if(progres == 100){
+                if (progres == 100) {
                     //Supervisor clocks to complete project.
                     FPDialog(1);
                     //createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat,dtim, coment, progres,status);
 
-                }
-                else if(progres < 100 && trad.length() > 0 && status != selectStatus){
+                } else if (progres < 100 && trad.length() > 0 && status != selectStatus) {
                     FPDialog(1);
                     //createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat,dtim, coment, progres,status);
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Please select check status and Trade", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            else{
+            } else {
 
                 Toast.makeText(getApplicationContext(), "Please fill in fields with *", Toast.LENGTH_SHORT).show();
             }
@@ -597,24 +527,23 @@ public class ProjectUpdate extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(receiver, new IntentFilter(
-                UploadService._SERVICE));
+        uploadReceiver.register(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+        uploadReceiver.unregister(this);
     }
 
-    private void FPDialog(int i){
-        iFinger=i;
+    private void FPDialog(int i) {
+        iFinger = i;
         AlertDialog.Builder builder = new AlertDialog.Builder(ProjectUpdate.this);
         builder.setTitle("fingerprint Reader ");
         final LayoutInflater inflater = LayoutInflater.from(ProjectUpdate.this);
         View vl = inflater.inflate(R.layout.dialog_enrolfinger, null);
         fpImage = vl.findViewById(R.id.imageView1);
-        tvFpStatus= vl.findViewById(R.id.textview1);
+        tvFpStatus = vl.findViewById(R.id.textview1);
         builder.setView(vl);
         builder.setCancelable(false);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -639,33 +568,31 @@ public class ProjectUpdate extends AppCompatActivity {
         FPProcess();
     }
 
-    private void FPProcess(){
-
-        if(!bfpWork){
+    private void FPProcess() {
+        if (!bfpWork) {
             tvFpStatus.setText(getString(R.string.txt_fpplace));
             try {
                 Thread.currentThread();
                 Thread.sleep(500);
-            }catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             //imgFeed.setImageResource(R.drawable.green_trans);
 
             vFingerprint.FP_GetImage();
-            bfpWork=true;
+            bfpWork = true;
         }
     }
 
-    private void FPInit(){
-        vFingerprint.setOnGetImageListener(new AsyncFingerprint.OnGetImageListener()  {
+    private void FPInit() {
+        vFingerprint.setOnGetImageListener(new AsyncFingerprint.OnGetImageListener() {
             @Override
             public void onGetImageSuccess() {
-                if(bIsUpImage){
+                if (bIsUpImage) {
                     vFingerprint.FP_UpImage();
                     tvFpStatus.setText(getString(R.string.txt_fpdisplay));
-                }else{
+                } else {
                     tvFpStatus.setText(getString(R.string.txt_fpprocess));
                     vFingerprint.FP_GenChar(1);
                 }
@@ -713,7 +640,6 @@ public class ProjectUpdate extends AppCompatActivity {
         });
 
 
-
         //Send Information after clocking
 
         vFingerprint.setOnUpCharListener(new AsyncFingerprint.OnUpCharListener() {
@@ -725,8 +651,8 @@ public class ProjectUpdate extends AppCompatActivity {
                 HashMap<String, String> manager = session.getUserDetails();
                 int userID = Integer.parseInt(manager.get(SessionManager.KEY_UID));
                 String status;
-
-                String locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat,dtim, coment;
+                listOfImagesPath = jobDB.getPictures(criticalAsset.getText().toString());
+                String locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment;
                 int progres;
                 locatio = location.getText().toString();
                 asse = asset.getText().toString();
@@ -741,7 +667,7 @@ public class ProjectUpdate extends AppCompatActivity {
                 progres = Integer.parseInt(progress.getText().toString());
                 coment = comment.getText().toString();
                 File extf = Environment.getExternalStorageDirectory();
-                File myFile = new File(extf.getAbsolutePath() + "/fgtit/" + pictName + ".jpg");
+                //File myFile = new File(extf.getAbsolutePath() + "/fgtit/" + pictName + ".jpg");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String currentDateandTime = sdf.format(new Date());
                 dat = currentDateandTime;
@@ -758,38 +684,20 @@ public class ProjectUpdate extends AppCompatActivity {
                             if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
                                 fpDialog.cancel();
                                 user_id = String.valueOf(us.getuId());
-                                if(progres == 100 && us.getuId() != userID){
-                                    //Call Dialog here
-                                    myDialog();
-                                }
-                                else if(progres == 100 && us.getuId() == userID){
-                                    createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat,dtim, coment, progres,status);
-                                   // Toast.makeText(getApplicationContext(), "Project Should be completed", Toast.LENGTH_SHORT).show();
-                                }
-                                else{
-
-                                    if (myFile.exists()) {
-
+                                    if (listOfImagesPath.size() > 0) {
                                         String path = "/sdcard/fgtit/" + pictName + ".jpg";
                                         String name = pictName + ".jpg";
-                                        uploadInfo(user_id,locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
-                                        //upload(path, name, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat, dtim, coment, progres,status);
+                                        pDialog.show();
+                                        fileUploadFunction(user_id, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
 
                                     } else {
                                         //No Picture
-                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat,dtim, coment, progres,status);
-                                        //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
+                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
                                     }
-
-                                }
-
-                                    //Toast.makeText(getApplicationContext(), "Job Done " + us.getuName(), Toast.LENGTH_SHORT).show();
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
-                                    break;
-
+                                break;
                             }
                         }
-
 
                         if (us.getFinger2() != null && us.getFinger2().length() >= 512) {
 
@@ -797,28 +705,15 @@ public class ProjectUpdate extends AppCompatActivity {
                             if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
                                 fpDialog.cancel();
                                 user_id = String.valueOf(us.getuId());
-                                if(progres == 100 && us.getuId() != userID){
-                                    //Call Dialog here
-                                    myDialog();
-                                }
-                                else if(progres == 100 && us.getuId() == userID){
-                                    //Toast.makeText(getApplicationContext(), "Project Should be completed", Toast.LENGTH_SHORT).show();
+                                if (listOfImagesPath.size() > 0) {
+                                    pDialog.show();
+                                    fileUploadFunction(user_id, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
+                                } else {
+                                    //No Picture
                                     createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
                                 }
-                                else {
-                                    if (myFile.exists()) {
-                                        String path = "/sdcard/fgtit/" + pictName + ".jpg";
-                                        String name = pictName + ".jpg";
-                                        uploadInfo(user_id,locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
-                                       // upload(path, name, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat, dtim, coment, progres, status);
-                                    } else {
-                                        //No Picture
-                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
-                                    }
-                                }
-                                    //Toast.makeText(getApplicationContext(), "Job Done " + us.getuName(), Toast.LENGTH_SHORT).show();
-                                    tvFpStatus.setText(getString(R.string.txt_fpmatchok));
-                                    break;
+                                tvFpStatus.setText(getString(R.string.txt_fpmatchok));
+                                break;
                             }
                         }
 
@@ -844,8 +739,8 @@ public class ProjectUpdate extends AppCompatActivity {
 
     }
 
-    public void TimerStart(){
-        if(startTimer==null){
+    public void TimerStart() {
+        if (startTimer == null) {
             startTimer = new Timer();
             startHandler = new Handler() {
                 @Override
@@ -868,34 +763,28 @@ public class ProjectUpdate extends AppCompatActivity {
         }
     }
 
-    public void TimeStop(){
-        if (startTimer!=null)
-        {
+    public void TimeStop() {
+        if (startTimer != null) {
             startTimer.cancel();
             startTimer = null;
             startTask.cancel();
-            startTask=null;
+            startTask = null;
         }
     }
 
     private void updateRequired() {
-
         String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
-
         dateRequired.setText(sdf.format(myCal.getTime()));
     }
 
     private void updateDate() {
-
         String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
-
-       // date.setText(sdf.format(mycal2.getTime()));
+        // date.setText(sdf.format(mycal2.getTime()));
     }
 
-    public void myDialog(){
-
+    public void myDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(ProjectUpdate.this);
         dialog.setTitle("Supervisor Required");
         dialog.setMessage("Only the supervisor can set a 100% progress. Please reduce the progress and clock" +
@@ -912,88 +801,31 @@ public class ProjectUpdate extends AppCompatActivity {
         dialog.show();
     }
 
+    private void anotherPicture() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(ProjectUpdate.this);
+        dialog.setTitle("Picture Saved!");
+        dialog.setMessage("Would you like to take another picture?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
-    public void createProject(String imgName,final String loc ,final String asset,final String rb,final String ca,final String dr,final String wr,final String sit,String nam,String trad,
-                              String dat,String dt, String com,final int pro,final String status){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dispatchTakePictureIntent();
+            }
+        });
 
-        try{
-
-            //Create AsycHttpClient object
-            AsyncHttpClient client = new AsyncHttpClient();
-            RequestParams params = new RequestParams();
-            String json = "";
-            session = new SessionManager(getApplicationContext());
-            HashMap<String, String> manager = session.getUserDetails();
-            int userID = Integer.parseInt(manager.get(SessionManager.KEY_UID));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            final String currentDateandTime = sdf.format(new Date());
-
-
-            //  build jsonObject
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("base64", ba1);
-            jsonObject.accumulate("ImageName", imgName);
-            jsonObject.accumulate("location", loc);
-            jsonObject.accumulate("asset", asset);
-            jsonObject.accumulate("rb", rb);
-            jsonObject.accumulate("ca", ca);
-            jsonObject.accumulate("dr", dr);
-            jsonObject.accumulate("wr", wr);
-            jsonObject.accumulate("site", sit);
-            jsonObject.accumulate("nam", nam);
-            jsonObject.accumulate("trade", trad);
-            jsonObject.accumulate("dat", dat);
-            jsonObject.accumulate("dt", dt);
-            jsonObject.accumulate("comment", com);
-            jsonObject.accumulate("progress",pro);
-            jsonObject.accumulate("status",status);
-            jsonObject.accumulate("id", userID);
-            jsonObject.accumulate("dateDone", currentDateandTime);
-            json = jsonObject.toString();
-            prgDialog.show();
-            params.put("projectJSON", json);
-            client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/project/update.php", params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(String response) {
-                    /*System.out.println("+++++++++++++++++++++++++");
-                    System.out.println(response);
-                    System.out.println("+++++++++++++++++++++++++");*/
-                    prgDialog.hide();
-                    mydb.updateProDate(pro,currentDateandTime,rb,sit,loc,asset,dr,ca);
-                    Toast.makeText(getApplicationContext(), "Project Updated", Toast.LENGTH_LONG).show();
-                    if(Integer.parseInt(response) == 100){
-                        mydb.deleteProject(ca);
-                        reloadActivity();
-                    }else
-                        //updateProBar(pro);
-                    reloadActivity();
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Throwable error,
-                                      String content) {
-                    // TODO Auto-generated method stub
-                    prgDialog.hide();
-                    //controller.insertRecord(idN, name, dat, lat, lon, id, "IN");
-                    //jdb.insertJInfo(comment, time, dat, job_code,strt,fnsh);
-                    //jdb.updateJob(job_code, progres);
-                    Toast.makeText(getApplicationContext(), "Network error could not update project please check data connection", Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-
-        }catch (Exception e){
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
-    public void createNopict(final String loc ,final String asset,final String rb,final String ca,final String dr,final String wr,final String sit,String nam,String trad,
-                             String dat,String dt, String com,final int pro,final String status){
+    public void createNopict(final String loc, final String asset, final String rb, final String ca, final String dr, final String wr, final String sit, String nam, String trad,
+                             String dat, String dt, String com, final int pro, final String status) {
 
-        try{
+        try {
 
             //Create AsycHttpClient object
             AsyncHttpClient client = new AsyncHttpClient();
@@ -1022,8 +854,8 @@ public class ProjectUpdate extends AppCompatActivity {
             //jsonObject.accumulate("ot2", ot2);
             jsonObject.accumulate("dt", dt);
             jsonObject.accumulate("comment", com);
-            jsonObject.accumulate("progress",pro);
-            jsonObject.accumulate("status",status);
+            jsonObject.accumulate("progress", pro);
+            jsonObject.accumulate("status", status);
             jsonObject.accumulate("id", userID);
             jsonObject.accumulate("dateDone", currentDateandTime);
 
@@ -1038,14 +870,14 @@ public class ProjectUpdate extends AppCompatActivity {
                     System.out.println(response);
                     System.out.println("+++++++++++++++++++++++++");*/
                     prgDialog.hide();
-                    mydb.updateProDate(pro,currentDateandTime,rb,sit,loc,asset,dr,ca);
+                    mydb.updateProDate(pro, currentDateandTime, rb, sit, loc, asset, dr, ca);
                     Toast.makeText(getApplicationContext(), "Project Updated", Toast.LENGTH_LONG).show();
-                    if(response.equals("100")){
+                    if (response.equals("100")) {
                         mydb.deleteProject(ca);
                         reloadActivity();
-                    }else{
+                    } else {
                         //updateProBar(pro);
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
                         reloadActivity();
                     }
                 }
@@ -1064,7 +896,7 @@ public class ProjectUpdate extends AppCompatActivity {
             });
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
     }
@@ -1090,6 +922,7 @@ public class ProjectUpdate extends AppCompatActivity {
             }
         }
     }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -1105,6 +938,7 @@ public class ProjectUpdate extends AppCompatActivity {
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
+
     private void setPic() {
         // Get the dimensions of the View
         int targetW = pImage.getWidth();
@@ -1118,7 +952,7 @@ public class ProjectUpdate extends AppCompatActivity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -1128,9 +962,100 @@ public class ProjectUpdate extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
         pImage.setImageBitmap(bitmap);
     }
+
     // Reload ProjectActivity
     public void reloadActivity() {
         Intent objIntent = new Intent(getApplicationContext(), Project.class);
         startActivity(objIntent);
     }
+
+    @Override
+    public void onProgress(int progress) {
+        pDialog.setProgress(progress);
+    }
+
+    @Override
+    public void onProgress(long uploadedBytes, long totalBytes) {
+
+    }
+
+    @Override
+    public void onError(Exception exception) {
+
+    }
+
+    @Override
+    public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
+        if (pDialog != null && pDialog.isShowing()) {
+            pDialog.dismiss();
+        }
+        try {
+            String response = new String(serverResponseBody, "UTF-8");
+            uploadResponse(response);
+        } catch (UnsupportedEncodingException e) {
+            Log.e(ProjectUpdate.class.getSimpleName(), "UnsupportedEncodingException");
+        }
+    }
+
+    @Override
+    public void onCancelled() {
+
+    }
+
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public boolean deleteFile(String path) {
+        File fileToDelete = new File(path);
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public void uploadResponse(String response) {
+        try {
+            String databaseRes, message;
+            JSONObject result = new JSONObject(response);
+            databaseRes = result.getString("database");
+            JSONObject database = new JSONObject(databaseRes);
+            int count = 0;
+            int success = database.getInt("success");
+            String progress = database.getString("progress");
+            message = database.getString("message");
+            JSONArray pictures = result.getJSONArray("pictures");
+            if (pictures.length() > 0) {
+                for (int x = 0; x < pictures.length(); x++) {
+
+                    JSONObject obj = (JSONObject) pictures.get(x);
+                    String imageName = obj.getString("file_name");
+                    int imgSuccess = obj.getInt("success");
+                    if (imgSuccess == 1) {
+                        Log.d("ImagePath", imgPath + imageName);
+                        if (deleteFile(imgPath + imageName)) {
+                            jobDB.delePicturesByPath(imgPath + imageName);
+                            count++;
+                        }
+                    }
+                }
+            }
+            if (success == 1) {
+                if (progress.equals("100")) {
+                    mydb.deleteProject(criticalAsset.getText().toString());
+                } else {
+                    mydb.updateProgress(criticalAsset.getText().toString(), progress);
+                }
+            }
+            showToast(message + ", with " + count + " images uploaded");
+            reloadActivity();
+        } catch (JSONException e) {
+            Log.e(ProjectUpdate.class.getSimpleName(), "UnsupportedEncodingException");
+        }
+    }
+
 }
