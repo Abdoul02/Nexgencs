@@ -422,7 +422,7 @@ public class ERDClock extends AppCompatActivity {
                 //String trade = spn_trade.getSelectedItem().toString();
                 String status = spn_status.getSelectedItem().toString();
                 if (status.equals(status_prompt)) {
-                    showToast("Please select a trade and a status");
+                    showToast("Please select a status");
                 } else {
                     List<User> user = empList;
                     int count = 0;
