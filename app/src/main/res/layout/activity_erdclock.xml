@@ -144,7 +144,6 @@
         android:layout_marginRight="10dp"/>
 
     <RelativeLayout
-        android:visibility="gone"
         android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -152,6 +151,7 @@
         android:id="@+id/rL_clock">
 
         <Spinner
+            android:visibility="gone"
             android:id="@+id/trade_spinner"
             android:background="@drawable/custom_spinner"
             android:spinnerMode="dropdown"
@@ -169,6 +169,7 @@
             android:layout_height="wrap_content"
             />
         <android.support.design.widget.FloatingActionButton
+            android:visibility="gone"
             android:id="@+id/erd_clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -179,6 +180,7 @@
 
     </RelativeLayout>
     <ListView
+        android:layout_marginTop="10dp"
         android:id="@+id/listView1"
         android:layout_below="@+id/rL_clock"
         android:layout_above="@+id/fingerprintImage"

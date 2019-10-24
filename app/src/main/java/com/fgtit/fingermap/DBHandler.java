@@ -455,7 +455,7 @@ public class DBHandler  extends SQLiteOpenHelper {
     public ArrayList<HashMap<String, String>> getAllProjects() {
 
         ArrayList<HashMap<String, String>> wordList;
-        wordList = new ArrayList<HashMap<String, String>>();
+        wordList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM project";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);

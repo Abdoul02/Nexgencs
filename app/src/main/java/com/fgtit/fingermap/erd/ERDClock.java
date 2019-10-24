@@ -93,12 +93,12 @@ public class ERDClock extends AppCompatActivity {
     JobDB jobDB = new JobDB(this);
 
     //Spinners
-    //Spinner spn_trade,spn_status;
+    Spinner spn_trade, spn_status;
     //TextView
-    TextView txt_job_name,txt_job_code,txt_address,txt_supervisor,txt_description;
+    TextView txt_job_name, txt_job_code, txt_address, txt_supervisor, txt_description;
     int job_id;
-    HashMap<String,Integer> tradeMap;
-    List<ERDSubTask>subTaskList;
+    HashMap<String, Integer> tradeMap;
+    List<ERDSubTask> subTaskList;
     List<String> trades = new ArrayList<>();
 
     //users who clocked
@@ -125,9 +125,9 @@ public class ERDClock extends AppCompatActivity {
                             JSONObject obj = (JSONObject) arr.get(i);
                             int success = obj.getInt("success");
                             String msg = obj.getString("message");
-                            if(success == 1){
+                            if (success == 1) {
                                 showToast(msg);
-                            }else{
+                            } else {
                                 showToast(msg);
                             }
                         }
@@ -150,6 +150,7 @@ public class ERDClock extends AppCompatActivity {
 
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,13 +167,13 @@ public class ERDClock extends AppCompatActivity {
 
                 Cursor cursor = jobDB.getERDJobById(Integer.parseInt(value));
                 cursor.moveToFirst();
-                final String job_name,address,job_code,description,supervisor;
+                final String job_name, address, job_code, description, supervisor;
                 int supervisor_id;
 
                 job_name = cursor.getString(cursor.getColumnIndex("name"));
-                address  = cursor.getString(cursor.getColumnIndex("address"));
+                address = cursor.getString(cursor.getColumnIndex("address"));
                 job_code = cursor.getString(cursor.getColumnIndex("job_no"));
-                description =cursor.getString(cursor.getColumnIndex("description"));
+                description = cursor.getString(cursor.getColumnIndex("description"));
                 supervisor_id = cursor.getInt(cursor.getColumnIndex("supervisor_id"));
                 supervisor = userDB.getUserName(supervisor_id);
 
@@ -183,16 +184,16 @@ public class ERDClock extends AppCompatActivity {
                 txt_supervisor.setText(supervisor);
 
                 subTaskList = jobDB.getSubTasks(job_id);
-                for(ERDSubTask subTask : subTaskList){
+                for (ERDSubTask subTask : subTaskList) {
                     trades.add(subTask.getName());
-                    tradeMap.put(subTask.getName(),subTask.getId());
+                    tradeMap.put(subTask.getName(), subTask.getId());
                 }
 
                 //Trade
                 //initAllSpinner(this,trade_prompt,trades,spn_trade);
             }
 
-        }else{
+        } else {
             finish();
         }
     }
@@ -222,17 +223,18 @@ public class ERDClock extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-    private void initViews(){
+
+    private void initViews() {
 
         empList = userDB.getAllUsers();
-       // spn_status = findViewById(R.id.status_spinner);
-       // spn_trade = findViewById(R.id.trade_spinner);
+        spn_status = findViewById(R.id.status_spinner);
+        // spn_trade = findViewById(R.id.trade_spinner);
 
         txt_address = findViewById(R.id.txt_address);
-        txt_description= findViewById(R.id.txt_description);
-        txt_job_code =  findViewById(R.id.txt_code);
+        txt_description = findViewById(R.id.txt_description);
+        txt_job_code = findViewById(R.id.txt_code);
         txt_job_name = findViewById(R.id.txt_name);
-        txt_supervisor= findViewById(R.id.txt_supervisor);
+        txt_supervisor = findViewById(R.id.txt_supervisor);
 
         tvFpStatus = findViewById(R.id.textView1);
         tvFpStatus.setText("");
@@ -248,34 +250,33 @@ public class ERDClock extends AppCompatActivity {
         statuses.add("OUT");
 
 
-        listView1 = (ListView) findViewById(R.id.listView1);
-        mData1 = new ArrayList<HashMap<String, Object>>();
+        listView1 = findViewById(R.id.listView1);
+        mData1 = new ArrayList<>();
         adapter1 = new ImageSimpleAdapter(this, mData1, R.layout.listview_signitem,
                 new String[]{"title", "info", "dts", "img"},
                 new int[]{R.id.title, R.id.info, R.id.dts, R.id.img});
         listView1.setAdapter(adapter1);
 
         //status
-        //initAllSpinner(this,status_prompt,statuses,spn_status);
+        initAllSpinner(this, status_prompt, statuses, spn_status);
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
         FPInit();
         FPProcess();
     }
-    private void initAllSpinner(Context context,String prom,List<String> dbValue,Spinner spinner){
+
+    private void initAllSpinner(Context context, String prom, List<String> dbValue, Spinner spinner) {
 
         List<String> loadList = new ArrayList<>();
         loadList.add(prom);
         loadList.addAll(dbValue);
 
-        CustomSpinnerAdapter customSpinnerAdapter=new CustomSpinnerAdapter(context,loadList);
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(context, loadList);
         spinner.setAdapter(customSpinnerAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 //val = parent.getItemAtPosition(position).toString();
-
             }
 
             @Override
@@ -291,7 +292,7 @@ public class ERDClock extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = sdf.format(new Date());
 
-        upload(user.getuId(),currentTime);
+        upload(user.getuId(), currentTime);
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("title", user.getuName());
         map.put("info", user.getIdNum());
@@ -300,6 +301,7 @@ public class ERDClock extends AppCompatActivity {
         adapter1.notifyDataSetChanged();
         ScrollListViewToBottom();
     }
+
     private void ScrollListViewToBottom() {
         listView1.post(new Runnable() {
             @Override
@@ -309,7 +311,8 @@ public class ERDClock extends AppCompatActivity {
             }
         });
     }
-    public void clearInfo(){
+
+    public void clearInfo() {
 
         final Handler tOut = new Handler();
         tOut.postDelayed(new Runnable() {
@@ -318,11 +321,13 @@ public class ERDClock extends AppCompatActivity {
                 mData1.clear();
                 adapter1.notifyDataSetChanged();
             }
-        },2000);
+        }, 2000);
     }
+
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
+
     private void setDialog(boolean show) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -415,7 +420,10 @@ public class ERDClock extends AppCompatActivity {
             public void onUpCharSuccess(byte[] model) {
 
                 //String trade = spn_trade.getSelectedItem().toString();
-               // String status = spn_status.getSelectedItem().toString();
+                String status = spn_status.getSelectedItem().toString();
+                if (status.equals(status_prompt)) {
+                    showToast("Please select a trade and a status");
+                } else {
                     List<User> user = empList;
                     int count = 0;
                     if (empList.size() > 0) {
@@ -440,7 +448,7 @@ public class ERDClock extends AppCompatActivity {
 
                                     //Clock
                                     AddPersonItem(us);
-                                    Log.d(TAG, "onUpCharSuccess: "+us.getuName());
+                                    Log.d(TAG, "onUpCharSuccess: " + us.getuName());
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
                                 }
@@ -457,10 +465,7 @@ public class ERDClock extends AppCompatActivity {
                         showToast("Please download employee information");
 
                     }
-
-
-
-
+                }
                 bfpWork = false;
                 TimerStart();
             }
@@ -475,30 +480,30 @@ public class ERDClock extends AppCompatActivity {
 
     }
 
-    public void upload(int user_id,String date){
+    public void upload(int user_id, String date) {
         JSONObject postDataParams = new JSONObject();
 
-       // String trade_id = spn_trade.getSelectedItem().toString();
-       // int task_id = tradeMap.get(trade_id);
+        // String trade_id = spn_trade.getSelectedItem().toString();
+        // int task_id = tradeMap.get(trade_id);
 
         try {
             postDataParams.accumulate("clock_date", date);
-           // postDataParams.accumulate("status", spn_status.getSelectedItem().toString());
+            postDataParams.accumulate("status", spn_status.getSelectedItem().toString());
             postDataParams.accumulate("user_id", user_id);
             postDataParams.accumulate("job_id", job_id);
-          //  postDataParams.accumulate("task_id", task_id);
+            //  postDataParams.accumulate("task_id", task_id);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "upload: "+postDataParams);
+        Log.d(TAG, "upload: " + postDataParams);
 
         setDialog(true);
         Intent client_intent = new Intent(ERDClock.this, DownloadService.class);
         client_intent.putExtra(DownloadService.POST_JSON, "erd_clock");
-        client_intent.putExtra(DownloadService.JSON_VAL,postDataParams.toString());
-        client_intent.putExtra(DownloadService.URL,ERD_CLOCK_URL);
+        client_intent.putExtra(DownloadService.JSON_VAL, postDataParams.toString());
+        client_intent.putExtra(DownloadService.URL, ERD_CLOCK_URL);
         client_intent.putExtra(DownloadService.FILTER, ERD_CLOCK);
         startService(client_intent);
 
