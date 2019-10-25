@@ -8,7 +8,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/generalInfo"
@@ -26,7 +27,7 @@
             android:id="@+id/job_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="@string/job_no"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +87,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:hint="Date Of Weld"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -106,7 +107,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
             android:hint="Welding machine No"
             app:layout_constraintLeft_toRightOf="@+id/txt_input_id"
@@ -125,7 +126,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:hint="Actual volts (v)"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -135,8 +136,7 @@
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/actualVoltage"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="date" />
+                android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -145,7 +145,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
 
             android:layout_marginRight="5dp"
             android:hint="Actual Amps (A)"
@@ -166,7 +166,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:hint="Actual Pre-heat temp"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -176,8 +176,7 @@
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/actualPreheat"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="date" />
+                android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -186,7 +185,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
             android:hint="Inter Pass Temp(max)"
             app:layout_constraintLeft_toRightOf="@+id/txt_input_preHeat"
@@ -206,7 +205,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/btncustom"
+            android:background="@drawable/btngrey"
             android:text="capture"
             android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
@@ -225,6 +224,7 @@
             android:id="@+id/consumableTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="@string/consumable_control"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -239,7 +239,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:hint="Issue Date"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -259,7 +259,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
             android:hint="Welder No."
             app:layout_constraintLeft_toRightOf="@+id/txt_input_issueDate"
@@ -272,5 +272,131 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_input_consSize"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:hint="Cons. Size."
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/txt_input_consBatch"
+            app:layout_constraintTop_toBottomOf="@+id/txt_input_issueDate">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/consSize"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_input_consBatch"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:hint="Cons. Batch No"
+            app:layout_constraintLeft_toRightOf="@+id/txt_input_consSize"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_input_welderNo"
+            tools:ignore="HardcodedText,RtlHardcoded">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/consBatch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_input_receivedKg"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:hint="Received Kg"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/txt_input_returnedKg"
+            app:layout_constraintTop_toBottomOf="@+id/txt_input_consSize">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/receivedKg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_input_returnedKg"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:hint="Returned Kg"
+            app:layout_constraintLeft_toRightOf="@+id/txt_input_receivedKg"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_input_consBatch"
+            tools:ignore="HardcodedText,RtlHardcoded">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/returnedKg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_input_typeAWS"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
+            android:hint="Type/AWS Designation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_input_returnedKg"
+            tools:ignore="HardcodedText,RtlHardcoded">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/type"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/signature"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/btngrey"
+            android:text="Signature"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toRightOf="@+id/captureConsumable"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_input_typeAWS" />
+
+        <Button
+            android:id="@+id/captureConsumable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/btngrey"
+            android:text="Capture Consumable"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintRight_toLeftOf="@+id/signature"
+            app:layout_constraintTop_toBottomOf="@+id/txt_input_typeAWS" />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

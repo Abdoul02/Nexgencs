@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.fgtit.fingermap.dryden.QF10_Report;
 import com.fgtit.fingermap.erd.ERDJobActivity;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
@@ -158,9 +159,9 @@ public class MenuActivity extends AppCompatActivity {
 					break;
 				case 4:{
 
-					//Intent intent = new Intent(MenuActivity.this, AppSettings.class);
-					//startActivity(intent);
-					passwordDialog();
+					Intent intent = new Intent(MenuActivity.this, QF10_Report.class);
+					startActivity(intent);
+					//passwordDialog();
 					}
 					break;
 

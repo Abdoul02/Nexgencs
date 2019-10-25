@@ -61,7 +61,8 @@
         android:largeHeap="true"
         android:theme="@style/Theme.Fgtit"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".dryden.QF10_Report"></activity>
+        <activity android:name=".dryden.QF10_WeldMap"></activity>
+        <activity android:name=".dryden.QF10_Report" />
         <activity android:name=".DisplayLocalPictures" />
         <activity android:name=".erd.ERDClock" />
         <activity android:name=".erd.ERDJobActivity" />
