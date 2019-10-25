@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Job Name: "
-                android:textColor="@color/black"></TextView>
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/txt_name"
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/txt_name_info"
                 android:text="Testing Job"
-                android:textColor="@color/black"></TextView>
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
@@ -47,14 +47,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Job Code:  "
-                android:textColor="@color/black"></TextView>
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/txt_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0001"
-                android:textColor="@color/black"></TextView>
+                android:textColor="@color/black" />
 
         </LinearLayout>
 

@@ -167,6 +167,14 @@
     <string name="action_print">Print</string>
     <string name="action_printtest">Demo</string>
 
+    <!--Dryden Combustion -->
+    <string name="general_info">General Info</string>
+    <string name="job_no">Job No: %1$s</string>
+    <string name="job_description">Job Description: %1$s</string>
+    <string name="qcp_no">QCP No: %1$s</string>
+    <string name="date_of_jb">Date of Job Card issue: %1$s</string>
+    <string name="verification_and_validation">Verification and validation of welding machine &amp; material temperature</string>
+    <string name="consumable_control">Consumable Control</string>
     <!-- Setting   -->
     <string name="target_ip">NET Server Address</string>
     <string name="default_target_ip">192.168.1.106</string>
