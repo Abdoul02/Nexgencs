@@ -568,7 +568,7 @@ public class ERDJobActivity extends AppCompatActivity {
 
 
     //Adapter
-    public class MyAppAdapter extends BaseAdapter {
+    public class MyAppAdapter extends BaseAdapter  {
 
         public class ViewHolder {
             TextView txt_job_name, txt_local_id,txt_supervisor,txt_job_code,txt_job_id,txt_supervisor_id;

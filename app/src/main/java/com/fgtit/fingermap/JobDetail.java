@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -76,7 +75,6 @@ import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
 import static com.fgtit.service.UploadService.JOBCARD_URL;
-import static com.fgtit.service.UploadService.PROJECT_URL;
 
 public class JobDetail extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
 
@@ -1197,7 +1195,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
                     int imgSuccess = obj.getInt("success");
                     if (imgSuccess == 1) {
                         if (deleteFile(imgPath + imageName)) {
-                            jdb.delePicturesByPath(imgPath + imageName);
+                            jdb.deletePicturesByPath(imgPath + imageName);
                             count++;
                         }
                     }

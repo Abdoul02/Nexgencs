@@ -112,12 +112,9 @@ public class JobActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.records, menu);
-
         MenuItem searchItem = menu.findItem(R.id.job_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        //*** setOnQueryTextFocusChangeListener ***
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
 
             @Override
@@ -193,8 +190,6 @@ public class JobActivity extends AppCompatActivity {
 
         public class ViewHolder {
             TextView txt_job_name, txt_jobID;
-
-
         }
 
         public List<JobCard> JobList;

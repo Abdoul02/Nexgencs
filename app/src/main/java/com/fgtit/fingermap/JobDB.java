@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.fgtit.models.DrydenJobCard;
 import com.fgtit.models.ERDSubTask;
 import com.fgtit.models.ERDjobCard;
 import com.fgtit.models.EcCustomer;
@@ -29,16 +30,18 @@ public class JobDB extends SQLiteOpenHelper {
     private static final String TAG = "JobDB";
     String ERD_TABLE = "erd_job";
     String SUB_TASK_TABLE = "sub_task_table";
+    String DRYDEN_TABLE = "dryden_job";
 
-    public JobDB(Context applicationcontext) {
-        super(applicationcontext, "androidsqlite.db", null, 7);
+    public JobDB(Context applicationContext) {
+        super(applicationContext, "androidsqlite.db", null, 8);
     }
 
     //Creates Table
     @Override
     public void onCreate(SQLiteDatabase database) {
         String query, query2, query3, btScale, pine, ec_job,
-                ec_job_info, ec_material, ec_customer, ec_product, erd_job_card, sub_task, local_pict;
+                ec_job_info, ec_material, ec_customer, ec_product, erd_job_card, sub_task, local_pict,
+                dryden_job;
         query = "CREATE TABLE jobcard ( jobID INTEGER PRIMARY KEY, name TEXT, description TEXT, " +
                 "location TEXT, assignee TEXT, approvedBy TEXT,customer TEXT, progress INTEGER, start TEXT, end TEXT,jobCode TEXT,attachment TEXT," +
                 "office TEXT)";
@@ -68,6 +71,8 @@ public class JobDB extends SQLiteOpenHelper {
                 "name TEXT, job_no TEXT, description TEXT, address TEXT, progress TEXT, from_date TEXT, to_date TEXT)";
         sub_task = "CREATE TABLE sub_task_table(task_id INTEGER PRIMARY KEY,id INTEGER, job_card_id INTEGER, name TEXT)";
         local_pict = "CREATE TABLE local_pict(pict_id INTEGER PRIMARY KEY, path TEXT,job_id INTEGER, job_no TEXT)";
+        dryden_job = "CREATE TABLE dryden_job(local_id INTEGER PRIMARY KEY, id INTEGER, job_name TEXT, job_no TEXT," +
+                "qc_no TEXT, description TEXT, drawing_no TEXT, issue_date TEXT, supervisor_id INTEGER,checked INTEGER)";
 
         database.execSQL(query);
         database.execSQL(query2);
@@ -82,14 +87,14 @@ public class JobDB extends SQLiteOpenHelper {
         database.execSQL(erd_job_card);
         database.execSQL(sub_task);
         database.execSQL(local_pict);
+        database.execSQL(dryden_job);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
 
         //If version is one, edit the table and add the following columns and add a new tables
-        if (current_version < 2) {
-
+        if (current_version == 1) {
             database.execSQL("ALTER TABLE record ADD COLUMN shifts_id INTEGER");
             database.execSQL("ALTER TABLE record ADD COLUMN shift_type INTEGER");
             database.execSQL("ALTER TABLE record ADD COLUMN costCenterId INTEGER");
@@ -105,14 +110,10 @@ public class JobDB extends SQLiteOpenHelper {
             database.execSQL("CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
                     "unit_price TEXT)");
 
-        } else if (current_version > 2 && current_version < 4) {
-            //record columns were added in version 2, so version 3, just add the new tables btScale and Pine.
-
+        } else if (current_version == 3) {
             database.execSQL("CREATE TABLE bt_scale(scale_id INTEGER PRIMARY KEY, userId TEXT, weight TEXT, date TEXT, time TEXT,imei TEXT," +
                     "status TEXT)");
             database.execSQL("CREATE TABLE pine(pine_id INTEGER PRIMARY KEY, userId TEXT, deliveryNote TEXT, diggersrestDN TEXT, date TEXT)");
-           /* database.execSQL("CREATE TABLE jozi(job_id INTEGER PRIMARY KEY, date TEXT, company TEXT, office TEXT, location TEXT, jobType TEXT, " +
-                    "jobNo TEXT, id INTEGER)");*/
             database.execSQL("ALTER TABLE jobcard ADD COLUMN office TEXT");
             database.execSQL("ALTER TABLE bt_scale ADD COLUMN product_id INTEGER");
             database.execSQL("ALTER TABLE bt_scale ADD COLUMN costcenter_id INTEGER");
@@ -121,7 +122,6 @@ public class JobDB extends SQLiteOpenHelper {
                     "travelling_time INTEGER)");
             database.execSQL("CREATE TABLE ec_material(material_id INTEGER PRIMARY KEY,id INTEGER,job_id INTEGER, quantity INTEGER,material_used TEXT," +
                     "unit_price TEXT)");
-
         } else if (current_version == 5) {
 
             database.execSQL("CREATE TABLE ec_job(id INTEGER PRIMARY KEY,job_id INTEGER,company TEXT)");
@@ -136,16 +136,12 @@ public class JobDB extends SQLiteOpenHelper {
             database.execSQL("CREATE TABLE erd_job(local_id INTEGER PRIMARY KEY, id INTEGER, supervisor_id INTEGER," +
                     "name TEXT, job_no TEXT, description TEXT, address TEXT, progress TEXT, from_date TEXT, to_date TEXT)");
             database.execSQL("CREATE TABLE sub_task_table(task_id INTEGER PRIMARY KEY,id INTEGER, job_card_id INTEGER, name TEXT)");
-        }
-        else if (current_version == 7){
+        } else if (current_version == 7) {
             database.execSQL("CREATE TABLE local_pict(pict_id INTEGER PRIMARY KEY, path TEXT,job_id INTEGER, job_no TEXT)");
+        } else if (current_version == 8) {
+            database.execSQL("CREATE TABLE dryden_job(local_id INTEGER PRIMARY KEY, id INTEGER, job_name TEXT, job_no TEXT," +
+                    "qc_no TEXT, description TEXT, drawing_no TEXT, issue_date TEXT, supervisor_id INTEGER, checked INTEGER)");
         }
-
-
-        //database.execSQL(query);
-        // database.execSQL(query2);
-        //database.execSQL(query3);
-        //onCreate(database);
     }
 
     /**
@@ -226,7 +222,7 @@ public class JobDB extends SQLiteOpenHelper {
         return res;
     }
 
-    public void insertPictPath(int job_id, String path, String job_no){
+    public void insertPictPath(int job_id, String path, String job_no) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -238,19 +234,19 @@ public class JobDB extends SQLiteOpenHelper {
     }
 
 
-    public void deletePictures(String job_id){
+    public void deletePictures(String job_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("local_pict", "job_id = ?", new String[]{job_id});
         db.close();
     }
 
-    public void delePicturesByPath(String path){
+    public void deletePicturesByPath(String path) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("local_pict", "path = ?", new String[]{path});
         db.close();
     }
 
-    public List<String> getPictures(String job_no){
+    public List<String> getPictures(String job_no) {
         List<String> listOfPictures = new ArrayList<>();
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery("SELECT  * FROM local_pict WHERE job_no ='" + job_no + "'", null);
@@ -386,7 +382,7 @@ public class JobDB extends SQLiteOpenHelper {
         return jobList;
     }
 
-    public Cursor getERDJobById(int id){
+    public Cursor getERDJobById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from erd_job where id=" + id, null);
         return res;
@@ -396,7 +392,7 @@ public class JobDB extends SQLiteOpenHelper {
 
         List<ERDSubTask> subTaskList = new ArrayList<ERDSubTask>();
         SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery("select * from sub_task_table WHERE job_card_id = "+job_id, null);
+        Cursor cursor = database.rawQuery("select * from sub_task_table WHERE job_card_id = " + job_id, null);
         if (cursor.moveToFirst()) {
             do {
                 ERDSubTask subTask = new ERDSubTask();
@@ -417,17 +413,89 @@ public class JobDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void delete_erd_sub_task(String job_id){
+    public void delete_erd_sub_task(String job_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(SUB_TASK_TABLE, "job_card_id=? ", new String[]{job_id});
         db.close();
     }
 
-    public void deleteAllERD(){
+    public void deleteAllERD() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ERD_TABLE, null, null);
         db.delete(SUB_TASK_TABLE, null, null);
         db.close();
+    }
+
+    //Dryden Combustion
+    public void insertDryden(DrydenJobCard jobCard) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", jobCard.getId());
+        values.put("job_no", jobCard.getJobNo());
+        values.put("supervisor_id", jobCard.getSupervisorId());
+        values.put("job_name", jobCard.getJobName());
+        values.put("description", jobCard.getDescription());
+        values.put("issue_date", jobCard.getIssueDate());
+        values.put("drawing_no", jobCard.getDrawingNo());
+        values.put("qc_no", jobCard.getQcNo());
+        values.put("checked", jobCard.getChecklistDone());
+        database.insert(DRYDEN_TABLE, null, values);
+        database.close();
+    }
+
+    public ArrayList<DrydenJobCard> getDrydenJobList() {
+        ArrayList<DrydenJobCard> jobList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM dryden_job";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                DrydenJobCard jobCard = new DrydenJobCard();
+                jobCard.setLocal_id(cursor.getInt(0));
+                jobCard.setId(cursor.getInt(1));
+                jobCard.setJobName(cursor.getString(2));
+                jobCard.setJobNo(cursor.getString(3));
+                jobCard.setSupervisorId(cursor.getInt(8));
+                jobList.add(jobCard);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return jobList;
+    }
+
+    public Cursor getDrydenJobById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from dryden_job where id=" + id, null);
+        return res;
+    }
+
+    public void deleteAllDryden() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DRYDEN_TABLE, null, null);
+        db.close();
+    }
+
+    public void deleteDrydenById(String local_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DRYDEN_TABLE, "local_id=? ", new String[]{local_id});
+        db.close();
+    }
+
+    public boolean isChecked(String local_id) {
+        int id = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT  * FROM dryden_job WHERE local_id ='" + local_id + "'", null);
+        if (res.moveToFirst()) {
+            id = res.getInt((res.getColumnIndex("local_id")));
+        }
+        if (id == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public void updateCheckStatus(int local_id){
+
     }
 
     //Effective Cooling Job

@@ -1,7 +1,13 @@
 package com.fgtit.data;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
+
+import com.fgtit.fingermap.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +17,7 @@ import java.util.List;
 public class CommonFunction {
 
     Context context;
-
+    public Dialog dialog;
     public CommonFunction(Context context) {
         this.context = context;
     }
@@ -20,6 +26,23 @@ public class CommonFunction {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
+    public void setDialog(boolean show) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View vl = inflater.inflate(R.layout.progress, null);
+        builder.setView(vl);
+        dialog = builder.create();
+        if (show) {
+            dialog.show();
+        } else {
+            dialog.cancel();
+        }
+    }
+    public void cancelDialog(){
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
     public List<String> RetriveCapturedImagePath(String path) {
         List<String> tFileList = new ArrayList<String>();
         File f = new File(path);

@@ -4,11 +4,8 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,7 +19,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -43,9 +39,7 @@ import android.widget.Toast;
 import com.fgtit.fpcore.FPMatch;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
-import com.fgtit.service.DownloadService;
 import com.fgtit.service.SingleUploadBroadcastReceiver;
-import com.fgtit.service.UploadService;
 import com.fgtit.utils.ExtApi;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -58,9 +52,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -77,7 +69,6 @@ import java.util.UUID;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
-import static com.fgtit.service.UploadService.PROJECT;
 import static com.fgtit.service.UploadService.PROJECT_URL;
 
 public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
@@ -1038,7 +1029,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                     if (imgSuccess == 1) {
                         Log.d("ImagePath", imgPath + imageName);
                         if (deleteFile(imgPath + imageName)) {
-                            jobDB.delePicturesByPath(imgPath + imageName);
+                            jobDB.deletePicturesByPath(imgPath + imageName);
                             count++;
                         }
                     }

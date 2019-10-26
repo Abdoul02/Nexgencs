@@ -61,6 +61,7 @@
         android:largeHeap="true"
         android:theme="@style/Theme.Fgtit"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".dryden.DrydenJobList"></activity>
         <activity
             android:name="com.fgtit.adapter.ClockActivity"
             android:theme="@android:style/Theme.Dialog" />
