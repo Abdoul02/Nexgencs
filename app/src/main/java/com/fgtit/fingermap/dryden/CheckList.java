@@ -2,6 +2,7 @@ package com.fgtit.fingermap.dryden;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.fgtit.adapter.ClockActivity;
 import com.fgtit.data.CommonFunction;
+import com.fgtit.fingermap.JobDB;
 import com.fgtit.fingermap.R;
 
 import static com.fgtit.data.MyConstants.ID_NUMBER;
@@ -26,7 +28,9 @@ public class CheckList extends AppCompatActivity {
     String[] checklist;
     CheckBox checkBox;
     CommonFunction commonFunction = new CommonFunction(this);
+    JobDB jobDB = new JobDB(this);
     private static final int REQUEST_CLOCK = 101;
+    String job_id,job_code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,30 +40,39 @@ public class CheckList extends AppCompatActivity {
     }
 
     private void initViews() {
-        setTitle(R.string.job_no);
-        linearLayout = findViewById(R.id.mainLinearLayout);
-        checkBox = findViewById(R.id.cb_dryden);
-        Resources res = getResources();
-        checklist = res.getStringArray(R.array.dryden_checkList);
-        for (int i = 0; i < checklist.length; i++) {
-            CheckBox cb = new CheckBox(this);
-            cb.setText(checklist[i]);
-            cb.setLayoutParams(checkBox.getLayoutParams());
-            cb.setId(i + 1);
-            cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        checkCount++;
-                    } else {
-                        if (checkCount > 0) {
-                            checkCount--;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            job_id = extras.getString("job_id");
+            Cursor cursor = jobDB.getDrydenJobById(Integer.parseInt(job_id));
+            cursor.moveToFirst();
+            job_code = cursor.getString(cursor.getColumnIndex("job_no"));
+            setTitle(getString(R.string.job_no,job_code));
+            linearLayout = findViewById(R.id.mainLinearLayout);
+            checkBox = findViewById(R.id.cb_dryden);
+            Resources res = getResources();
+            checklist = res.getStringArray(R.array.dryden_checkList);
+            for (int i = 0; i < checklist.length; i++) {
+                CheckBox cb = new CheckBox(this);
+                cb.setText(checklist[i]);
+                cb.setLayoutParams(checkBox.getLayoutParams());
+                cb.setId(i + 1);
+                cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            checkCount++;
+                        } else {
+                            if (checkCount > 0) {
+                                checkCount--;
+                            }
                         }
                     }
-                }
-            });
-            linearLayout.addView(cb);
-        }
+                });
+                linearLayout.addView(cb);
+            }
+        }else finish();
+
     }
 
     private boolean checkIfAllIsChecked() {

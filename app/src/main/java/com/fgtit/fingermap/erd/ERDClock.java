@@ -163,35 +163,31 @@ public class ERDClock extends AppCompatActivity {
             String value = extras.getString("job_id");
             job_id = Integer.parseInt(value);
 
-            if (value != null) {
+            Cursor cursor = jobDB.getERDJobById(Integer.parseInt(value));
+            final String job_name, address, job_code, description, supervisor;
+            int supervisor_id;
 
-                Cursor cursor = jobDB.getERDJobById(Integer.parseInt(value));
-                cursor.moveToFirst();
-                final String job_name, address, job_code, description, supervisor;
-                int supervisor_id;
+            job_name = cursor.getString(cursor.getColumnIndex("name"));
+            address = cursor.getString(cursor.getColumnIndex("address"));
+            job_code = cursor.getString(cursor.getColumnIndex("job_no"));
+            description = cursor.getString(cursor.getColumnIndex("description"));
+            supervisor_id = cursor.getInt(cursor.getColumnIndex("supervisor_id"));
+            supervisor = userDB.getUserName(supervisor_id);
 
-                job_name = cursor.getString(cursor.getColumnIndex("name"));
-                address = cursor.getString(cursor.getColumnIndex("address"));
-                job_code = cursor.getString(cursor.getColumnIndex("job_no"));
-                description = cursor.getString(cursor.getColumnIndex("description"));
-                supervisor_id = cursor.getInt(cursor.getColumnIndex("supervisor_id"));
-                supervisor = userDB.getUserName(supervisor_id);
+            txt_job_name.setText(job_name);
+            txt_job_code.setText(job_code);
+            txt_description.setText(description);
+            txt_address.setText(address);
+            txt_supervisor.setText(supervisor);
 
-                txt_job_name.setText(job_name);
-                txt_job_code.setText(job_code);
-                txt_description.setText(description);
-                txt_address.setText(address);
-                txt_supervisor.setText(supervisor);
-
-                subTaskList = jobDB.getSubTasks(job_id);
-                for (ERDSubTask subTask : subTaskList) {
-                    trades.add(subTask.getName());
-                    tradeMap.put(subTask.getName(), subTask.getId());
-                }
-
-                //Trade
-                //initAllSpinner(this,trade_prompt,trades,spn_trade);
+            subTaskList = jobDB.getSubTasks(job_id);
+            for (ERDSubTask subTask : subTaskList) {
+                trades.add(subTask.getName());
+                tradeMap.put(subTask.getName(), subTask.getId());
             }
+
+            //Trade
+            //initAllSpinner(this,trade_prompt,trades,spn_trade);
 
         } else {
             finish();
