@@ -10,14 +10,17 @@ import android.widget.Toast;
 import com.fgtit.fingermap.R;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class CommonFunction {
 
     Context context;
     public Dialog dialog;
+
     public CommonFunction(Context context) {
         this.context = context;
     }
@@ -38,11 +41,18 @@ public class CommonFunction {
             dialog.cancel();
         }
     }
-    public void cancelDialog(){
+
+    public void cancelDialog() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
+
+    public String getDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(new Date());
+    }
+
     public List<String> RetriveCapturedImagePath(String path) {
         List<String> tFileList = new ArrayList<String>();
         File f = new File(path);

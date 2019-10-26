@@ -486,7 +486,7 @@ public class JobDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT  * FROM dryden_job WHERE local_id ='" + local_id + "'", null);
         if (res.moveToFirst()) {
-            id = res.getInt((res.getColumnIndex("local_id")));
+            id = res.getInt((res.getColumnIndex("checked")));
         }
         if (id == 1) {
             return true;

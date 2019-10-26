@@ -82,7 +82,6 @@ public class DrydenJobList extends AppCompatActivity {
         if (list_of_jobs.size() != 0) {
             myAppAdapter = new MyAppAdapter(list_of_jobs, this);
             myList.setAdapter(myAppAdapter);
-
             myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

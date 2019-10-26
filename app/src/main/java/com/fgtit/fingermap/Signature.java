@@ -129,8 +129,6 @@ public class Signature extends AppCompatActivity {
     }
 
     private void shareDrawing()  {
-
-
         final boolean cachePreviousState = dv.isDrawingCacheEnabled();
         final int backgroundPreviousColor = dv.getDrawingCacheBackgroundColor();
         dv.setDrawingCacheEnabled(true);
@@ -184,8 +182,6 @@ public class Signature extends AppCompatActivity {
         }
 
     }
-
-
     public int uploadFile(String sourceFileUri) {
 
 
@@ -389,7 +385,6 @@ public class Signature extends AppCompatActivity {
                 Log.v("log_tag", "Error in http connection " + e.toString());
             }
             return st;
-
         }
 
         protected void onPostExecute(String result) {
