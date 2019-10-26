@@ -15,18 +15,6 @@ android:orientation="vertical"
         android:checked="true"
         android:id="@+id/chFingerLock"
         />
-
-
-    <!--CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:text="Send Location every Hour"
-        android:id="@+id/chLocation"
- /-->
-
-
     <RelativeLayout
         android:layout_marginTop="25dp"
         android:layout_width="match_parent"

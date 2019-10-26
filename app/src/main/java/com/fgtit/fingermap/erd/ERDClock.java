@@ -342,7 +342,6 @@ public class ERDClock extends AppCompatActivity {
         }
 
     }
-
     //Fingerprint methods
     private void FPProcess() {
         if (!bfpWork) {

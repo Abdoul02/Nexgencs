@@ -207,6 +207,7 @@
             android:layout_marginRight="8dp"
             android:background="@drawable/btngrey"
             android:text="capture"
+            android:onClick="captureVerification"
             android:textColor="@color/white"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_input_interPass" />
@@ -394,6 +395,7 @@
             android:background="@drawable/btngrey"
             android:text="Capture Consumable"
             android:textColor="@color/white"
+            android:onClick="captureConsumable"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintRight_toLeftOf="@+id/signature"

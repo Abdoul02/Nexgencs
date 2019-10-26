@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mainLinearLayout"
+    android:orientation="vertical"
+    tools:context="com.fgtit.fingermap.dryden.CheckList">
+    <CheckBox
+        android:id="@+id/cb_dryden"
+        android:visibility="gone"
+        android:text="(WHEN REQUIRED) I HAVE CHECKED THAT THE HOT BOX REMAINS SWITCHED ON AT ALL TIMES AND IS SET AT THE CORRECT TEMPERATURE WHEN RECEIVED FROM THE STORE. ENSURE HOTBOX IS KEPT AT THAT TEMPERATURE UNTIL THE END OF THE SHIFT OR COMPLETION OF THE JOB. HOTBOX LID TO REMAIN CLOSED AT ALL TIMES"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
