@@ -21,10 +21,15 @@ import android.widget.TextView;
 
 import com.fgtit.data.CommonFunction;
 import com.fgtit.fingermap.JobDB;
+import com.fgtit.fingermap.JobDetail;
 import com.fgtit.fingermap.MenuActivity;
 import com.fgtit.fingermap.R;
 import com.fgtit.models.DrydenJobCard;
 import com.fgtit.service.DownloadService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +40,12 @@ import static com.fgtit.data.MyConstants.DRYDEN;
 
 public class DrydenJobList extends AppCompatActivity {
 
-    private static final String TAG = "ERDJobActivity";
+    private static final String TAG = "DrydenJobList";
     JobDB jobDB = new JobDB(this);
     CommonFunction commonFunction = new CommonFunction(this);
     private MyAppAdapter myAppAdapter;
     ArrayList<DrydenJobCard> list_of_jobs;
     ListView myList;
-    int supervisor_id;
     String job_id, local_id;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -83,11 +87,12 @@ public class DrydenJobList extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     TextView txt_job_id = view.findViewById(R.id.txt_job_id);
-                    TextView txt_supervisor_id = view.findViewById(R.id.txt_supervisor_id);
                     TextView txt_local_id = view.findViewById(R.id.txt_local_id);
                     job_id = txt_job_id.getText().toString();
                     local_id = txt_local_id.getText().toString();
-                    supervisor_id = Integer.parseInt(txt_supervisor_id.getText().toString());
+                    if(!jobDB.isChecked(local_id)){
+                        gotoCheckList(job_id);
+                    }
                 }
             });
         } else {
@@ -95,14 +100,62 @@ public class DrydenJobList extends AppCompatActivity {
         }
     }
 
+    private void gotoCheckList(String id){
+        Bundle dataBundle = new Bundle();
+        dataBundle.putString("job_id", id);
+        Intent intent = new Intent(this, CheckList.class);
+        intent.putExtras(dataBundle);
+        startActivity(intent);
+    }
+
     private void handleResponse(Bundle bundle) {
         String filter = bundle.getString(DownloadService.FILTER);
         int resultCode = bundle.getInt(DownloadService.RESULT);
         if (resultCode == RESULT_OK && filter.equals(DRYDEN)) {
             String response = bundle.getString(DownloadService.CALL_RESPONSE);
-            int success = 0;
+            int success;
             String message = "";
+
+            try {
+                JSONObject result = new JSONObject(response);
+                success = result.getInt("success");
+                message = result.getString("message");
+                if (success == 1) {
+                    JSONArray arr = result.getJSONArray("data");
+                    if (arr.length() > 0) {
+                        jobDB.deleteAllDryden();
+                        for (int i = 0; i < arr.length(); i++) {
+                            JSONObject obj = (JSONObject) arr.get(i);
+                            DrydenJobCard jobCard = new DrydenJobCard();
+                            jobCard.setId(obj.getInt("id"));
+                            jobCard.setSupervisorId(obj.getInt("supervisor_id"));
+                            jobCard.setJobNo(obj.getString("job_no"));
+                            jobCard.setDescription(obj.getString("description"));
+                            jobCard.setJobName(obj.getString("name"));
+                            jobCard.setDrawingNo(obj.getString("drawing_no"));
+                            jobCard.setIssueDate(obj.getString("from_date"));
+                            jobCard.setQcNo(obj.getString("qcp_no"));
+                            jobCard.setChecklistDone(0);
+                            jobDB.insertDryden(jobCard);
+                        }
+                    }
+                }
+               commonFunction.cancelDialog();
+                refresh(message);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                commonFunction.cancelDialog();
+            }
+        }else{
+            commonFunction.cancelDialog();
+            commonFunction.showToast("Something went wrong");
         }
+    }
+
+    public void refresh(String message) {
+        commonFunction.showToast(message);
+        Intent intent = new Intent(this, DrydenJobList.class);
+        startActivity(intent);
     }
 
     private void downloadDrydenJob() {

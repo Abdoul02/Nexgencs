@@ -494,8 +494,11 @@ public class JobDB extends SQLiteOpenHelper {
         return false;
     }
 
-    public void updateCheckStatus(int local_id){
-
+    public void updateCheckStatus(String local_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("checked", 1);
+        db.update(DRYDEN_TABLE, values, "local_id = ?", new String[]{local_id});
     }
 
     //Effective Cooling Job

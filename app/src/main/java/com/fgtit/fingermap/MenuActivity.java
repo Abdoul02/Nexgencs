@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.fgtit.fingermap.dryden.DrydenJobList;
 import com.fgtit.fingermap.dryden.QF10_Report;
 import com.fgtit.fingermap.erd.ERDJobActivity;
 import com.fgtit.models.SessionManager;
@@ -128,11 +129,13 @@ public class MenuActivity extends AppCompatActivity {
 					break;
 				case 1:{
 
-					if(companyID == 117 || companyID == 3){
-
+					if(companyID == 117){
 						Intent intent = new Intent(MenuActivity.this, ERDJobActivity.class);
 						startActivity(intent);
-					}else{
+					}else if(companyID == 8 || companyID == 3){
+						Intent intent = new Intent(MenuActivity.this, DrydenJobList.class);
+						startActivity(intent);
+					} else{
 						Intent intent = new Intent(MenuActivity.this, JobActivity.class);
 						startActivity(intent);
 					}

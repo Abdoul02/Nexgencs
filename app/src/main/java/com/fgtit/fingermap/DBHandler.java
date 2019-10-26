@@ -446,7 +446,7 @@ public class DBHandler  extends SQLiteOpenHelper {
 
     }
 
-    public void updateProgress(String ca,String progress){
+    void updateProgress(String ca, String progress){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("progress", progress);
