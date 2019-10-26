@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.fgtit.data.CommonFunction;
 import com.fgtit.fingermap.JobDB;
-import com.fgtit.fingermap.JobDetail;
 import com.fgtit.fingermap.MenuActivity;
 import com.fgtit.fingermap.R;
 import com.fgtit.models.DrydenJobCard;
@@ -35,8 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.fgtit.data.MyConstants.DRYDEN_GET_JOB_URL;
 import static com.fgtit.data.MyConstants.DRYDEN;
+import static com.fgtit.data.MyConstants.DRYDEN_GET_JOB_URL;
 
 public class DrydenJobList extends AppCompatActivity {
 

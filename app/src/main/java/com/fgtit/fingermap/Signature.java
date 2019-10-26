@@ -81,7 +81,6 @@ public class Signature extends AppCompatActivity {
             finish();
         }
 
-
         dv = new DrawingView(this);
         dv.setDrawingCacheEnabled(true);
         dv.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -98,7 +97,6 @@ public class Signature extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_drawing,menu);
         return true;
     }
@@ -144,7 +142,7 @@ public class Signature extends AppCompatActivity {
             final String value = extras.getString("code");
             final String path = Environment.getExternalStorageDirectory().toString()+"/signature/";
             OutputStream fOut = null;
-            File file = new File(path, String.valueOf(value)+".png");
+            File file = new File(path, value +".png");
             file.getParentFile().mkdirs();
 
             try {
@@ -168,9 +166,6 @@ public class Signature extends AppCompatActivity {
             // dv.getDrawingCache()
             drawing.compress(Bitmap.CompressFormat.PNG, 50, fOut);
             dv.setDrawingCacheEnabled(cachePreviousState);
-
-
-
             try {
                 fOut.flush();
                 fOut.close();
@@ -427,7 +422,6 @@ public class Signature extends AppCompatActivity {
         @Override
         protected void onSizeChanged(int w, int h, int oldw, int oldh) {
             super.onSizeChanged(w, h, oldw, oldh);
-
             mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
             mCanvas = new Canvas(mBitmap);
         }
@@ -435,7 +429,6 @@ public class Signature extends AppCompatActivity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-
             canvas.drawBitmap( mBitmap, 0, 0, mBitmapPaint);
             canvas.drawPath( mPath,  mPaint);
             canvas.drawPath( circlePath,  circlePaint);
@@ -502,7 +495,7 @@ public class Signature extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.client_name,null);
         dialogBuilder.setView(dialogView);
-        final EditText edtClient = (EditText) dialogView.findViewById(R.id.edtClientName);
+        final EditText edtClient = dialogView.findViewById(R.id.edtClientName);
 
         dialogBuilder.setTitle("Client Name");
         dialogBuilder.setMessage("Enter client name below");

@@ -53,6 +53,18 @@ public class CommonFunction {
         return sdf.format(new Date());
     }
 
+    public boolean deleteFile(String path) {
+        File fileToDelete = new File(path);
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
     public List<String> RetriveCapturedImagePath(String path) {
         List<String> tFileList = new ArrayList<String>();
         File f = new File(path);
