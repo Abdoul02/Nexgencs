@@ -110,20 +110,20 @@ public final class R {
     public static final class id {
         private id() {}
 
-        public static final int adjust_height = 0x7f090035;
-        public static final int adjust_width = 0x7f090036;
-        public static final int auto = 0x7f09003d;
-        public static final int dark = 0x7f090080;
-        public static final int hybrid = 0x7f0900f4;
-        public static final int icon_only = 0x7f0900f7;
-        public static final int light = 0x7f090121;
-        public static final int none = 0x7f09014d;
-        public static final int normal = 0x7f09014e;
-        public static final int satellite = 0x7f09017f;
-        public static final int standard = 0x7f0901b0;
-        public static final int terrain = 0x7f0901bd;
-        public static final int wide = 0x7f090211;
-        public static final int wrap_content = 0x7f090216;
+        public static final int adjust_height = 0x7f090039;
+        public static final int adjust_width = 0x7f09003a;
+        public static final int auto = 0x7f090041;
+        public static final int dark = 0x7f09008f;
+        public static final int hybrid = 0x7f090108;
+        public static final int icon_only = 0x7f09010b;
+        public static final int light = 0x7f090139;
+        public static final int none = 0x7f090166;
+        public static final int normal = 0x7f090167;
+        public static final int satellite = 0x7f09019b;
+        public static final int standard = 0x7f0901ce;
+        public static final int terrain = 0x7f0901db;
+        public static final int wide = 0x7f090244;
+        public static final int wrap_content = 0x7f09024a;
     }
     public static final class integer {
         private integer() {}

@@ -1,4 +1,4 @@
-#Sun Sep 22 19:32:39 CAT 2019
+#Sun Oct 27 19:13:32 CAT 2019
 base.0=C\:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out
 path.0=classes.dex
 renamed.0=classes.dex

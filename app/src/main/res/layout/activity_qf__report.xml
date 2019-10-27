@@ -252,6 +252,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:hint="Issue Date"
+            android:clickable="false"
+            android:focusable="false"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/txt_input_welderNo"
@@ -259,6 +261,8 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/issueDate"
+                android:clickable="false"
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="date" />
@@ -392,6 +396,7 @@
             android:layout_marginRight="8dp"
             android:background="@drawable/btngrey"
             android:text="store controller"
+            android:onClick="storeControllerSign"
             android:drawableRight="@drawable/signature"
             android:textColor="@color/white"
             app:layout_constraintLeft_toRightOf="@+id/captureConsumable"

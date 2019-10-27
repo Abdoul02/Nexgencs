@@ -172,7 +172,6 @@ public class CheckList extends AppCompatActivity {
             image = data.getStringExtra(IMAGE);
             image_path = data.getStringExtra(IMAGE_PATH);
             imageName = data.getStringExtra(IMAGE_NAME);
-            commonFunction.showToast(imageName);
         }else{
             commonFunction.showToast("Operation Cancelled");
         }

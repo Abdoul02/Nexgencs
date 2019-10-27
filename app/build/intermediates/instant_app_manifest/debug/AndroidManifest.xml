@@ -3,7 +3,7 @@
     package="co.za.nexgencs.clocking"
     android:targetSandboxVersion="2"
     android:versionCode="1"
-    android:versionName="1.7.0" >
+    android:versionName="1.8.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -65,9 +65,25 @@
         android:allowBackup="true"
         android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
         android:debuggable="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
+        android:testOnly="true"
         android:theme="@style/Theme.Fgtit" >
+        <activity android:name="com.fgtit.adapter.DrawingActivity" />
+        <activity android:name="com.fgtit.fingermap.dryden.DrydenJobList" />
+        <activity
+            android:name="com.fgtit.adapter.ClockActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name="com.fgtit.fingermap.dryden.CheckList"
+            android:label="Checklist" />
+        <activity android:name="com.fgtit.fingermap.dryden.QF10_WeldMap" />
+        <activity
+            android:name="com.fgtit.fingermap.dryden.QF10_Report"
+            android:label="QF10 Job Card" />
+        <activity android:name="com.fgtit.fingermap.DisplayLocalPictures" />
         <activity android:name="com.fgtit.fingermap.erd.ERDClock" />
         <activity android:name="com.fgtit.fingermap.erd.ERDJobActivity" />
         <activity android:name="com.fgtit.fingermap.effective_cooling.CreateEffectiveJob" />
@@ -85,6 +101,9 @@
         <service
             android:name="com.fgtit.service.ClockService"
             android:enabled="true" />
+        <service
+            android:name="com.fgtit.service.UploadService"
+            android:enabled="true" />
 
         <receiver
             android:name="com.fgtit.models.SampleBC"
@@ -96,6 +115,16 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="co.za.nexgencs.clocking.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <!--
         receiver
             android:name="com.fgtit.fingermap.LocationBC"

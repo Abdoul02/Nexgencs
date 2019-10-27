@@ -48,17 +48,17 @@ public final class R {
     public static final class id {
         private id() {}
 
-        public static final int adjust_height = 0x7f090035;
-        public static final int adjust_width = 0x7f090036;
-        public static final int hybrid = 0x7f0900f4;
-        public static final int none = 0x7f09014d;
-        public static final int normal = 0x7f09014e;
-        public static final int satellite = 0x7f09017f;
-        public static final int terrain = 0x7f0901bd;
-        public static final int text = 0x7f0901be;
-        public static final int webview = 0x7f090210;
-        public static final int window = 0x7f090212;
-        public static final int wrap_content = 0x7f090216;
+        public static final int adjust_height = 0x7f090039;
+        public static final int adjust_width = 0x7f09003a;
+        public static final int hybrid = 0x7f090108;
+        public static final int none = 0x7f090166;
+        public static final int normal = 0x7f090167;
+        public static final int satellite = 0x7f09019b;
+        public static final int terrain = 0x7f0901db;
+        public static final int text = 0x7f0901dc;
+        public static final int webview = 0x7f090241;
+        public static final int window = 0x7f090245;
+        public static final int wrap_content = 0x7f09024a;
     }
     public static final class integer {
         private integer() {}
@@ -68,9 +68,9 @@ public final class R {
     public static final class layout {
         private layout() {}
 
-        public static final int info_window = 0x7f0c0058;
-        public static final int text_bubble = 0x7f0c007c;
-        public static final int webview = 0x7f0c007f;
+        public static final int info_window = 0x7f0c005e;
+        public static final int text_bubble = 0x7f0c0082;
+        public static final int webview = 0x7f0c0085;
     }
     public static final class raw {
         private raw() {}

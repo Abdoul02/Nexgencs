@@ -8,12 +8,12 @@
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-hdpi\\scan_fail.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21_notification_action_tombstone.xml.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\86242b325e969c5b665ce8f82fc51436\\res\\layout-v21\\notification_action_tombstone.xml"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\interpolator_mtrl_fast_out_linear_in.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\interpolator\\mtrl_fast_out_linear_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout-v21_notification_action_tombstone.xml.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\86242b325e969c5b665ce8f82fc51436\\res\\layout-v21\\notification_action_tombstone.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_download.png.flat",
@@ -36,12 +36,12 @@
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\layout\\progress.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_list_menu_item_layout.xml.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\layout\\abc_list_menu_item_layout.xml"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_add.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-hdpi\\ic_add.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_list_menu_item_layout.xml.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\layout\\abc_list_menu_item_layout.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21_abc_edit_text_material.xml.flat",
@@ -52,12 +52,12 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xxhdpi-v4\\abc_scrubber_control_to_pressed_mtrl_005.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_check_update.png.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\check_update.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_close.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\generated\\res\\pngs\\debug\\drawable-hdpi\\ic_close.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_check_update.png.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\check_update.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_notification_bg_low_normal.9.png.flat",
@@ -68,28 +68,28 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-xhdpi\\common_google_signin_btn_icon_dark_pressed.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ab_background_textured_fgtit.xml.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\ab_background_textured_fgtit.xml"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\interpolator-v21_mtrl_fast_out_linear_in.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\interpolator-v21\\mtrl_fast_out_linear_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ab_background_textured_fgtit.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\ab_background_textured_fgtit.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_scrubber_track_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-hdpi-v4\\abc_scrubber_track_mtrl_alpha.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_common_plus_signin_btn_icon_light_focused.9.png.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-hdpi\\common_plus_signin_btn_icon_light_focused.9.png"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_tab_unselected_focused_fgtit.9.png.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-hdpi\\tab_unselected_focused_fgtit.9.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_part_time.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\86242b325e969c5b665ce8f82fc51436\\res\\layout\\notification_template_part_time.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_tab_unselected_focused_fgtit.9.png.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-hdpi\\tab_unselected_focused_fgtit.9.png"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_common_plus_signin_btn_icon_light_focused.9.png.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-hdpi\\common_plus_signin_btn_icon_light_focused.9.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_design_ic_visibility_off.png.flat",
@@ -104,12 +104,12 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable\\common_google_signin_btn_text_light.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_common_plus_signin_btn_icon_light_normal.9.png.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-mdpi\\common_plus_signin_btn_icon_light_normal.9.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_common_plus_signin_btn_icon_dark_disabled.9.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-xhdpi\\common_plus_signin_btn_icon_dark_disabled.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_common_plus_signin_btn_icon_light_normal.9.png.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-mdpi\\common_plus_signin_btn_icon_light_normal.9.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_custom_edt.xml.flat",
@@ -136,12 +136,16 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-hdpi-v4\\abc_ic_menu_copy_mtrl_am_alpha.png"
     },
     {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_mtrl_layout_snackbar.xml.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\layout\\mtrl_layout_snackbar.xml"
+    },
+    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi_common_plus_signin_btn_icon_light_focused.9.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-tvdpi\\common_plus_signin_btn_icon_light_focused.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_mtrl_layout_snackbar.xml.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\layout\\mtrl_layout_snackbar.xml"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_display_local_pictures.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\layout\\activity_display_local_pictures.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_thumb_unfocus.png.flat",
@@ -204,44 +208,44 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-xhdpi\\common_plus_signin_btn_text_light_focused.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_generate.png.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\generate.png"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\menu_project_detail.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\menu\\project_detail.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_list_pressed_holo_dark.9.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xxhdpi-v4\\abc_list_pressed_holo_dark.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\menu_project_detail.xml.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\menu\\project_detail.xml"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_generate.png.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\generate.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_menu_dropdown_panel_fgtit.9.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-hdpi\\menu_dropdown_panel_fgtit.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\color_mtrl_btn_stroke_color_selector.xml.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\color\\mtrl_btn_stroke_color_selector.xml"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_tab_unselected_pressed_fgtit.9.png.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-xxhdpi\\tab_unselected_pressed_fgtit.9.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_select_dialog_singlechoice_material.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\layout\\select_dialog_singlechoice_material.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_tab_unselected_pressed_fgtit.9.png.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-xxhdpi\\tab_unselected_pressed_fgtit.9.png"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\color_mtrl_btn_stroke_color_selector.xml.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\color\\mtrl_btn_stroke_color_selector.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\color-v23_abc_tint_switch_track.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\color-v23\\abc_tint_switch_track.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_menu_share_mtrl_alpha.png.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-hdpi-v4\\abc_ic_menu_share_mtrl_alpha.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_delete.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\generated\\res\\pngs\\debug\\drawable-hdpi\\ic_delete.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_menu_share_mtrl_alpha.png.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-hdpi-v4\\abc_ic_menu_share_mtrl_alpha.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_common_google_signin_btn_text_light_disabled.9.png.flat",
@@ -296,12 +300,12 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xhdpi-v4\\abc_scrubber_track_mtrl_alpha.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_list_divider_mtrl_alpha.9.png.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xhdpi-v4\\abc_list_divider_mtrl_alpha.9.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_btn_cab_done_default_fgtit.9.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-xxhdpi\\btn_cab_done_default_fgtit.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_list_divider_mtrl_alpha.9.png.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xhdpi-v4\\abc_list_divider_mtrl_alpha.9.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi_common_google_signin_btn_text_light_pressed.9.png.flat",
@@ -340,6 +344,10 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xxxhdpi-v4\\abc_text_select_handle_left_mtrl_light.png"
     },
     {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_qf_weld_map.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\layout\\activity_qf_weld_map.xml"
+    },
+    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_notification_tile_bg.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\86242b325e969c5b665ce8f82fc51436\\res\\drawable\\notification_tile_bg.xml"
     },
@@ -348,24 +356,24 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\layout\\design_navigation_menu_item.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_pause.png.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\pause.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\raw_default_balloon.kml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\8daa2d494b5c8e4ff9e58e37b46d5485\\res\\raw\\default_balloon.kml"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_pause.png.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\pause.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_enrolfinger.xml.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\layout\\dialog_enrolfinger.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_tab_selected_pressed_fgtit.9.png.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-xxhdpi\\tab_selected_pressed_fgtit.9.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_abc_ic_arrow_drop_right_black_24dp.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable\\abc_ic_arrow_drop_right_black_24dp.xml"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_tab_selected_pressed_fgtit.9.png.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-xxhdpi\\tab_selected_pressed_fgtit.9.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_ic_star_black_36dp.png.flat",
@@ -428,12 +436,12 @@
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-hdpi\\scan_flashlight_normal.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_design_layout_snackbar.xml.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\layout\\design_layout_snackbar.xml"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_ic_delete.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\generated\\res\\pngs\\debug\\drawable-xxhdpi\\ic_delete.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_design_layout_snackbar.xml.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\ebdb8ea44dd596e9d2a60b2c32d7cdae\\res\\layout\\design_layout_snackbar.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-ldrtl-xxhdpi-v17_abc_ic_menu_copy_mtrl_am_alpha.png.flat",
@@ -524,16 +532,16 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-mdpi-v4\\abc_switch_track_mtrl_alpha.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_ic_menu_copy_mtrl_am_alpha.png.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-mdpi-v4\\abc_ic_menu_copy_mtrl_am_alpha.png"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi_common_google_signin_btn_text_light_normal.9.png.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-tvdpi\\common_google_signin_btn_text_light_normal.9.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_progress_horizontal_fgtit.xml.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\progress_horizontal_fgtit.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi_common_google_signin_btn_text_light_normal.9.png.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-tvdpi\\common_google_signin_btn_text_light_normal.9.png"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_ic_menu_copy_mtrl_am_alpha.png.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-mdpi-v4\\abc_ic_menu_copy_mtrl_am_alpha.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-tvdpi_common_plus_signin_btn_icon_dark_focused.9.png.flat",
@@ -596,12 +604,12 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\3c6f34327cabc4f52033957bb5fe52d6\\res\\drawable-hdpi\\common_plus_signin_btn_icon_light_normal.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_list_selector_disabled_holo_dark.9.png.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-mdpi-v4\\abc_list_selector_disabled_holo_dark.9.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_textfield_search_default_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-mdpi-v4\\abc_textfield_search_default_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_list_selector_disabled_holo_dark.9.png.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-mdpi-v4\\abc_list_selector_disabled_holo_dark.9.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_caution.png.flat",
@@ -616,20 +624,20 @@
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\menu\\userslist.xml"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_scan_photo_normal.png.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-hdpi\\scan_photo_normal.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_btn_check_to_on_mtrl_000.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xxhdpi-v4\\abc_btn_check_to_on_mtrl_000.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_expanded_menu_layout.xml.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\layout\\abc_expanded_menu_layout.xml"
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_scan_photo_normal.png.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-hdpi\\scan_photo_normal.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_tab_unselected_fgtit.9.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-xxhdpi\\tab_unselected_fgtit.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_expanded_menu_layout.xml.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\layout\\abc_expanded_menu_layout.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\menu_enroll.xml.flat",
@@ -672,12 +680,12 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xxhdpi-v4\\abc_ic_menu_paste_mtrl_am_alpha.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_neutral_grey.png.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\neutral_grey.png"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout-watch-v20_abc_alert_dialog_button_bar_material.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\layout-watch-v20\\abc_alert_dialog_button_bar_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_neutral_grey.png.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\neutral_grey.png"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_common_google_signin_btn_icon_light_normal.9.png.flat",
@@ -768,12 +776,12 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xxhdpi-v4\\abc_textfield_search_activated_mtrl_alpha.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21_abc_action_bar_item_background_material.xml.flat",
-        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_cab_background_top_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xhdpi-v4\\abc_cab_background_top_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21_abc_action_bar_item_background_material.xml.flat",
+        "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_commit_search_api_mtrl_alpha.png.flat",
@@ -800,12 +808,12 @@
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-xxxhdpi-v4\\abc_switch_track_mtrl_alpha.9.png"
     },
     {
-        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\menu_utilities.xml.flat",
-        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\menu\\utilities.xml"
-    },
-    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_fingerprint.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\fingerprint.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\menu_utilities.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\menu\\utilities.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_cascading_menu_item_layout.xml.flat",
@@ -872,6 +880,10 @@
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable\\hail.png"
     },
     {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_qf__report.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\layout\\activity_qf__report.xml"
+    },
+    {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_list_selector_disabled_holo_dark.9.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-hdpi-v4\\abc_list_selector_disabled_holo_dark.9.png"
     },
@@ -886,6 +898,10 @@
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\menu_records.xml.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\menu\\records.xml"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_clock.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\layout\\activity_clock.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\raw_music3.wav.flat",
@@ -966,6 +982,10 @@
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_star_black_16dp.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-hdpi-v4\\abc_ic_star_black_16dp.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\xml_file_paths.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\xml\\file_paths.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_common_google_signin_btn_icon_light_disabled.9.png.flat",
@@ -1370,6 +1390,10 @@
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_text_select_handle_left_mtrl_light.png.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable-mdpi-v4\\abc_text_select_handle_left_mtrl_light.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\menu_drawing_menu.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\menu\\drawing_menu.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_ic_star_half_black_48dp.png.flat",
@@ -1882,6 +1906,10 @@
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable_abc_item_background_holo_light.xml.flat",
         "source": "C:\\Users\\Abdoul\\.gradle\\caches\\transforms-2\\files-2.1\\4a09c0b1055a022bb91e0646b25c59db\\res\\drawable\\abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_dryden_job_list.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\layout\\activity_dryden_job_list.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\interpolator-v21_mtrl_fast_out_slow_in.xml.flat",
@@ -3250,6 +3278,10 @@
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_ab_bottom_solid_fgtit.9.png.flat",
         "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\drawable-xxhdpi\\ab_bottom_solid_fgtit.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_check_list.xml.flat",
+        "source": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\src\\main\\res\\layout\\activity_check_list.xml"
     },
     {
         "merged": "C:\\Users\\Abdoul\\Documents\\Mobile\\Nexgencs\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_text_select_handle_right_mtrl_dark.png.flat",

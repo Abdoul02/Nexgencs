@@ -25,6 +25,7 @@ animator mtrl_fab_hide_motion_spec
 animator mtrl_fab_show_motion_spec
 animator mtrl_fab_transformation_sheet_collapse_spec
 animator mtrl_fab_transformation_sheet_expand_spec
+array dryden_checkList
 array quy_array
 array us1_array
 array us2_array
@@ -1485,6 +1486,10 @@ id action_text
 id action_view
 id actions
 id activity_chooser_view_content
+id actualAmps
+id actualInterPass
+id actualPreheat
+id actualVoltage
 id add
 id adjust_height
 id adjust_width
@@ -1520,13 +1525,18 @@ id btn_ec_product
 id btn_ok
 id btn_time_in
 id btn_time_out
+id btn_viewImg
 id button1
 id button2
 id button3
 id button4
 id buttonPanel
 id button_scan
+id cancel
 id cancel_action
+id captureConsumable
+id captureVerification
+id captureWeldMap
 id capture_bottom_hint
 id capture_button_cancel
 id capture_button_createcode
@@ -1536,6 +1546,7 @@ id capture_preview_view
 id capture_scan_photo
 id capture_top_hint
 id capture_viewfinder_view
+id cb_dryden
 id center
 id center_horizontal
 id center_vertical
@@ -1551,6 +1562,11 @@ id clip_vertical
 id clockLayout
 id code
 id collapseActionView
+id completed
+id consAWS
+id consBatch
+id consSize
+id consumableTitle
 id container
 id content
 id contentPanel
@@ -1563,6 +1579,7 @@ id customPanel
 id customer
 id dark
 id dashboard_view
+id dateOfWeld
 id db_quantity
 id decode
 id decode_failed
@@ -1580,6 +1597,9 @@ id design_navigation_view
 id disableHome
 id done
 id download
+id drawingNo
+id drydenJobList
+id drydenJobNo
 id dts
 id editText1
 id editText2
@@ -1673,6 +1693,7 @@ id finish
 id first_Tab
 id fixed
 id forever
+id generalInfo
 id ghost_view
 id group_divider
 id home
@@ -1694,6 +1715,7 @@ id imgCam
 id imgDelete
 id imgFinger1
 id imgFinger2
+id imgGridView
 id imgNeutral
 id imgPCam
 id imgPPict
@@ -1704,13 +1726,16 @@ id img_job
 id imgfeed
 id info
 id inner
+id issueDate
 id italic
 id item_touch_helper_previous_elevation
 id jbName
 id jcod
 id jobID
 id jobList
+id job_date
 id job_name
+id job_no
 id job_search
 id joziList
 id kidlayout
@@ -1751,6 +1776,7 @@ id loadingMsg
 id loc
 id location
 id mainL
+id mainLinearLayout
 id map
 id map_frame
 id masked
@@ -1794,6 +1820,7 @@ id progress_circular
 id progress_horizontal
 id projectLayout
 id projectList
+id qcNo
 id quit
 id rL_clock
 id rLayout
@@ -1807,11 +1834,13 @@ id radio2
 id radio3
 id radioGroup1
 id radioGroup2
+id receivedKg
 id refresh
 id relativeLayout1
 id relativeLayout2
 id restart_preview
 id return_scan_result
+id returnedKg
 id right
 id right_icon
 id right_side
@@ -1847,6 +1876,7 @@ id showCustom
 id showHome
 id showTitle
 id sign
+id signature
 id smallLabel
 id snackbar_action
 id snackbar_text
@@ -1865,6 +1895,7 @@ id src_atop
 id src_in
 id src_over
 id sta
+id stampNo
 id standard
 id start
 id statusSpinner
@@ -1932,15 +1963,31 @@ id txt_description
 id txt_description_info
 id txt_display_code
 id txt_display_quantity
+id txt_input_amps
+id txt_input_consAWS
+id txt_input_consBatch
+id txt_input_consSize
+id txt_input_drawing
 id txt_input_id
+id txt_input_interPass
+id txt_input_issueDate
 id txt_input_km
 id txt_input_material
 id txt_input_name
 id txt_input_order
+id txt_input_preHeat
 id txt_input_price
 id txt_input_qty
+id txt_input_receivedKg
+id txt_input_returnedKg
+id txt_input_stampNo
 id txt_input_travel_time
+id txt_input_typeAWS
+id txt_input_volts
+id txt_input_weldMachine
+id txt_input_welderNo
 id txt_input_work
+id txt_input_workDescription
 id txt_job_id
 id txt_local_id
 id txt_name
@@ -1950,6 +1997,7 @@ id txt_supervisor_id
 id txt_supervisor_info
 id txt_time_in
 id txt_time_out
+id type
 id uList
 id uniform
 id unlabeled
@@ -1959,12 +2007,17 @@ id useLogo
 id userId
 id userName
 id validateZhiwen
+id verificationSeparator
+id verificationTitle
 id view_offset_helper
 id visible
 id webview
+id weldMachineNo
+id welderNo
 id wide
 id window
 id withText
+id workDescription
 id workLayout
 id wrap
 id wrap_content
@@ -2021,7 +2074,11 @@ layout activity_app_settings
 layout activity_brcapture
 layout activity_btscale
 layout activity_captureex
+layout activity_check_list
+layout activity_clock
 layout activity_create_effective_job
+layout activity_display_local_pictures
+layout activity_dryden_job_list
 layout activity_effective_cooling
 layout activity_emp_update
 layout activity_employee
@@ -2042,6 +2099,8 @@ layout activity_printer
 layout activity_project
 layout activity_project_detail
 layout activity_project_update
+layout activity_qf__report
+layout activity_qf_weld_map
 layout activity_rec_details
 layout activity_record_list
 layout activity_sign_local
@@ -2118,6 +2177,7 @@ layout view_user_entry
 layout webview
 menu bt_scale
 menu capture
+menu drawing_menu
 menu effective_cooling
 menu employee
 menu employees
@@ -2284,7 +2344,9 @@ string common_google_play_services_updating_title
 string common_open_on_phone
 string common_signin_button_text
 string common_signin_button_text_long
+string consumable_control
 string create
+string date_of_jb
 string default_device_sn
 string default_login_password
 string default_login_user
@@ -2295,8 +2357,11 @@ string default_web_update
 string device_sn
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string general_info
 string good
 string hide_bottom_view_on_scroll_behavior
+string job_description
+string job_no
 string loadType
 string login_password
 string login_user
@@ -2315,6 +2380,7 @@ string path_password_eye_mask_strike_through
 string path_password_eye_mask_visible
 string path_password_strike_through
 string placeHolder
+string qcp_no
 string scan_failed
 string scanning
 string search_menu_title
@@ -2432,6 +2498,7 @@ string txt_userid
 string txt_username
 string txt_usertype
 string us_prompt
+string verification_and_validation
 string web_addr
 string web_update
 style ActionBar_Solid_Fgtit
@@ -3031,4 +3098,5 @@ styleable View android_theme android_focusable paddingEnd paddingStart theme
 styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 styleable ViewStubCompat android_id android_layout android_inflatedId
 xml device_filter
+xml file_paths
 xml setserver

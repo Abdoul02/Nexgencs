@@ -21,6 +21,7 @@ public class MyConstants {
     public static final int CHECKLIST_REQUEST_CLOCK = 101;
     public static final int CHECKLIST_REQUEST_SIGN = 102;
     public static final int VERIFICATION_REQUEST_CLOCK = 103;
-
+    public static final int CONSUMABLE_REQUEST_CLOCK = 104;
+    public static final int CONSUMABLE_REQUEST_SIGN = 105;
 
 }
