@@ -26,6 +26,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
         android:hint="Drawing No."
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drydenJobNo">
@@ -41,6 +42,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:clickable="false"
+        android:focusable="false"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="10dp"
@@ -52,8 +55,10 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/workDescription"
             android:layout_width="match_parent"
+            android:clickable="false"
+            android:focusable="false"
             android:layout_height="match_parent"
-            android:lines="4"/>
+            android:lines="2"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -103,6 +108,7 @@
         android:layout_marginRight="8dp"
         android:background="@drawable/btngrey"
         android:text="capture"
+        android:onClick="uploadInfo"
         android:textColor="@color/white"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_stampNo" />

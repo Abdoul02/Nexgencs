@@ -1,7 +1,9 @@
 package com.fgtit.fingermap.dryden;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -86,11 +88,13 @@ public class DrydenJobList extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     TextView txt_job_id = view.findViewById(R.id.txt_job_id);
                     TextView txt_local_id = view.findViewById(R.id.txt_local_id);
+                    TextView txt_job_no = view.findViewById(R.id.txt_supervisor);
+                    String jobNo = txt_job_no.getText().toString();
                     job_id = txt_job_id.getText().toString();
                     local_id = txt_local_id.getText().toString();
                     if(!jobDB.isChecked(local_id)){
-                        gotoCheckList(job_id);
-                    }
+                        gotoActivity(job_id,CheckList.class);
+                    }else showOptions(jobNo,job_id);
                 }
             });
         } else {
@@ -98,10 +102,10 @@ public class DrydenJobList extends AppCompatActivity {
         }
     }
 
-    private void gotoCheckList(String id){
+    private void gotoActivity(String id, Class destination){
         Bundle dataBundle = new Bundle();
         dataBundle.putString("job_id", id);
-        Intent intent = new Intent(this, CheckList.class);
+        Intent intent = new Intent(this, destination);
         intent.putExtras(dataBundle);
         startActivity(intent);
     }
@@ -227,6 +231,26 @@ public class DrydenJobList extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    private void showOptions(String title, final String job_id){
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(title);
+        dialog.setMessage("Select an option below");
+        dialog.setPositiveButton("QF-10.2 WeldMap", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                gotoActivity(job_id,QF10_WeldMap.class);
+            }
+        });
+        dialog.setNegativeButton("QF-10.0 JobCard", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                gotoActivity(job_id,QF10_Report.class);
+            }
+        });
+        dialog.show();
     }
 
     @Override

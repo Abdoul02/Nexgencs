@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +21,6 @@ import com.fgtit.adapter.ClockActivity;
 import com.fgtit.adapter.DrawingActivity;
 import com.fgtit.data.CommonFunction;
 import com.fgtit.fingermap.JobDB;
-import com.fgtit.fingermap.MenuActivity;
 import com.fgtit.fingermap.R;
 import com.fgtit.service.DownloadService;
 import com.fgtit.service.UploadService;
@@ -76,6 +76,18 @@ public class CheckList extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            Intent intent = new Intent(this, DrydenJobList.class);
+            startActivity(intent);
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_HOME) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private void initViews() {
@@ -170,7 +182,7 @@ public class CheckList extends AppCompatActivity {
         JSONObject postDataParams = new JSONObject();
 
         try {
-            postDataParams.accumulate("date", commonFunction.getDate());
+            postDataParams.accumulate("date", commonFunction.getDateAndTime());
             postDataParams.accumulate("user_id", user_id);
             postDataParams.accumulate("job_id", job_id);
             postDataParams.accumulate("image", image);
@@ -212,10 +224,10 @@ public class CheckList extends AppCompatActivity {
                             if(commonFunction.deleteFile(image_path)){
                                 commonFunction.showToast(msg);
                                 jobDB.updateCheckStatus(local_id);
-                                gotoQFReport();
                             }else{
                                 commonFunction.showToast("Image could not be deleted locally");
                             }
+                            gotoQFReport();
                         } else {
                             commonFunction.showToast(msg);
                         }
@@ -233,7 +245,10 @@ public class CheckList extends AppCompatActivity {
     }
 
     private void gotoQFReport(){
+        Bundle dataBundle = new Bundle();
+        dataBundle.putString("job_id", job_id);
         Intent intent = new Intent(this, QF10_Report.class);
+        intent.putExtras(dataBundle);
         startActivity(intent);
     }
 }

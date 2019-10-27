@@ -7,6 +7,8 @@
     tools:context="com.fgtit.fingermap.dryden.QF10_Report">
 
     <android.support.constraint.ConstraintLayout
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp">
@@ -89,6 +91,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:hint="Date Of Weld"
+            android:clickable="false"
+            android:focusable="false"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/txt_input_weldMachine"
@@ -98,6 +102,8 @@
                 android:id="@+id/dateOfWeld"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="false"
+                android:focusable="false"
                 android:inputType="date" />
         </android.support.design.widget.TextInputLayout>
 
@@ -135,6 +141,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/actualVoltage"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
@@ -156,6 +163,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/actualAmps"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
@@ -175,6 +183,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/actualPreheat"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
@@ -195,6 +204,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/actualInterPass"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
@@ -328,6 +338,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/receivedKg"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
@@ -348,6 +359,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/returnedKg"
+                android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
@@ -379,7 +391,8 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/btngrey"
-            android:text="Signature"
+            android:text="store controller"
+            android:drawableRight="@drawable/signature"
             android:textColor="@color/white"
             app:layout_constraintLeft_toRightOf="@+id/captureConsumable"
             app:layout_constraintRight_toRightOf="parent"

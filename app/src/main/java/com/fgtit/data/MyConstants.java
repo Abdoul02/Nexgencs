@@ -11,12 +11,16 @@ public class MyConstants {
     public static final String IMAGE_PATH = "image_path";
     public static final String DRYDEN = "dryden";
     public static final String CHECKLIST = "checklist";
+    public static final String WELD_MAP = "weld_map";
+    public static final String JOB_DETAIL = "job_detail";
+    public static final String CONSUMABLE = "consumable";
     public static final String DRYDEN_GET_JOB_URL = "http://nexgencs.co.za/alos/dryden_combustion/getDrydenJobs.php";
     public static final String DRYDEN_UPLOAD = "http://nexgencs.co.za/alos/dryden_combustion/uploadData.php";
 
     //Activity Requestcode
     public static final int CHECKLIST_REQUEST_CLOCK = 101;
     public static final int CHECKLIST_REQUEST_SIGN = 102;
+    public static final int VERIFICATION_REQUEST_CLOCK = 103;
 
 
 }

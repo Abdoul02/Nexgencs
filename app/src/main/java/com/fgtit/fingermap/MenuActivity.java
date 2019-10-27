@@ -161,10 +161,7 @@ public class MenuActivity extends AppCompatActivity {
 					}
 					break;
 				case 4:{
-
-					Intent intent = new Intent(MenuActivity.this, QF10_Report.class);
-					startActivity(intent);
-					//passwordDialog();
+					passwordDialog();
 					}
 					break;
 
@@ -526,7 +523,7 @@ public class MenuActivity extends AppCompatActivity {
 		final View dialogView = inflater.inflate(R.layout.client_name,null);
 		dialogBuilder.setView(dialogView);
 
-		final EditText edtClient = (EditText) dialogView.findViewById(R.id.edtClientName);
+		final EditText edtClient = dialogView.findViewById(R.id.edtClientName);
 		edtClient.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		final String password = manager.get(SessionManager.PASSWORD);//"Admin2018";
 

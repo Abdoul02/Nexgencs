@@ -455,6 +455,7 @@ public class JobDB extends SQLiteOpenHelper {
                 jobCard.setId(cursor.getInt(1));
                 jobCard.setJobName(cursor.getString(2));
                 jobCard.setJobNo(cursor.getString(3));
+                jobCard.setQcNo(cursor.getString(4));
                 jobCard.setSupervisorId(cursor.getInt(8));
                 jobList.add(jobCard);
             } while (cursor.moveToNext());

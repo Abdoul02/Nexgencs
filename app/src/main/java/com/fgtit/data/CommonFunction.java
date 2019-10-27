@@ -48,9 +48,20 @@ public class CommonFunction {
         }
     }
 
-    public String getDate() {
+    public String getDateAndTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(new Date());
+    }
+
+    public String getDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(new Date());
+    }
+    public boolean checkTextLength(String text) {
+        if (text.trim().length() > 0) {
+            return true;
+        }
+        return false;
     }
 
     public boolean deleteFile(String path) {
