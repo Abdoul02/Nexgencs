@@ -78,6 +78,7 @@ public class QF10_Report extends AppCompatActivity {
     CommonFunction commonFunction = new CommonFunction(this);
     String job_id, localId, jobCode, qcpNo, dateOfIssue, description;
     String dateOfWeld, machineNo, actualVolt, actualAmps, actualPreheat, actualInterpass;
+    String issueDate,welderNo,consSize,consBatch,receivedKg,returnedKg,type,imagePath,imageName,image;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -172,8 +173,15 @@ public class QF10_Report extends AppCompatActivity {
     }
 
     public void captureConsumable(View view) {
-        Intent intent = new Intent(this, CheckList.class);
-        startActivity(intent);
+        issueDate = edt_issue_date.getText().toString();
+        welderNo = edt_weld_no.getText().toString();
+        consSize = edt_consSize.getText().toString();
+        consBatch= edt_cons_batch.getText().toString();
+       receivedKg = edt_received_kg.getText().toString();
+       returnedKg = edt_returned_kg.getText().toString();
+       type = edt_type.getText().toString();
+
+
     }
 
     @Override
