@@ -31,9 +31,12 @@ public class JobDB extends SQLiteOpenHelper {
     String ERD_TABLE = "erd_job";
     String SUB_TASK_TABLE = "sub_task_table";
     String DRYDEN_TABLE = "dryden_job";
+    String CATEGORY_TABLE = "category";
+    String QUESTION_TABLE = "question";
+    String VEHICLE_TABLE = "vehicle";
 
     public JobDB(Context applicationContext) {
-        super(applicationContext, "androidsqlite.db", null, 8);
+        super(applicationContext, "androidsqlite.db", null, 9);
     }
 
     //Creates Table
@@ -41,7 +44,7 @@ public class JobDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         String query, query2, query3, btScale, pine, ec_job,
                 ec_job_info, ec_material, ec_customer, ec_product, erd_job_card, sub_task, local_pict,
-                dryden_job;
+                dryden_job, strucMacCategory, strucMacQuestion, strucMacVehicle;
         query = "CREATE TABLE jobcard ( jobID INTEGER PRIMARY KEY, name TEXT, description TEXT, " +
                 "location TEXT, assignee TEXT, approvedBy TEXT,customer TEXT, progress INTEGER, start TEXT, end TEXT,jobCode TEXT,attachment TEXT," +
                 "office TEXT)";
@@ -66,13 +69,23 @@ public class JobDB extends SQLiteOpenHelper {
                 "unit_price TEXT)";
 
         ec_customer = "CREATE TABLE ec_customer(customer_id INTEGER PRIMARY KEY,id INTEGER,name TEXT)";
+
         ec_product = "CREATE TABLE ec_product(product_id INTEGER PRIMARY KEY, id INTEGER, name TEXT, price TEXT)";
+
         erd_job_card = "CREATE TABLE erd_job(local_id INTEGER PRIMARY KEY, id INTEGER, supervisor_id INTEGER," +
                 "name TEXT, job_no TEXT, description TEXT, address TEXT, progress TEXT, from_date TEXT, to_date TEXT)";
+
         sub_task = "CREATE TABLE sub_task_table(task_id INTEGER PRIMARY KEY,id INTEGER, job_card_id INTEGER, name TEXT)";
+
         local_pict = "CREATE TABLE local_pict(pict_id INTEGER PRIMARY KEY, path TEXT,job_id INTEGER, job_no TEXT)";
+
         dryden_job = "CREATE TABLE dryden_job(local_id INTEGER PRIMARY KEY, id INTEGER, job_name TEXT, job_no TEXT," +
                 "qc_no TEXT, description TEXT, drawing_no TEXT, issue_date TEXT, supervisor_id INTEGER,checked INTEGER)";
+
+        strucMacCategory = "CREATE TABLE category(local_id INTEGER PRIMARY KEY, id INTEGER, category TEXT)";
+        strucMacQuestion = "CREATE TABLE question(local_id INTEGER PRIMARY KEY, id INTEGER, question TEXT, category_id INTEGER)";
+        strucMacVehicle = "CREATE TABLE vehicle(local_id INTEGER PRIMARY KEY,id INTEGER, reg_no TEXT,licence_disc TEXT, km TEXT)";
+
 
         database.execSQL(query);
         database.execSQL(query2);
@@ -88,6 +101,9 @@ public class JobDB extends SQLiteOpenHelper {
         database.execSQL(sub_task);
         database.execSQL(local_pict);
         database.execSQL(dryden_job);
+        database.execSQL(strucMacCategory);
+        database.execSQL(strucMacQuestion);
+        database.execSQL(strucMacVehicle);
     }
 
     @Override
@@ -141,6 +157,10 @@ public class JobDB extends SQLiteOpenHelper {
         } else if (current_version == 8) {
             database.execSQL("CREATE TABLE dryden_job(local_id INTEGER PRIMARY KEY, id INTEGER, job_name TEXT, job_no TEXT," +
                     "qc_no TEXT, description TEXT, drawing_no TEXT, issue_date TEXT, supervisor_id INTEGER, checked INTEGER)");
+        } else if (current_version == 9) {
+            database.execSQL("CREATE TABLE category(local_id INTEGER PRIMARY KEY, id INTEGER, category TEXT)");
+            database.execSQL("CREATE TABLE question(local_id INTEGER PRIMARY KEY, id INTEGER, question TEXT, category_id INTEGER)");
+            database.execSQL("CREATE TABLE vehicle(local_id INTEGER PRIMARY KEY,id INTEGER, reg_no TEXT,licence_disc TEXT, km TEXT)");
         }
     }
 
@@ -495,12 +515,46 @@ public class JobDB extends SQLiteOpenHelper {
         return false;
     }
 
-    public void updateCheckStatus(String local_id){
+    public void updateCheckStatus(String local_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("checked", 1);
         db.update(DRYDEN_TABLE, values, "local_id = ?", new String[]{local_id});
     }
+
+    //StrucMac
+
+    public void insertCategories(HashMap<String, String> queryValues) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", queryValues.get("id"));
+        values.put("category", queryValues.get("category"));
+        database.insert(CATEGORY_TABLE, null, values);
+        database.close();
+    }
+
+    public void insertQuestions(HashMap<String, String> queryValues) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", queryValues.get("id"));
+        values.put("category_id", queryValues.get("category_id"));
+        values.put("question", queryValues.get("question"));
+        database.insert(QUESTION_TABLE, null, values);
+        database.close();
+    }
+
+    public void insertVehicle(HashMap<String, String> queryValues) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", queryValues.get("id"));
+        values.put("reg_no", queryValues.get("reg_no"));
+        values.put("licence_disc", queryValues.get("licence_disc"));
+        values.put("km", queryValues.get("km"));
+        database.insert(VEHICLE_TABLE, null, values);
+        database.close();
+    }
+
+
 
     //Effective Cooling Job
     public void insert_ec_Job(HashMap<String, String> queryValues) {

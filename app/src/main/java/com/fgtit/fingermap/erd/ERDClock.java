@@ -164,6 +164,7 @@ public class ERDClock extends AppCompatActivity {
             job_id = Integer.parseInt(value);
 
             Cursor cursor = jobDB.getERDJobById(Integer.parseInt(value));
+            cursor.moveToFirst();
             final String job_name, address, job_code, description, supervisor;
             int supervisor_id;
 
