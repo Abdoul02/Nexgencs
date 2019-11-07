@@ -5,53 +5,6 @@
     android:versionCode="1"
     android:versionName="1.3.6">
 
-    <uses-feature
-        android:name="android.hardware.usb.host"
-        android:required="false" />
-    <uses-feature android:name="android.hardware.usb.accessory" />
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- uses-permission android:name="android.permission.WRITE_SETTINGS" / -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature
-        android:name="android.hardware.nfc"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <application
         android:name="com.fgtit.models.App"
         android:allowBackup="true"
@@ -61,7 +14,9 @@
         android:largeHeap="true"
         android:theme="@style/Theme.Fgtit"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.fgtit.adapter.DrawingActivity"></activity>
+        <activity android:name=".strucmac.StrucMacCheckList"></activity>
+        <activity android:name=".strucmac.StrucMacReport" />
+        <activity android:name="com.fgtit.adapter.DrawingActivity" />
         <activity android:name=".dryden.DrydenJobList" />
         <activity
             android:name="com.fgtit.adapter.ClockActivity"
@@ -78,67 +33,6 @@
         <activity android:name=".erd.ERDJobActivity" />
         <activity android:name=".effective_cooling.CreateEffectiveJob" />
         <activity android:name=".effective_cooling.EffectiveCooling" />
-
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="qkVpvhTCpxxV3ulT1XUYBuCo" /> <!-- Register MyService -->
-        <service
-            android:name="com.fgtit.models.MyService"
-            android:enabled="true" /> <!-- Register BroadCase Receiver -->
-        <service
-            android:name="com.fgtit.service.DownloadService"
-            android:enabled="true" />
-        <service
-            android:name="com.fgtit.service.ClockService"
-            android:enabled="true" />
-        <service
-            android:name="com.fgtit.service.UploadService"
-            android:enabled="true" />
-
-        <receiver
-            android:name="com.fgtit.models.SampleBC"
-            android:exported="true"
-            android:process=":remote">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-                <category android:name="android.intent.category.HOME" />
-            </intent-filter>
-        </receiver>
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="co.za.nexgencs.clocking.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-        <!--
-        receiver
-            android:name="com.fgtit.fingermap.LocationBC"
-            android:process=":remote">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <category android:name="android.intent.category.HOME" />
-
-            </intent-filter>
-        </receiver
-        -->
-        <!-- 服务 -->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" /> <!-- USB连接指定接受广播的类 -->
-        <receiver android:name="com.fgtit.service.UsbBroadcastReceiver">
-            <intent-filter>
-                <action android:name="NotifyUsbStartNet" />
-                <action android:name="NotifyUsbStopNet" />
-            </intent-filter>
-        </receiver> <!-- USB虚拟网络指定服务类 -->
-        <service android:name="com.fgtit.service.ConnectService" /> <!-- Put startUP activity -->
         <activity
             android:name=".MainActivity"
             android:label="NexgenCS">
@@ -147,10 +41,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Register MyService -->
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name" /> <!-- Register BroadCase Receiver -->
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu" />
@@ -167,15 +61,28 @@
         <activity
             android:name=".EmployeesActivity"
             android:label="@string/title_activity_employees" />
+        <!--
+        receiver
+            android:name="com.fgtit.fingermap.LocationBC"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <category android:name="android.intent.category.HOME" />
+
+            </intent-filter>
+        </receiver
+        -->
+        <!-- 服务 -->
         <activity
             android:name=".EmployeeActivity"
-            android:label="@string/title_activity_employee" />
+            android:label="@string/title_activity_employee" /> <!-- USB连接指定接受广播的类 -->
         <activity
             android:name=".CameraExActivity"
-            android:label="@string/title_activity_capturephoto" />
+            android:label="@string/title_activity_capturephoto" /> <!-- USB虚拟网络指定服务类 -->
         <activity
             android:name=".UtilitiesActivity"
-            android:label="@string/title_activity_utilities" />
+            android:label="@string/title_activity_utilities" /> <!-- Put startUP activity -->
         <activity
             android:name=".SystemActivity"
             android:label="@string/title_activity_system" />
@@ -207,21 +114,7 @@
         <activity
             android:name=".UserList"
             android:label="@string/title_activity_user_list" />
-        <activity android:name=".EmpUpdate" /> <!-- Google Maps -->
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAqJ3Adr0xBDsprJROw7O68cFCEUxWA7zU" />
-        <!--
-         Mapbox
-
-         To get free Mapbox maps for your app, please visit https://www.mapbox.com/signup/
-        -->
-        <meta-data
-            android:name="com.mapbox.ACCESS_TOKEN"
-            android:value="pk.eyJ1IjoiYWJkb3VsayIsImEiOiJjaXFhbDE2MmcwMDV5aHNrcWJxeWlnNjhzIn0.in8KUEhAuqB5LkG4JpwKMA" />
-        <meta-data
-            android:name="com.mapbox.MAP_ID"
-            android:value="mapbox.streets" /> <!-- service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" / -->
+        <activity android:name=".EmpUpdate" />
         <activity android:name=".JobDetail" />
         <activity android:name=".AppSettings" />
         <activity android:name=".Signature" />
@@ -237,16 +130,121 @@
             android:name=".ProjectUpdate"
             android:label="Project Detail" />
         <activity android:name=".PinneReport" />
-        <activity android:name=".PineDetail" />
+        <activity android:name=".PineDetail" /> <!-- Google Maps -->
         <activity android:name=".BTScale" />
+        <!--
+         Mapbox
+
+         To get free Mapbox maps for your app, please visit https://www.mapbox.com/signup/
+        -->
         <activity android:name=".PineCapture" />
+        <activity
+            android:name=".Alcohol"
+            android:label="Alcohol Test" /> <!-- service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" / -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="qkVpvhTCpxxV3ulT1XUYBuCo" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAqJ3Adr0xBDsprJROw7O68cFCEUxWA7zU" />
+        <meta-data
+            android:name="com.mapbox.ACCESS_TOKEN"
+            android:value="pk.eyJ1IjoiYWJkb3VsayIsImEiOiJjaXFhbDE2MmcwMDV5aHNrcWJxeWlnNjhzIn0.in8KUEhAuqB5LkG4JpwKMA" />
+        <meta-data
+            android:name="com.mapbox.MAP_ID"
+            android:value="mapbox.streets" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="co.za.nexgencs.clocking.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <receiver
+            android:name="com.fgtit.models.SampleBC"
+            android:exported="true"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.fgtit.service.UsbBroadcastReceiver">
+            <intent-filter>
+                <action android:name="NotifyUsbStartNet" />
+                <action android:name="NotifyUsbStopNet" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.fgtit.models.MyService"
+            android:enabled="true" />
+        <service
+            android:name="com.fgtit.service.DownloadService"
+            android:enabled="true" />
+        <service
+            android:name="com.fgtit.service.ClockService"
+            android:enabled="true" />
+        <service
+            android:name="com.fgtit.service.NetworkService"
+            android:enabled="true" />
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
         <!--
         To make the activity like a dialog
         android:theme="@android:style/Theme.Dialog"
         -->
-        <activity
-            android:name=".Alcohol"
-            android:label="Alcohol Test" />
+        <service android:name="com.fgtit.service.ConnectService" />
     </application>
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.usb.accessory" />
+    <uses-feature android:name="android.hardware.camera" /> <!-- uses-permission android:name="android.permission.WRITE_SETTINGS" / -->
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

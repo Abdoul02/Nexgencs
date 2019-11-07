@@ -69,7 +69,7 @@ import java.util.UUID;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
-import static com.fgtit.service.UploadService.PROJECT_URL;
+import static com.fgtit.service.NetworkService.PROJECT_URL;
 
 public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
 

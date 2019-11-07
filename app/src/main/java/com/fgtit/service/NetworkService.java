@@ -25,10 +25,10 @@ import static com.fgtit.service.DownloadService.FILTER;
 import static com.fgtit.service.DownloadService.RESULT;
 import static com.fgtit.service.DownloadService.URL;
 
-public class UploadService extends IntentService {
+public class NetworkService extends IntentService {
 
     private int result = Activity.RESULT_CANCELED;
-    public static final String TAG = "UploadService";
+    public static final String TAG = "NetworkService";
     public static final String _SERVICE = "package com.fgtit.service.uploadService";
     public static final String POST_JSON = "json";
     public static final String JSON_VAL = "json_value";
@@ -36,8 +36,8 @@ public class UploadService extends IntentService {
     public static final String PROJECT_URL  ="http://www.nexgencs.co.za/alos/upload.php";
     public static final String JOBCARD_URL  ="http://www.nexgencs.co.za/alos/jobCardPictures.php";
 
-    public UploadService() {
-        super( "UploadService");
+    public NetworkService() {
+        super( "NetworkService");
     }
 
     final Handler responseHandler = new Handler(Looper.getMainLooper()) {
@@ -56,7 +56,7 @@ public class UploadService extends IntentService {
 
         try {
             post(url,json,jsonValue, new Callback() {
-                Handler handler = new Handler(UploadService.this.getMainLooper());
+                Handler handler = new Handler(NetworkService.this.getMainLooper());
 
                 @Override
                 public void onFailure(final Call call, final IOException e) {

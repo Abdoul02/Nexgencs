@@ -175,19 +175,8 @@
     <string name="date_of_jb">Date of Job Card issue: %1$s</string>
     <string name="verification_and_validation">Verification and validation of welding machine &amp; material temperature</string>
     <string name="consumable_control">Consumable Control</string>
-    <string-array name="dryden_checkList">
-        <item>I HAVE ENSURED THAT THE WORK AREA IS SAFE BEFORE I START THE JOB</item>
-        <item>I HAVE ENSURED THAT THE WELDING MACHINE POWER SUPPLY CABLE IS CORRECTLY PLUGGED IN</item>
-        <item>I HAVE CHECKED THAT THE WIRE FEEDER+ROLLERS, CABLE CONNECTIONS, ELECTRODE HOLDER OR WELDING GUN ARE CORRECTLY CONNECTED AND IN GOOD CONDITION</item>
-        <item>I HAVE MADE SURE THAT THE WPS, WELD INSTRUCTION, WORKS INSTRUCTION, OR ANY OTHER INSTRUCTION RELATED TO WELDING REQUIREMENTS FOR THE JOB TO BE DONE IS AVAILABLE AND CLEARLY UNDERSTOOD</item>
-        <item>I HAVE ENSURED THAT ALL GAS GAUGES AND HOSES ARE IN GOOD CONDITION, AND CHECK FOR LEAKS BEFORE WELDING OR CUTTING</item>
-        <item>(WHEN REQUIRED) I HAVE CHECKED THAT THE HOT BOX REMAINS SWITCHED ON AT ALL TIMES AND IS SET AT THE CORRECT TEMPERATURE WHEN RECEIVED FROM THE STORE. ENSURE HOTBOX IS KEPT AT THAT TEMPERATURE UNTIL THE END OF THE SHIFT OR COMPLETION OF THE JOB. HOTBOX LID TO REMAIN CLOSED AT ALL TIMES.</item>
-        <item>I HAVE MADE SURE THAT I HAVE THE CORRECT WELDING WIRE, GAS AND/OR FLUX (CONSUMABLES) FOR THE JOB AS PER INSTRUCTION</item>
-        <item>I HAVE CHECKED IF PRE-HEAT AND INTERPASS TEMPERATURES ARE REQUIRED. I WILL MONITOR THE TEMPERATURES AS PER INSTRUCTION</item>
-        <item>I WILL CHECK INTERPASS TEMPERATURES PERIODICALLY AND WILL HAVE THE CORRECT TEMPERATURE MEASURING EQUIPMENT BEFORE I START WELDING</item>
-    </string-array>
-    <!-- Setting   -->
     <string name="target_ip">NET Server Address</string>
+    <!-- Setting   -->
     <string name="default_target_ip">192.168.1.106</string>
     <string name="target_port">NET Server Port</string>
     <string name="default_target_port">5002</string>
@@ -205,8 +194,8 @@
     <string name="not_null">Not null</string>
     <string name="net_status">Net Status</string>
     <string name="net_setting">System Setting</string>
-
     <string name="txt_upd01">Software Update</string>
+
     <string name="txt_upd02">Update Now</string>
     <string name="txt_upd03">Later</string>
     <string name="txt_upd04">Downloading &#8230;</string>
@@ -218,9 +207,23 @@
     <string name="txt_upd10">You are the latest version</string>
     <string name="txt_upd11">Can\'t get version update information</string>
     <string name="txt_upd12">Network failure, unable to connect the server</string>
+    <string name="us_prompt">Please Select</string>
 
     <!-- String List   -->
-    <string name="us_prompt">Please Select</string>
+    <string name="title_activity_emp_list">List Of Employees</string>
+    <string name="title_activity_user_list">NexGenCS</string>
+    <string name="title_activity_jozi_job">Job Card</string>
+    <string-array name="dryden_checkList">
+        <item>I HAVE ENSURED THAT THE WORK AREA IS SAFE BEFORE I START THE JOB</item>
+        <item>I HAVE ENSURED THAT THE WELDING MACHINE POWER SUPPLY CABLE IS CORRECTLY PLUGGED IN</item>
+        <item>I HAVE CHECKED THAT THE WIRE FEEDER+ROLLERS, CABLE CONNECTIONS, ELECTRODE HOLDER OR WELDING GUN ARE CORRECTLY CONNECTED AND IN GOOD CONDITION</item>
+        <item>I HAVE MADE SURE THAT THE WPS, WELD INSTRUCTION, WORKS INSTRUCTION, OR ANY OTHER INSTRUCTION RELATED TO WELDING REQUIREMENTS FOR THE JOB TO BE DONE IS AVAILABLE AND CLEARLY UNDERSTOOD</item>
+        <item>I HAVE ENSURED THAT ALL GAS GAUGES AND HOSES ARE IN GOOD CONDITION, AND CHECK FOR LEAKS BEFORE WELDING OR CUTTING</item>
+        <item>(WHEN REQUIRED) I HAVE CHECKED THAT THE HOT BOX REMAINS SWITCHED ON AT ALL TIMES AND IS SET AT THE CORRECT TEMPERATURE WHEN RECEIVED FROM THE STORE. ENSURE HOTBOX IS KEPT AT THAT TEMPERATURE UNTIL THE END OF THE SHIFT OR COMPLETION OF THE JOB. HOTBOX LID TO REMAIN CLOSED AT ALL TIMES.</item>
+        <item>I HAVE MADE SURE THAT I HAVE THE CORRECT WELDING WIRE, GAS AND/OR FLUX (CONSUMABLES) FOR THE JOB AS PER INSTRUCTION</item>
+        <item>I HAVE CHECKED IF PRE-HEAT AND INTERPASS TEMPERATURES ARE REQUIRED. I WILL MONITOR THE TEMPERATURES AS PER INSTRUCTION</item>
+        <item>I WILL CHECK INTERPASS TEMPERATURES PERIODICALLY AND WILL HAVE THE CORRECT TEMPERATURE MEASURING EQUIPMENT BEFORE I START WELDING</item>
+    </string-array>
     <string-array name="us1_array">
         <item>Management</item>
         <item>General</item>
@@ -241,8 +244,5 @@
         <item>ID</item>
         <item>Name</item>
     </string-array>
-    <string name="title_activity_emp_list">List Of Employees</string>
-    <string name="title_activity_user_list">NexGenCS</string>
-    <string name="title_activity_jozi_job">Job Card</string>
 </resources>    
 

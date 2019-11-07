@@ -74,7 +74,7 @@ import java.util.UUID;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
-import static com.fgtit.service.UploadService.JOBCARD_URL;
+import static com.fgtit.service.NetworkService.JOBCARD_URL;
 
 public class JobDetail extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
 

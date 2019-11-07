@@ -16,7 +16,7 @@ import com.fgtit.data.CommonFunction;
 import com.fgtit.fingermap.JobDB;
 import com.fgtit.fingermap.R;
 import com.fgtit.service.DownloadService;
-import com.fgtit.service.UploadService;
+import com.fgtit.service.NetworkService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,7 +64,7 @@ public class QF10_WeldMap extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(receiver, new IntentFilter(
-                UploadService._SERVICE));
+                NetworkService._SERVICE));
     }
 
     @Override
@@ -107,7 +107,7 @@ public class QF10_WeldMap extends AppCompatActivity {
                 //  postDataParams.accumulate("task_id", task_id);
 
                 commonFunction.setDialog(true);
-                Intent client_intent = new Intent(this, UploadService.class);
+                Intent client_intent = new Intent(this, NetworkService.class);
                 client_intent.putExtra(DownloadService.POST_JSON, "weldMap");
                 client_intent.putExtra(DownloadService.JSON_VAL, postDataParams.toString());
                 client_intent.putExtra(DownloadService.FILTER, WELD_MAP);

@@ -554,6 +554,71 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
     }
 
+    public ArrayList<HashMap<String, String>> getAllCategories(){
+        ArrayList<HashMap<String, String>> categoryList;
+        categoryList = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM category";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("id", cursor.getString(1));
+                map.put("category", cursor.getString(2));
+                categoryList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return categoryList;
+    }
+
+    public ArrayList<HashMap<String,String>> getQuestionByCategory(int categoryId){
+        ArrayList<HashMap<String, String>> questionList;
+        questionList = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM question WHERE category_id = "+ categoryId;
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("id", cursor.getString(1));
+                map.put("question", cursor.getString(2));
+                map.put("category_id", cursor.getString(3));
+                questionList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return questionList;
+    }
+
+    public ArrayList<HashMap<String,String>> getVehicleInfo(){
+        ArrayList<HashMap<String, String>> vehicleList;
+        vehicleList = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM vehicle";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("id", cursor.getString(1));
+                map.put("reg_no", cursor.getString(2));
+                map.put("licence_disc", cursor.getString(3));
+                map.put("km", cursor.getString(4));
+                vehicleList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return vehicleList;
+    }
+
+    public void deleteTable(String table){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(table, null, null);
+        db.close();
+    }
 
 
     //Effective Cooling Job
