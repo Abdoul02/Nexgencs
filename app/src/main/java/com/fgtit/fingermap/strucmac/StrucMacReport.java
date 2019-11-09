@@ -101,7 +101,8 @@ public class StrucMacReport extends AppCompatActivity {
                     } else commonFunction.showToast("This Vehicle does not any data");
                 }
             });
-        }else commonFunction.showToast("Please download vehicle information by clicking cloud icon");
+        } else
+            commonFunction.showToast("Please download vehicle information by clicking cloud icon");
     }
 
     @Override
@@ -119,7 +120,7 @@ public class StrucMacReport extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.download_only,menu);
+        getMenuInflater().inflate(R.menu.download_only, menu);
         return true;
     }
 
@@ -127,7 +128,7 @@ public class StrucMacReport extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        switch(id){
+        switch (id) {
             case R.id.download:
                 downloadVehicleList();
                 return true;

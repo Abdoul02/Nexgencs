@@ -359,10 +359,10 @@ public class EffectiveCooling extends AppCompatActivity {
             showToast("You already Have a Time IN for today");
         } else {
 
-         //   if (edt_km.getText().length() > 0 && edt_travel_time.getText().length() > 0) {
-                txt_time_in.setText(currentDateTime);
-                txt_time_in.setVisibility(View.VISIBLE);
-                uploadInfo(status);
+            //   if (edt_km.getText().length() > 0 && edt_travel_time.getText().length() > 0) {
+            txt_time_in.setText(currentDateTime);
+            txt_time_in.setVisibility(View.VISIBLE);
+            uploadInfo(status);
         }
 
 
@@ -480,7 +480,7 @@ public class EffectiveCooling extends AppCompatActivity {
         setDialog(true);
         Intent product_intent = new Intent(this, DownloadService.class);
         product_intent.putExtra(DownloadService.POST_JSON, "ec_products");
-        product_intent.putExtra(DownloadService.URL,EC_DATA_URL);
+        product_intent.putExtra(DownloadService.URL, EC_DATA_URL);
         product_intent.putExtra(DownloadService.FILTER, PRODUCTS);
         startService(product_intent);
 
@@ -502,6 +502,7 @@ public class EffectiveCooling extends AppCompatActivity {
         Log.d(TAG, "ec_job_json: " + param);
         client.newCall(request).enqueue(new Callback() {
             Handler handler = new Handler(EffectiveCooling.this.getMainLooper());
+
             @Override
             public void onFailure(Call call, final IOException e) {
                 call.cancel();
@@ -515,6 +516,7 @@ public class EffectiveCooling extends AppCompatActivity {
                     }
                 });
             }
+
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 handler.post(new Runnable() {

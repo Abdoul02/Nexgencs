@@ -9,7 +9,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +22,7 @@ import android.widget.TextView;
 import com.fgtit.adapter.ClockActivity;
 import com.fgtit.data.CommonFunction;
 import com.fgtit.fingermap.JobDB;
+import com.fgtit.fingermap.MenuActivity;
 import com.fgtit.fingermap.R;
 import com.fgtit.service.DownloadService;
 import com.fgtit.service.NetworkService;
@@ -74,7 +74,7 @@ public class StrucMacCheckList extends AppCompatActivity {
     CommonFunction commonFunction = new CommonFunction(this);
 
     String plantNo, workCondition, faultFound, km, vehicleId;
-    String user_id,userName;
+    String user_id, userName;
     int engineCheckCount = 0, insideCheckCount = 0, toolboxCheckCount = 0;
     ArrayList<HashMap<String, String>> engineQuestions;
     ArrayList<HashMap<String, String>> insideQuestions;
@@ -110,7 +110,7 @@ public class StrucMacCheckList extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_drawing,menu);
+        getMenuInflater().inflate(R.menu.menu_drawing, menu);
         return true;
     }
 
@@ -138,18 +138,18 @@ public class StrucMacCheckList extends AppCompatActivity {
             faultFound = extras.getString("fault");
             km = extras.getString("km");
             vehicleId = extras.getString("vehicle_id");
-            mTabHost.setup();
-            addTabs();
+        }
 
-            if (jobDB.getAllCategories().size() > 0) {
-                categoryList();
-            } else commonFunction.showToast("Download Checklist");
+        mTabHost.setup();
+        addTabs();
+        if (jobDB.getAllCategories().size() > 0) {
+            populateTabs();
+        } else commonFunction.showToast("Download Checklist");
 
-        } else finish();
 
     }
 
-    private void categoryList() {
+    private void populateTabs() {
         ArrayList<HashMap<String, String>> categoryList;
         categoryList = jobDB.getAllCategories();
         HashMap<String, String> engineHashMap = categoryList.get(0);
@@ -297,12 +297,12 @@ public class StrucMacCheckList extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == STRUCMAC_REPORT_CLOCK && resultCode == RESULT_OK){
+        if (requestCode == STRUCMAC_REPORT_CLOCK && resultCode == RESULT_OK) {
             userName = data != null ? data.getStringExtra(USERNAME) : null;
             user_id = data != null ? data.getStringExtra(USER_ID) : null;
-            commonFunction.showToast("Clocked by "+userName);
+            commonFunction.showToast("Clocked by " + userName);
             uploadData();
-        }else{
+        } else {
             commonFunction.showToast("Operation Cancelled");
         }
     }
@@ -344,7 +344,7 @@ public class StrucMacCheckList extends AppCompatActivity {
         startService(client_intent);
     }
 
-    private boolean allChecked(){
+    private boolean allChecked() {
         return engineCheckCount == engineQuestions.size() && insideCheckCount == insideQuestions.size() && toolboxCheckCount == toolboxQuestions.size();
     }
 
@@ -386,15 +386,29 @@ public class StrucMacCheckList extends AppCompatActivity {
                     }
                 }
                 commonFunction.cancelDialog();
-                refresh(message);
+                refresh(message, StrucMacCheckList.class);
             } catch (JSONException e) {
                 e.printStackTrace();
                 commonFunction.cancelDialog();
             }
-        } else  if (resultCode == RESULT_OK && (filter != null && filter.equals(STRUCMAC_UPLOAD))) {
+        } else if (resultCode == RESULT_OK && (filter != null && filter.equals(STRUCMAC_UPLOAD))) {
             String response = bundle.getString(DownloadService.CALL_RESPONSE);
             int success;
             String message;
+            try {
+                JSONObject result = new JSONObject(response);
+                success = result.getInt("success");
+                message = result.getString("message");
+                commonFunction.cancelDialog();
+                if (success == 1) {
+                    refresh(message, MenuActivity.class);
+                } else {
+                    commonFunction.showToast(message);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         } else {
             commonFunction.cancelDialog();
@@ -402,7 +416,7 @@ public class StrucMacCheckList extends AppCompatActivity {
         }
     }
 
-    private void uploadData(){
+    private void uploadData() {
         JSONObject postDataParams = new JSONObject();
         try {
             postDataParams.accumulate("date", commonFunction.getDateAndTime());
@@ -412,10 +426,7 @@ public class StrucMacCheckList extends AppCompatActivity {
             postDataParams.accumulate("plant_no", plantNo);
             postDataParams.accumulate("work_condition", workCondition);
             postDataParams.accumulate("fault_found", faultFound);
-            postDataParams.accumulate("answers",jobDB.questionJSON());
-
-            Log.d("JSON Value",postDataParams.toString());
-
+            postDataParams.accumulate("answers", jobDB.questionJSON());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -429,9 +440,9 @@ public class StrucMacCheckList extends AppCompatActivity {
         startService(client_intent);
     }
 
-    public void refresh(String message) {
-        Intent intent = new Intent(this, StrucMacCheckList.class);
-        startActivity(intent);
+    public void refresh(String message, Class destination) {
         commonFunction.showToast(message);
+        Intent intent = new Intent(this, destination);
+        startActivity(intent);
     }
 }

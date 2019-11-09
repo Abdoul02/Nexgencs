@@ -29,8 +29,8 @@ public class DownloadService extends IntentService {
     public static final String JSON_VAL = "json_value";
 
     public static final String EC_DATA_URL = "http://nexgencs.co.za/alos/get_ec_data.php";
-    public static final String ERD_DATA_URL="http://nexgencs.co.za/alos/get_erd_job.php";
-    public static final String ERD_CLOCK_URL="http://nexgencs.co.za/alos/erd_job_clock.php";
+    public static final String ERD_DATA_URL = "http://nexgencs.co.za/alos/get_erd_job.php";
+    public static final String ERD_CLOCK_URL = "http://nexgencs.co.za/alos/erd_job_clock.php";
 
     public static final String CUSTOMER = "customer";
     public static final String PRODUCTS = "product";
@@ -65,13 +65,13 @@ public class DownloadService extends IntentService {
         Log.d(TAG, json);
         Log.d(TAG, filter);
 
-        String jsonValue ="";
-        if(filter.equals(ERD_CLOCK)){
+        String jsonValue = "";
+        if (filter.equals(ERD_CLOCK)) {
             jsonValue = intent.getStringExtra(JSON_VAL);
         }
 
         try {
-            post(url,json,jsonValue, new Callback() {
+            post(url, json, jsonValue, new Callback() {
                 Handler handler = new Handler(DownloadService.this.getMainLooper());
 
                 @Override
@@ -93,8 +93,8 @@ public class DownloadService extends IntentService {
                         String responseStr = response.body().string();
                         response.body().close();
                         result = Activity.RESULT_OK;
-                        Log.d(TAG, "Result =>"+result);
-                        publishResults(filter,result,responseStr);
+                        Log.d(TAG, "Result =>" + result);
+                        publishResults(filter, result, responseStr);
 
                     } else {
                         // Request not successful
@@ -110,12 +110,12 @@ public class DownloadService extends IntentService {
     }
 
 
-    Call post(String url,String filter,String jsonVal, Callback callback) throws IOException {
+    Call post(String url, String filter, String jsonVal, Callback callback) throws IOException {
         OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
         Call call;
 
         RequestBody body = new FormBody.Builder()
-                .add(filter,jsonVal)
+                .add(filter, jsonVal)
                 .build();
         OkHttpClient client = builder.build();
         Request request = new Request.Builder()
@@ -129,11 +129,11 @@ public class DownloadService extends IntentService {
         return call;
     }
 
-    private void publishResults(String filter, int result,String response) {
+    private void publishResults(String filter, int result, String response) {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra(FILTER, filter);
         intent.putExtra(RESULT, result);
-        intent.putExtra(CALL_RESPONSE,response);
+        intent.putExtra(CALL_RESPONSE, response);
         sendBroadcast(intent);
     }
 

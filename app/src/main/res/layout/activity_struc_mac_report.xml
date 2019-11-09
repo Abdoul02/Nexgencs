@@ -6,19 +6,26 @@
     android:layout_height="match_parent"
     tools:context="com.fgtit.fingermap.strucmac.StrucMacReport">
 
-    <Button
-        android:id="@+id/btnNext"
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txt_input_plant_no"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/btngrey"
-        android:text="Next"
-        android:onClick="gotoStrucMacChecklist"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:hint="Plant No"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edtPlantNo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:lines="2" />
+    </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/txt_input_reg_no"
@@ -128,24 +135,18 @@
             android:inputType="numberDecimal"
             android:lines="2" />
     </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/txt_input_plant_no"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+    <Button
+        android:id="@+id/btnNext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="8dp"
-        android:hint="Plant No"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btngrey"
+        android:text="Next"
+        android:onClick="gotoStrucMacChecklist"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edtPlantNo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:lines="2" />
-    </android.support.design.widget.TextInputLayout>
 </android.support.constraint.ConstraintLayout>
