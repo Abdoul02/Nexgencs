@@ -6,74 +6,39 @@
     android:layout_height="match_parent"
     tools:context="com.fgtit.fingermap.strucmac.StrucMacReport">
 
-    <TextView
-        android:id="@+id/txtDownload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="8dp"
-        android:text="Download Vehicle info =>"
-        android:textColor="@color/black"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/txtDownload"
-        android:src="@drawable/download"
-        android:tint="@color/primary_dark_material_dark"/>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/txt_input_plant_no"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+    <Button
+        android:id="@+id/btnNext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
-        android:layout_marginLeft="8dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="20dp"
-        android:hint="Plant No"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDownload">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/edtPlantNo"
-            android:layout_width="match_parent"
-            android:clickable="false"
-            android:focusable="false"
-            android:layout_height="match_parent"
-            android:lines="2"/>
-    </android.support.design.widget.TextInputLayout>
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btngrey"
+        android:text="Next"
+        android:onClick="gotoStrucMacChecklist"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/txt_input_reg_no"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
         android:hint="Reg No"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_plant_no">
 
         <AutoCompleteTextView
-            android:paddingLeft="10dp"
             android:id="@+id/edtRegNo"
             android:layout_width="match_parent"
-            android:clickable="false"
-            android:focusable="false"
             android:layout_height="match_parent"
-            android:lines="2"/>
+            android:lines="2"
+            android:paddingLeft="10dp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -81,23 +46,21 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
         android:clickable="false"
         android:focusable="false"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:hint="Inspected and found in working condition"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_reg_no">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edtWorkCondition"
             android:layout_width="match_parent"
-            android:clickable="false"
-            android:focusable="false"
             android:layout_height="match_parent"
-            android:lines="2"/>
+            android:lines="2" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -105,23 +68,19 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
         android:hint="Inspected and fault found- not to be used"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_work_condition">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edtFault"
             android:layout_width="match_parent"
-            android:clickable="false"
-            android:focusable="false"
             android:layout_height="match_parent"
-            android:lines="2"/>
+            android:lines="2" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -129,24 +88,24 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
         android:clickable="false"
         android:focusable="false"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:hint="Licence disc"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_fault">
 
-        <AutoCompleteTextView
-            android:paddingLeft="10dp"
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/edtLicence"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:clickable="false"
             android:focusable="false"
-            android:layout_height="match_parent"
-            android:lines="2"/>
+            android:lines="2"
+            android:paddingLeft="10dp" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -154,54 +113,39 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
         android:hint="Daily KM"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_input_licence">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/edtDailyKm"
             android:layout_width="match_parent"
-            android:clickable="false"
-            android:focusable="false"
-            android:inputType="numberDecimal"
             android:layout_height="match_parent"
-            android:lines="2"/>
+            android:inputType="numberDecimal"
+            android:lines="2" />
     </android.support.design.widget.TextInputLayout>
 
-
-
-    <Button
-        android:id="@+id/btnNext"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/txt_input_plant_no"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/btngrey"
-        android:text="Next"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toRightOf="@+id/btnCancel"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:hint="Plant No"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/btngrey"
-        android:text="Cancel"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintRight_toLeftOf="@+id/btnNext"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/edtPlantNo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:lines="2" />
+    </android.support.design.widget.TextInputLayout>
 </android.support.constraint.ConstraintLayout>

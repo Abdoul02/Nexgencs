@@ -28,12 +28,12 @@ public class JobDB extends SQLiteOpenHelper {
 
 
     private static final String TAG = "JobDB";
-    String ERD_TABLE = "erd_job";
-    String SUB_TASK_TABLE = "sub_task_table";
-    String DRYDEN_TABLE = "dryden_job";
-    String CATEGORY_TABLE = "category";
-    String QUESTION_TABLE = "question";
-    String VEHICLE_TABLE = "vehicle";
+    public static final String ERD_TABLE = "erd_job";
+    public static final String SUB_TASK_TABLE = "sub_task_table";
+    public static final String DRYDEN_TABLE = "dryden_job";
+    public static final String CATEGORY_TABLE = "category";
+    public static final String QUESTION_TABLE = "question";
+    public static final String VEHICLE_TABLE = "vehicle";
 
     public JobDB(Context applicationContext) {
         super(applicationContext, "androidsqlite.db", null, 9);
@@ -554,7 +554,7 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
     }
 
-    public ArrayList<HashMap<String, String>> getAllCategories(){
+    public ArrayList<HashMap<String, String>> getAllCategories() {
         ArrayList<HashMap<String, String>> categoryList;
         categoryList = new ArrayList<>();
 
@@ -573,11 +573,11 @@ public class JobDB extends SQLiteOpenHelper {
         return categoryList;
     }
 
-    public ArrayList<HashMap<String,String>> getQuestionByCategory(int categoryId){
+    public ArrayList<HashMap<String, String>> getQuestionByCategory(int categoryId) {
         ArrayList<HashMap<String, String>> questionList;
         questionList = new ArrayList<>();
 
-        String selectQuery = "SELECT  * FROM question WHERE category_id = "+ categoryId;
+        String selectQuery = "SELECT  * FROM question WHERE category_id = " + categoryId;
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -593,7 +593,7 @@ public class JobDB extends SQLiteOpenHelper {
         return questionList;
     }
 
-    public ArrayList<HashMap<String,String>> getVehicleInfo(){
+    public ArrayList<HashMap<String, String>> getVehicleInfo() {
         ArrayList<HashMap<String, String>> vehicleList;
         vehicleList = new ArrayList<>();
 
@@ -614,10 +614,36 @@ public class JobDB extends SQLiteOpenHelper {
         return vehicleList;
     }
 
-    public void deleteTable(String table){
+    public Cursor getVehicleByRegNo(String reg_no){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT  * FROM vehicle WHERE reg_no ='" + reg_no + "'", null);
+        return res;
+    }
+
+    public void deleteTable(String table) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(table, null, null);
         db.close();
+    }
+
+    public String questionJSON(){
+        ArrayList<HashMap<String, String>> questionList;
+        questionList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM question";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("id", cursor.getString(1));
+                map.put("question", cursor.getString(2));
+                map.put("category_id", cursor.getString(3));
+                questionList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        Gson gson = new GsonBuilder().create();
+        return gson.toJson(questionList);
     }
 
 

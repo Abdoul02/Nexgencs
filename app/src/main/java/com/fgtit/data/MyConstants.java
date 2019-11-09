@@ -16,6 +16,11 @@ public class MyConstants {
     public static final String CONSUMABLE = "consumable";
     public static final String DRYDEN_GET_JOB_URL = "http://nexgencs.co.za/alos/dryden_combustion/getDrydenJobs.php";
     public static final String DRYDEN_UPLOAD = "http://nexgencs.co.za/alos/dryden_combustion/uploadData.php";
+    public static final String STRUCMAC_DATA_URL ="http://nexgencs.co.za/alos/strucmac/getStrucMacData.php";
+    public static final String STRUCMAC_UPLOAD_URL ="http://nexgencs.co.za/alos/strucmac/insertData.php";
+    public static final String STRUCMAC_CHECKLIST = "strucMacCheckList";
+    public static final String STRUCMAC_VEHICLE = "strucMacVehicle";
+    public static final String STRUCMAC_UPLOAD = "StrucMacUpload";
 
     //Activity Requestcode
     public static final int CHECKLIST_REQUEST_CLOCK = 101;
@@ -23,5 +28,7 @@ public class MyConstants {
     public static final int VERIFICATION_REQUEST_CLOCK = 103;
     public static final int CONSUMABLE_REQUEST_CLOCK = 104;
     public static final int CONSUMABLE_REQUEST_SIGN = 105;
+    public static final int STRUCMAC_REPORT_CLOCK = 106;
+
 
 }
