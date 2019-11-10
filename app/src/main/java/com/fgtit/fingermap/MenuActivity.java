@@ -220,11 +220,11 @@ public class MenuActivity extends AppCompatActivity {
     private List<Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map;
 
         if (companyID == 3 || companyID == 116) {
 
-            map = new HashMap<String, Object>();
+            map = new HashMap<>();
             map.put("title", "Machine Job Card");
             map.put("info", "Create Job card from machine");
             map.put("img", R.drawable.view_details);
@@ -232,7 +232,7 @@ public class MenuActivity extends AppCompatActivity {
 
         } else {
 
-            map = new HashMap<String, Object>();
+            map = new HashMap<>();
             map.put("title", "Projects");
             map.put("info", "Create Projects");
             map.put("img", R.drawable.timesheet);
@@ -240,37 +240,37 @@ public class MenuActivity extends AppCompatActivity {
         }
 
 
-        map = new HashMap<String, Object>();
+        map = new HashMap<>();
         map.put("title", "Cloud Job Card");
         map.put("info", "View or Download available Job Card(s) from Cloud");
         map.put("img", R.drawable.view_details);
         list.add(map);
 
-        map = new HashMap<String, Object>();
+        map = new HashMap<>();
         map.put("title", getString(R.string.txt_title_02));
         map.put("info", getString(R.string.txt_info_02));
         map.put("img", R.drawable.group);
         list.add(map);
 
-        map = new HashMap<String, Object>();
+        map = new HashMap<>();
         map.put("title", getString(R.string.txt_title_03));
         map.put("info", getString(R.string.txt_info_03));
         map.put("img", R.drawable.reload);
         list.add(map);
 
-        map = new HashMap<String, Object>();
+        map = new HashMap<>();
         map.put("title", getString(R.string.txt_title_04));
         map.put("info", getString(R.string.txt_info_04));
         map.put("img", R.drawable.engineering);
         list.add(map);
 
-        map = new HashMap<String, Object>();
+        map = new HashMap<>();
         map.put("title", getString(R.string.txt_title_05));
         map.put("info", getString(R.string.txt_info_05));
         map.put("img", R.drawable.about);
         list.add(map);
 
-        map = new HashMap<String, Object>();
+        map = new HashMap<>();
         map.put("title", "Check for update");
         map.put("info", ",your current version is " + versionName);
         map.put("img", R.drawable.check_update);
@@ -278,7 +278,7 @@ public class MenuActivity extends AppCompatActivity {
 
         if (companyID == 3 || companyID == 8 || companyID == 29) {
 
-            map = new HashMap<String, Object>();
+            map = new HashMap<>();
             map.put("title", "Bluetooth Scale");
             map.put("info", "Gets weight from bluetooth scale");
             map.put("img", R.drawable.bluetooth);
@@ -287,16 +287,16 @@ public class MenuActivity extends AppCompatActivity {
 
         if (companyID == 3 || companyID == 8) {
 
-            map = new HashMap<String, Object>();
+            map = new HashMap<>();
             map.put("title", "Alcohol Reader");
             map.put("info", "Detect Alcohol usage");
             map.put("img", R.drawable.alcohol);
             list.add(map);
         }
 
-        if (companyID == 3 || companyID == 8) {
+        if (companyID == 3 || companyID == 135) {
 
-            map = new HashMap<String, Object>();
+            map = new HashMap<>();
             map.put("title", "StrucMac vehicle checklist");
             map.put("info", "Pre-use checklist for vehicles");
             map.put("img", R.drawable.ic_check);

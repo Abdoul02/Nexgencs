@@ -614,7 +614,7 @@ public class JobDB extends SQLiteOpenHelper {
         return vehicleList;
     }
 
-    public Cursor getVehicleByRegNo(String reg_no){
+    public Cursor getVehicleByRegNo(String reg_no) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT  * FROM vehicle WHERE reg_no ='" + reg_no + "'", null);
         return res;
@@ -626,7 +626,7 @@ public class JobDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public String questionJSON(){
+    public String questionJSON() {
         ArrayList<HashMap<String, String>> questionList;
         questionList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM question";

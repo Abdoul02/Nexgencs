@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.fgtit.data.CommonFunction;
+import com.fgtit.data.MyConstants;
 import com.fgtit.fingermap.JobDB;
 import com.fgtit.fingermap.R;
 import com.fgtit.service.DownloadService;
@@ -188,14 +190,8 @@ public class StrucMacReport extends AppCompatActivity {
         if (commonFunction.checkTextLength(edtPlantNo.getText().toString()) && commonFunction.checkTextLength(edtWorkCondition.getText().toString())
                 && commonFunction.checkTextLength(edtFault.getText().toString()) && commonFunction.checkTextLength(edtKm.getText().toString())
                 && commonFunction.checkTextLength(actRegNo.getText().toString())) {
-            Bundle dataBundle = new Bundle();
-            dataBundle.putString("vehicle_id", vehicle_id);
-            dataBundle.putString("work_condition", edtWorkCondition.getText().toString());
-            dataBundle.putString("fault", edtFault.getText().toString());
-            dataBundle.putString("km", edtKm.getText().toString());
-            dataBundle.putString("plant_no", edtPlantNo.getText().toString());
+            saveDataToSharedPref();
             Intent intent = new Intent(getApplicationContext(), StrucMacCheckList.class);
-            intent.putExtras(dataBundle);
             startActivity(intent);
         } else commonFunction.showToast("Please provide all fields");
     }
@@ -204,5 +200,15 @@ public class StrucMacReport extends AppCompatActivity {
         commonFunction.showToast(message);
         Intent intent = new Intent(this, StrucMacReport.class);
         startActivity(intent);
+    }
+
+    public void saveDataToSharedPref() {
+        SharedPreferences.Editor editor = getSharedPreferences(MyConstants.REPORT_SHARED_PREF, MODE_PRIVATE).edit();
+        editor.putString(MyConstants.VEHICLE_ID, vehicle_id);
+        editor.putString(MyConstants.PLANT_NO, edtPlantNo.getText().toString());
+        editor.putString(MyConstants.WORK_CONDITION, edtWorkCondition.getText().toString());
+        editor.putString(MyConstants.FAULT_FOUND, edtFault.getText().toString());
+        editor.putString(MyConstants.KM, edtKm.getText().toString());
+        editor.apply();
     }
 }

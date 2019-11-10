@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.fgtit.adapter.ClockActivity;
 import com.fgtit.data.CommonFunction;
+import com.fgtit.data.MyConstants;
 import com.fgtit.fingermap.JobDB;
 import com.fgtit.fingermap.MenuActivity;
 import com.fgtit.fingermap.R;
@@ -131,22 +133,11 @@ public class StrucMacCheckList extends AppCompatActivity {
     }
 
     private void initViews() {
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            plantNo = extras.getString("plant_no");
-            workCondition = extras.getString("work_condition");
-            faultFound = extras.getString("fault");
-            km = extras.getString("km");
-            vehicleId = extras.getString("vehicle_id");
-        }
-
         mTabHost.setup();
         addTabs();
         if (jobDB.getAllCategories().size() > 0) {
             populateTabs();
         } else commonFunction.showToast("Download Checklist");
-
-
     }
 
     private void populateTabs() {
@@ -417,6 +408,14 @@ public class StrucMacCheckList extends AppCompatActivity {
     }
 
     private void uploadData() {
+
+        SharedPreferences prefs = getSharedPreferences(MyConstants.REPORT_SHARED_PREF, MODE_PRIVATE);
+        vehicleId = prefs.getString(MyConstants.VEHICLE_ID, "");
+        km = prefs.getString(MyConstants.KM, "");
+        plantNo = prefs.getString(MyConstants.PLANT_NO, "");
+        workCondition = prefs.getString(MyConstants.WORK_CONDITION, "");
+        faultFound = prefs.getString(MyConstants.FAULT_FOUND, "");
+
         JSONObject postDataParams = new JSONObject();
         try {
             postDataParams.accumulate("date", commonFunction.getDateAndTime());
