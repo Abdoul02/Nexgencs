@@ -121,6 +121,8 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 //Map<String, Object> item = (Map<String, Object>)parent.getItemAtPosition(pos);
+                Log.d("MenuActivity", "Position=>" + pos);
+
                 switch (pos) {
 
                     case 0: {
@@ -193,9 +195,13 @@ public class MenuActivity extends AppCompatActivity {
                     break;
 
                     case 7: {
-                        //Go to Bluetooth scale activity
-                        Intent intent = new Intent(MenuActivity.this, BTScale.class);
-                        startActivity(intent);
+                        if(companyID == 135){
+                            Intent intent = new Intent(MenuActivity.this, StrucMacReport.class);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(MenuActivity.this, BTScale.class);
+                            startActivity(intent);
+                        }
                     }
                     break;
 
@@ -221,7 +227,6 @@ public class MenuActivity extends AppCompatActivity {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         Map<String, Object> map;
-
         if (companyID == 3 || companyID == 116) {
 
             map = new HashMap<>();
