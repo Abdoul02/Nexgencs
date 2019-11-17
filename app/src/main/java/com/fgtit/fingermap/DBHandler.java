@@ -225,7 +225,7 @@ public class DBHandler  extends SQLiteOpenHelper {
     }
 
     public String getUserName(int id){
-        String name = "Supervisor not found";
+        String name = "user not found";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM users WHERE userId ="+id, null);
         if (res.moveToFirst()) {

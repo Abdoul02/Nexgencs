@@ -21,6 +21,7 @@ import java.util.Map;
 import com.fgtit.fingermap.dryden.DrydenJobList;
 import com.fgtit.fingermap.dryden.QF10_Report;
 import com.fgtit.fingermap.erd.ERDJobActivity;
+import com.fgtit.fingermap.strucmac.DeliveryList;
 import com.fgtit.fingermap.strucmac.StrucMacReport;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
@@ -136,10 +137,14 @@ public class MenuActivity extends AppCompatActivity {
                         if (companyID == 117) {
                             Intent intent = new Intent(MenuActivity.this, ERDJobActivity.class);
                             startActivity(intent);
-                        } else if (companyID == 8 || companyID == 3) {
+                        } else if (companyID == 8 || companyID == 132) {
                             Intent intent = new Intent(MenuActivity.this, DrydenJobList.class);
                             startActivity(intent);
-                        } else {
+                        } else if(companyID == 3 || companyID == 135){
+                            Intent intent = new Intent(MenuActivity.this, DeliveryList.class);
+                            startActivity(intent);
+                        }
+                        else {
                             Intent intent = new Intent(MenuActivity.this, JobActivity.class);
                             startActivity(intent);
                         }
@@ -244,12 +249,19 @@ public class MenuActivity extends AppCompatActivity {
             list.add(map);
         }
 
-
-        map = new HashMap<>();
-        map.put("title", "Cloud Job Card");
-        map.put("info", "View or Download available Job Card(s) from Cloud");
-        map.put("img", R.drawable.view_details);
-        list.add(map);
+        if(companyID == 135 || companyID == 3){
+            map = new HashMap<>();
+            map.put("title", "StrucMac Deliver Note");
+            map.put("info", "View or Download available Delivery Note(s) from Cloud");
+            map.put("img", R.drawable.view_details);
+            list.add(map);
+        }else {
+            map = new HashMap<>();
+            map.put("title", "Cloud Job Card");
+            map.put("info", "View or Download available Job Card(s) from Cloud");
+            map.put("img", R.drawable.view_details);
+            list.add(map);
+        }
 
         map = new HashMap<>();
         map.put("title", getString(R.string.txt_title_02));

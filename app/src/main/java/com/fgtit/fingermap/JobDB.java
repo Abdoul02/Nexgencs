@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.fgtit.models.Delivery;
 import com.fgtit.models.DrydenJobCard;
 import com.fgtit.models.ERDSubTask;
 import com.fgtit.models.ERDjobCard;
@@ -34,9 +35,11 @@ public class JobDB extends SQLiteOpenHelper {
     public static final String CATEGORY_TABLE = "category";
     public static final String QUESTION_TABLE = "question";
     public static final String VEHICLE_TABLE = "vehicle";
+    public static final String DELIVERY_TABLE = "delivery";
+    public static final String ADDRESS_TABLE = "address";
 
     public JobDB(Context applicationContext) {
-        super(applicationContext, "androidsqlite.db", null, 9);
+        super(applicationContext, "androidsqlite.db", null, 10);
     }
 
     //Creates Table
@@ -44,7 +47,7 @@ public class JobDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         String query, query2, query3, btScale, pine, ec_job,
                 ec_job_info, ec_material, ec_customer, ec_product, erd_job_card, sub_task, local_pict,
-                dryden_job, strucMacCategory, strucMacQuestion, strucMacVehicle;
+                dryden_job, strucMacCategory, strucMacQuestion, strucMacVehicle, delivery, address;
         query = "CREATE TABLE jobcard ( jobID INTEGER PRIMARY KEY, name TEXT, description TEXT, " +
                 "location TEXT, assignee TEXT, approvedBy TEXT,customer TEXT, progress INTEGER, start TEXT, end TEXT,jobCode TEXT,attachment TEXT," +
                 "office TEXT)";
@@ -85,7 +88,10 @@ public class JobDB extends SQLiteOpenHelper {
         strucMacCategory = "CREATE TABLE category(local_id INTEGER PRIMARY KEY, id INTEGER, category TEXT)";
         strucMacQuestion = "CREATE TABLE question(local_id INTEGER PRIMARY KEY, id INTEGER, question TEXT, category_id INTEGER)";
         strucMacVehicle = "CREATE TABLE vehicle(local_id INTEGER PRIMARY KEY,id INTEGER, reg_no TEXT,licence_disc TEXT, km TEXT)";
-
+        delivery = "CREATE TABLE delivery(local_id INTEGER PRIMARY KEY, id INTEGER,delivery_note TEXT,customer TEXT, driver_id INTEGER," +
+                "vehicle_id INTEGER,delivery_date TEXT,delivery_time TEXT,origin_address TEXT, latitude TEXT, longitude TEXT)";
+        address = "CREATE TABLE address(local_id INTEGER PRIMARY KEY,id INTEGER, delivery_id INTEGER, sequence INTEGER, address TEXT," +
+                "latitude TEXT, longitude TEXT)";
 
         database.execSQL(query);
         database.execSQL(query2);
@@ -104,6 +110,8 @@ public class JobDB extends SQLiteOpenHelper {
         database.execSQL(strucMacCategory);
         database.execSQL(strucMacQuestion);
         database.execSQL(strucMacVehicle);
+        database.execSQL(delivery);
+        database.execSQL(address);
     }
 
     @Override
@@ -161,6 +169,11 @@ public class JobDB extends SQLiteOpenHelper {
             database.execSQL("CREATE TABLE category(local_id INTEGER PRIMARY KEY, id INTEGER, category TEXT)");
             database.execSQL("CREATE TABLE question(local_id INTEGER PRIMARY KEY, id INTEGER, question TEXT, category_id INTEGER)");
             database.execSQL("CREATE TABLE vehicle(local_id INTEGER PRIMARY KEY,id INTEGER, reg_no TEXT,licence_disc TEXT, km TEXT)");
+        } else if (current_version == 10) {
+            database.execSQL("CREATE TABLE delivery(local_id INTEGER PRIMARY KEY, id INTEGER,delivery_note TEXT,customer TEXT, driver_id INTEGER," +
+                    "vehicle_id INTEGER,delivery_date TEXT,delivery_time TEXT,origin_address TEXT, latitude TEXT, longitude TEXT)");
+            database.execSQL("CREATE TABLE address(local_id INTEGER PRIMARY KEY,id INTEGER, delivery_id INTEGER, sequence INTEGER, address TEXT," +
+                    "latitude TEXT, longitude TEXT)");
         }
     }
 
@@ -408,6 +421,12 @@ public class JobDB extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor getDataById(int id, String table){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("select * from" + table+ " where id=" + id, null);
+        return res;
+    }
+
     public List<ERDSubTask> getSubTasks(int job_id) {
 
         List<ERDSubTask> subTaskList = new ArrayList<ERDSubTask>();
@@ -554,6 +573,37 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
     }
 
+    public void insertDelivery(Delivery delivery) {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", delivery.getiD());
+        values.put("delivery_note", delivery.getDeliveryNote());
+        values.put("customer", delivery.getCustomer());
+        values.put("driver_id", delivery.getDriverId());
+        values.put("vehicle_id", delivery.getVehicleId());
+        values.put("delivery_date", delivery.getDeliveryDate());
+        values.put("delivery_time", delivery.getDeliveryTime());
+        values.put("origin_address", delivery.getOriginAddress());
+        values.put("latitude", delivery.getLatitude());
+        values.put("longitude", delivery.getLongitude());
+        database.insert(DELIVERY_TABLE, null, values);
+        database.close();
+    }
+
+    public void insertAddresses(HashMap<String, String> queryValues) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", queryValues.get("id"));
+        values.put("delivery_id", queryValues.get("delivery_id"));
+        values.put("sequence", queryValues.get("sequence"));
+        values.put("address", queryValues.get("address"));
+        values.put("latitude", queryValues.get("latitude"));
+        values.put("longitude", queryValues.get("longitude"));
+        database.insert(ADDRESS_TABLE, null, values);
+        database.close();
+    }
+
     public ArrayList<HashMap<String, String>> getAllCategories() {
         ArrayList<HashMap<String, String>> categoryList;
         categoryList = new ArrayList<>();
@@ -614,10 +664,61 @@ public class JobDB extends SQLiteOpenHelper {
         return vehicleList;
     }
 
+    public ArrayList<Delivery> getDeliveries() {
+        ArrayList<Delivery> deliveryList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM delivery";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Delivery delivery = new Delivery();
+                delivery.setLocalId(cursor.getInt(0));
+                delivery.setiD(cursor.getInt(1));
+                delivery.setDeliveryNote(cursor.getString(2));
+                delivery.setCustomer(cursor.getString(3));
+                delivery.setDriverId(cursor.getInt(4));
+                delivery.setDeliveryDate(cursor.getString(6));
+                deliveryList.add(delivery);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return deliveryList;
+    }
+
+    public ArrayList<HashMap<String, String>> getAddressByDeliveryId(int id) {
+        ArrayList<HashMap<String, String>> addressList;
+        addressList = new ArrayList<>();
+        String selectQuery = "SELECT * FROM address WHERE delivery_id = " + id + "ORDER BY sequence ASC";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("id", cursor.getString(1));
+                map.put("sequence", cursor.getString(3));
+                map.put("address", cursor.getString(4));
+                map.put("latitude", cursor.getString(5));
+                map.put("longitude", cursor.getString(6));
+                addressList.add(map);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return addressList;
+    }
+
     public Cursor getVehicleByRegNo(String reg_no) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT  * FROM vehicle WHERE reg_no ='" + reg_no + "'", null);
         return res;
+    }
+    public String getVehicleById(int id){
+        String name = "vehicle not found";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM vehicle WHERE id ="+id, null);
+        if (res.moveToFirst()) {
+            name = res.getString((res.getColumnIndex("reg_no")));
+        }
+        return name;
     }
 
     public void deleteTable(String table) {

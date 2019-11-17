@@ -14,7 +14,9 @@
         android:largeHeap="true"
         android:theme="@style/Theme.Fgtit"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".strucmac.StrucMacCheckList"></activity>
+        <activity android:name=".strucmac.DeliveryDetail"></activity>
+        <activity android:name=".strucmac.DeliveryList" />
+        <activity android:name=".strucmac.StrucMacCheckList" />
         <activity android:name=".strucmac.StrucMacReport" />
         <activity android:name="com.fgtit.adapter.DrawingActivity" />
         <activity android:name=".dryden.DrydenJobList" />
@@ -205,9 +207,9 @@
     </application>
     <uses-feature
         android:name="android.hardware.usb.host"
-        android:required="false" />
+        android:required="false" /> <!-- uses-permission android:name="android.permission.WRITE_SETTINGS" / -->
     <uses-feature android:name="android.hardware.usb.accessory" />
-    <uses-feature android:name="android.hardware.camera" /> <!-- uses-permission android:name="android.permission.WRITE_SETTINGS" / -->
+    <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />

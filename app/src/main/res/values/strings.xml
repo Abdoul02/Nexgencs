@@ -176,6 +176,15 @@
     <string name="verification_and_validation">Verification and validation of welding machine &amp; material temperature</string>
     <string name="consumable_control">Consumable Control</string>
     <string name="target_ip">NET Server Address</string>
+    
+    <!--StrucMac -->
+    <string name="delivery_no">Delivery No: %1$s</string>
+    <string name="struc_mac_customer">Customer: %1$s</string>
+    <string name="struc_mac_driver">Driver: %1$s</string>
+    <string name="struc_mac_vehicle">Vehicle: %1$s</string>
+    <string name="delivery_date">Delivery Date: %1$s</string>
+    <string name="delivery_time">Delivery Time: %1$s</string>
+
     <!-- Setting   -->
     <string name="default_target_ip">192.168.1.106</string>
     <string name="target_port">NET Server Port</string>

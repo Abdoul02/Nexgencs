@@ -20,6 +20,7 @@ public class MyConstants {
     public static final String STRUCMAC_CHECKLIST = "strucMacCheckList";
     public static final String STRUCMAC_VEHICLE = "strucMacVehicle";
     public static final String STRUCMAC_UPLOAD = "StrucMacUpload";
+    public static final String DELIVERY = "delivery";
 
     //Data
     public static final String REPORT_SHARED_PREF = "reportSharedPref";
