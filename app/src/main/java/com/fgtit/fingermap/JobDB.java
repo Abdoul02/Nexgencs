@@ -423,7 +423,7 @@ public class JobDB extends SQLiteOpenHelper {
 
     public Cursor getDataById(int id, String table){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from" + table+ " where id=" + id, null);
+        Cursor res = db.rawQuery("select * from " + table+ " where id=" + id, null);
         return res;
     }
 
@@ -688,7 +688,7 @@ public class JobDB extends SQLiteOpenHelper {
     public ArrayList<HashMap<String, String>> getAddressByDeliveryId(int id) {
         ArrayList<HashMap<String, String>> addressList;
         addressList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM address WHERE delivery_id = " + id + "ORDER BY sequence ASC";
+        String selectQuery = "SELECT * FROM address WHERE delivery_id = " + id + " ORDER BY sequence ASC";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

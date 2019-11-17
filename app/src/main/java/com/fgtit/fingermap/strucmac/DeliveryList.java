@@ -144,13 +144,8 @@ public class DeliveryList extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String searchQuery) {
-                if (list_of_jobs.isEmpty()) {
-                    commonFunction.showToast("Download jobs first");
-                } else {
                     myAppAdapter.filter(searchQuery.trim());
                     myList.invalidate();
-                }
-
                 return true;
             }
         });

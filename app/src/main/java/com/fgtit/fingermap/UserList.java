@@ -68,11 +68,11 @@ public class UserList extends AppCompatActivity {
        /* adapter = new SimpleAdapter(UserList.this, userList, R.layout.user_entry, new String[]{
                 "userId", "name"}, new int[]{R.id.empId, R.id.nam}); */
 
-         list1 = (ListView) findViewById(R.id.uList);
+         list1 = findViewById(R.id.uList);
             myAppAdapter=new MyAppAdapter(userList,UserList.this);
         list1.setAdapter(myAppAdapter);
 
-            Toast.makeText(getApplicationContext(),String.valueOf(userList.size())+" employees",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), userList.size() +" employees",Toast.LENGTH_SHORT).show();
     }
 
         else{
@@ -84,8 +84,8 @@ public class UserList extends AppCompatActivity {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-          TextView c = (TextView) view.findViewById(R.id.empId);
-          TextView Uid = (TextView) view.findViewById(R.id.userId);
+          TextView c = view.findViewById(R.id.empId);
+          TextView Uid = view.findViewById(R.id.userId);
           String idnum = c.getText().toString();
           String userId = Uid.getText().toString();
 
@@ -111,16 +111,6 @@ public class UserList extends AppCompatActivity {
           intent.putExtras(dataBundle);
           startActivity(intent);
       }
-
-
-
-
-
-
-
-
-         // Toast.makeText(UserList.this,userId, Toast.LENGTH_SHORT).show();
-
 
       }
   });
@@ -178,9 +168,9 @@ public class UserList extends AppCompatActivity {
                 rowView = inflater.inflate(R.layout.user_entry, null);
                 // configure view holder
                 viewHolder = new ViewHolder();
-                viewHolder.txtTitle = (TextView) rowView.findViewById(R.id.nam);
-                viewHolder.txtSubTitle = (TextView) rowView.findViewById(R.id.empId);
-                viewHolder.txtUserId = (TextView) rowView.findViewById(R.id.userId);
+                viewHolder.txtTitle = rowView.findViewById(R.id.nam);
+                viewHolder.txtSubTitle = rowView.findViewById(R.id.empId);
+                viewHolder.txtUserId = rowView.findViewById(R.id.userId);
                 rowView.setTag(viewHolder);
 
             } else {
@@ -249,7 +239,7 @@ public class UserList extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String searchQuery) {
-                myAppAdapter.filter(searchQuery.toString().trim());
+                myAppAdapter.filter(searchQuery.trim());
                 list1.invalidate();
                 return true;
             }
@@ -294,7 +284,7 @@ public class UserList extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.client_name,null);
         dialogBuilder.setView(dialogView);
         HashMap<String, String> dataManager = adminData.getDataDetails();
-       final EditText edtClient = (EditText) dialogView.findViewById(R.id.edtClientName);
+       final EditText edtClient = dialogView.findViewById(R.id.edtClientName);
         edtClient.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
        final String defaultPassword;
        if(dataManager.get(AdminData.PASSWORD) != null){

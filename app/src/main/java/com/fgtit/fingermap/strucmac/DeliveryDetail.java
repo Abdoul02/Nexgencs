@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DeliveryDetail extends AppCompatActivity {
 
@@ -49,6 +50,7 @@ public class DeliveryDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_detail);
+        ButterKnife.bind(this);
         initViews();
     }
 
