@@ -22,6 +22,7 @@ import com.fgtit.fingermap.dryden.DrydenJobList;
 import com.fgtit.fingermap.dryden.QF10_Report;
 import com.fgtit.fingermap.erd.ERDJobActivity;
 import com.fgtit.fingermap.strucmac.DeliveryList;
+import com.fgtit.fingermap.strucmac.LicenceScanner;
 import com.fgtit.fingermap.strucmac.StrucMacReport;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
@@ -140,11 +141,10 @@ public class MenuActivity extends AppCompatActivity {
                         } else if (companyID == 8 || companyID == 132) {
                             Intent intent = new Intent(MenuActivity.this, DrydenJobList.class);
                             startActivity(intent);
-                        } else if(companyID == 3 || companyID == 135){
+                        } else if (companyID == 3 || companyID == 135) {
                             Intent intent = new Intent(MenuActivity.this, DeliveryList.class);
                             startActivity(intent);
-                        }
-                        else {
+                        } else {
                             Intent intent = new Intent(MenuActivity.this, JobActivity.class);
                             startActivity(intent);
                         }
@@ -200,10 +200,10 @@ public class MenuActivity extends AppCompatActivity {
                     break;
 
                     case 7: {
-                        if(companyID == 135){
+                        if (companyID == 135) {
                             Intent intent = new Intent(MenuActivity.this, StrucMacReport.class);
                             startActivity(intent);
-                        }else{
+                        } else {
                             Intent intent = new Intent(MenuActivity.this, BTScale.class);
                             startActivity(intent);
                         }
@@ -219,6 +219,12 @@ public class MenuActivity extends AppCompatActivity {
 
                     case 9: {
                         Intent intent = new Intent(MenuActivity.this, StrucMacReport.class);
+                        startActivity(intent);
+                    }
+                    break;
+
+                    case 10: {
+                        Intent intent = new Intent(MenuActivity.this, LicenceScanner.class);
                         startActivity(intent);
                     }
                     break;
@@ -249,13 +255,13 @@ public class MenuActivity extends AppCompatActivity {
             list.add(map);
         }
 
-        if(companyID == 135 || companyID == 3){
+        if (companyID == 135 || companyID == 3) {
             map = new HashMap<>();
             map.put("title", "StrucMac Deliver Note");
             map.put("info", "View or Download available Delivery Note(s) from Cloud");
             map.put("img", R.drawable.view_details);
             list.add(map);
-        }else {
+        } else {
             map = new HashMap<>();
             map.put("title", "Cloud Job Card");
             map.put("info", "View or Download available Job Card(s) from Cloud");
@@ -317,6 +323,14 @@ public class MenuActivity extends AppCompatActivity {
             map.put("title", "StrucMac vehicle checklist");
             map.put("info", "Pre-use checklist for vehicles");
             map.put("img", R.drawable.ic_check);
+            list.add(map);
+        }
+
+        if (companyID == 3 || companyID == 135) {
+            map = new HashMap<>();
+            map.put("title", "Driver's Licence scan");
+            map.put("info", "Click to start scanning driver's licence");
+            map.put("img", R.drawable.scanner);
             list.add(map);
         }
 

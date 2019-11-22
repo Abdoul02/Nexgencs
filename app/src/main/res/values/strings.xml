@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
     <string name="app_name">NexGenCS</string>
 
     <string name="title_activity_login">Login</string>
@@ -176,7 +177,7 @@
     <string name="verification_and_validation">Verification and validation of welding machine &amp; material temperature</string>
     <string name="consumable_control">Consumable Control</string>
     <string name="target_ip">NET Server Address</string>
-    
+
     <!--StrucMac -->
     <string name="delivery_no">Delivery No: %1$s</string>
     <string name="struc_mac_customer">Customer: %1$s</string>
@@ -184,6 +185,16 @@
     <string name="struc_mac_vehicle">Vehicle: %1$s</string>
     <string name="delivery_date">Delivery Date: %1$s</string>
     <string name="delivery_time">Delivery Time: %1$s</string>
+
+    <!-- Google vision Barcode -->
+    <string name="barcode_header">Click &quot;Read Barcode&quot; to read a barcode</string>
+    <string name="scan_barcode">Scan</string>
+    <string name="save_info">Save Information</string>
+    <string name="auto_focus">Auto Focus</string>
+    <string name="use_flash">Use Flash</string>
+    <string name="driver_name">Driver\'s name: %1$s</string>
+    <string name="driver_surname">Driver\'s surname: %1$s</string>
+    <string name="driver_id">Driver\'s ID: %1$s</string>
 
     <!-- Setting   -->
     <string name="default_target_ip">192.168.1.106</string>
