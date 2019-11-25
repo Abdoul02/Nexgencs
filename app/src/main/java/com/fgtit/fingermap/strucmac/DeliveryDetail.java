@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -48,11 +49,18 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.fgtit.data.MyConstants.STRUCMAC_IMAGE_UPLOAD;
-import static com.fgtit.service.NetworkService.JOBCARD_URL;
+import static com.fgtit.data.MyConstants.STRUCMAC_UPLOAD_URL;
 
-public class DeliveryDetail extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate{
+public class DeliveryDetail extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
 
     @BindView(R.id.txtDeliveryNote)
     TextView txtDeliveryNumber;
@@ -110,10 +118,14 @@ public class DeliveryDetail extends AppCompatActivity implements SingleUploadBro
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.finish:
-                //Complete job here
-                return true;
+        if (id == R.id.finish) {
+            listOfImagesPath = jobDB.getPictures(String.valueOf(job_id));
+            if(listOfImagesPath.size() > 0){
+                commonFunction.showToast("Please upload pictures first");
+            }else{
+                completeDelivery();
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -243,6 +255,35 @@ public class DeliveryDetail extends AppCompatActivity implements SingleUploadBro
         dialog.show();
     }
 
+    private void completeDelivery() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Complete Delivery note!");
+        dialog.setMessage("Pressing finish will mark this delivery note complete. Continue?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                JSONObject postDataParams = new JSONObject();
+                try {
+                    postDataParams.accumulate("job_id", String.valueOf(job_id));
+                    postRequest(postDataParams.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -282,15 +323,16 @@ public class DeliveryDetail extends AppCompatActivity implements SingleUploadBro
     }
 
     //Picture Network related
-    public void uploadImages(View view){
+    public void uploadImages(View view) {
         listOfImagesPath = jobDB.getPictures(String.valueOf(job_id));
-        if(listOfImagesPath.size() > 0){
+        if (listOfImagesPath.size() > 0) {
             commonFunction.showProgressDialog();
             uploadFunction();
-        }else{
+        } else {
             commonFunction.showToast("No picture to upload");
         }
     }
+
     public void uploadFunction() {
         fileID = UUID.randomUUID().toString();
         uploadReceiver.setDelegate(this);
@@ -315,6 +357,7 @@ public class DeliveryDetail extends AppCompatActivity implements SingleUploadBro
             exception.printStackTrace();
         }
     }
+
     public boolean deleteFile(String path) {
         File fileToDelete = new File(path);
         if (fileToDelete.exists()) {
@@ -345,7 +388,7 @@ public class DeliveryDetail extends AppCompatActivity implements SingleUploadBro
                     }
                 }
                 commonFunction.showToast(count + " images uploaded");
-            }else{
+            } else {
                 commonFunction.showToast("No images were uploaded.");
             }
         } catch (JSONException e) {
@@ -383,5 +426,85 @@ public class DeliveryDetail extends AppCompatActivity implements SingleUploadBro
     @Override
     public void onCancelled() {
 
+    }
+
+    //Complete
+    public void postRequest(String param) throws IOException {
+
+        commonFunction.setDialog(true);
+
+        OkHttpClient client = new OkHttpClient();
+        //RequestBody body = RequestBody.create(JSON, param);
+        RequestBody body = new FormBody.Builder()
+                .add("deliveryDetail", param)
+                .build();
+        Request request = new Request.Builder()
+                .url(STRUCMAC_UPLOAD_URL)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            Handler handler = new Handler(DeliveryDetail.this.getMainLooper());
+
+            @Override
+            public void onFailure(Call call, final IOException e) {
+                call.cancel();
+                commonFunction.cancelDialog();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        commonFunction.showToast("Error: " + e.getMessage());
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!response.isSuccessful()) {
+                            commonFunction.cancelDialog();
+                            commonFunction.showToast("Unexpected error: " + response.message());
+                        } else {
+                            commonFunction.cancelDialog();
+                            try {
+                                displayResponse(response.body().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+    }
+
+    public void displayResponse(String response) {
+        int success;
+        String message;
+        String jobId;
+        try {
+            JSONObject result = new JSONObject(response);
+            success = result.getInt("success");
+            message = result.getString("message");
+            commonFunction.cancelDialog();
+            if (success == 1) {
+                jobId = result.getString("job_id");
+                jobDB.deleteDeliveryById(jobId);
+                refresh(message, DeliveryList.class);
+            } else {
+                commonFunction.showToast(message);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            commonFunction.showToast("Error Occurred: "+e.getMessage());
+        }
+    }
+    public void refresh(String message, Class destination) {
+        commonFunction.showToast(message);
+        Intent intent = new Intent(this, destination);
+        startActivity(intent);
     }
 }

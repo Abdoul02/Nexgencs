@@ -727,6 +727,12 @@ public class JobDB extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteDeliveryById(String id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(DELIVERY_TABLE, "id=? ", new String[]{id});
+        db.close();
+    }
+
     public String questionJSON() {
         ArrayList<HashMap<String, String>> questionList;
         questionList = new ArrayList<>();
