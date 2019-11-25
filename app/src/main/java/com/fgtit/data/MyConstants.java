@@ -18,6 +18,7 @@ public class MyConstants {
     public static final String STRUCMAC_DATA_URL = "http://nexgencs.co.za/alos/strucmac/getStrucMacData.php";
     public static final String STRUCMAC_UPLOAD_URL = "http://nexgencs.co.za/alos/strucmac/insertData.php";
     public static final String STRUCMAC_CHECKLIST = "strucMacCheckList";
+    public static final String STRUCMAC_IMAGE_UPLOAD ="http://www.nexgencs.co.za/alos/strucmac/uploadPictures.php";
     public static final String STRUCMAC_VEHICLE = "strucMacVehicle";
     public static final String STRUCMAC_UPLOAD = "StrucMacUpload";
     public static final String DELIVERY = "delivery";

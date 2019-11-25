@@ -5,11 +5,11 @@
     <item
         android:id="@+id/action_enroll"
         android:title="@string/action_enroll"
-        android:showAsAction="always"/>
+        yourapp:showAsAction="always" />
     
     <item
         android:id="@+id/action_detail"
         android:title="@string/action_detail"
-        android:showAsAction="always"/>
+        yourapp:showAsAction="always" />
     
 </menu>

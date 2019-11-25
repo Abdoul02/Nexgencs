@@ -2,6 +2,7 @@ package com.fgtit.data;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ public class CommonFunction {
 
     Context context;
     public Dialog dialog;
+    ProgressDialog pDialog;
 
     public CommonFunction(Context context) {
         this.context = context;
@@ -46,6 +48,26 @@ public class CommonFunction {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
+    }
+
+    public void showProgressDialog(){
+        pDialog = new ProgressDialog(context);
+        pDialog.setMessage("Uploading information...");
+        pDialog.setIndeterminate(false);
+        pDialog.setMax(100);
+        pDialog.setProgressStyle(pDialog.STYLE_HORIZONTAL);
+        pDialog.setCancelable(false);
+        pDialog.show();
+    }
+
+    public void dismissProgressDialog(){
+        if (pDialog != null && pDialog.isShowing()){
+            pDialog.dismiss();
+        }
+    }
+
+    public void showProgress(int progress){
+        pDialog.setProgress(progress);
     }
 
     public String getDateAndTime() {

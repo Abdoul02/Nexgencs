@@ -1,11 +1,19 @@
 package com.fgtit.fingermap.strucmac;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -16,16 +24,35 @@ import android.widget.Toast;
 
 import com.fgtit.data.CommonFunction;
 import com.fgtit.fingermap.DBHandler;
+import com.fgtit.fingermap.DisplayLocalPictures;
 import com.fgtit.fingermap.JobDB;
 import com.fgtit.fingermap.R;
+import com.fgtit.service.SingleUploadBroadcastReceiver;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DeliveryDetail extends AppCompatActivity {
+import static com.fgtit.data.MyConstants.STRUCMAC_IMAGE_UPLOAD;
+import static com.fgtit.service.NetworkService.JOBCARD_URL;
+
+public class DeliveryDetail extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate{
 
     @BindView(R.id.txtDeliveryNote)
     TextView txtDeliveryNumber;
@@ -42,9 +69,17 @@ public class DeliveryDetail extends AppCompatActivity {
     @BindView(R.id.lvAddresses)
     ListView lvAddresses;
     int job_id;
+
+    //Multiple pictures
+    String currentPhotoPath, fileID, imgPath;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private List<String> listOfImagesPath;
+
     JobDB jobDB = new JobDB(this);
     DBHandler userDB = new DBHandler(this);
     CommonFunction commonFunction = new CommonFunction(this);
+    private final SingleUploadBroadcastReceiver uploadReceiver =
+            new SingleUploadBroadcastReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +89,39 @@ public class DeliveryDetail extends AppCompatActivity {
         initViews();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        uploadReceiver.register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        uploadReceiver.unregister(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.job_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.finish:
+                //Complete job here
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initViews() {
         Bundle extras = getIntent().getExtras();
         if (extras.containsKey("job_id")) {
+            listOfImagesPath = new ArrayList<>();
             String value = extras.getString("job_id");
             job_id = Integer.parseInt(value);
             Cursor cursor = jobDB.getDataById(job_id, JobDB.DELIVERY_TABLE);
@@ -124,5 +189,199 @@ public class DeliveryDetail extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Install Google Maps for navigation", Toast.LENGTH_SHORT).show();
 
         }
+    }
+
+    //Capture and Show Images
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            jobDB.insertPictPath(0, currentPhotoPath, String.valueOf(job_id));
+            anotherPicture();
+        } else {
+            commonFunction.showToast("Something went wrong, could not save picture");
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void takePicture(View view) {
+        dispatchTakePictureIntent();
+    }
+
+    public void showPictures(View view) {
+        listOfImagesPath = jobDB.getPictures(String.valueOf(job_id));
+        if (listOfImagesPath.size() > 0) {
+            Bundle dataBundle = new Bundle();
+            dataBundle.putString("asset", String.valueOf(job_id));
+            Intent intent = new Intent(getApplicationContext(), DisplayLocalPictures.class);
+            intent.putExtras(dataBundle);
+            startActivity(intent);
+        } else {
+            commonFunction.showToast("No pictures to display");
+        }
+    }
+
+    private void anotherPicture() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Picture Saved!");
+        dialog.setMessage("Would you like to take another picture?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dispatchTakePictureIntent();
+            }
+        });
+
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                ex.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "co.za.nexgencs.clocking.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "SM_" + timeStamp;
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    //Picture Network related
+    public void uploadImages(View view){
+        listOfImagesPath = jobDB.getPictures(String.valueOf(job_id));
+        if(listOfImagesPath.size() > 0){
+            commonFunction.showProgressDialog();
+            uploadFunction();
+        }else{
+            commonFunction.showToast("No picture to upload");
+        }
+    }
+    public void uploadFunction() {
+        fileID = UUID.randomUUID().toString();
+        uploadReceiver.setDelegate(this);
+        uploadReceiver.setUploadID(fileID);
+
+        imgPath = listOfImagesPath.get(0).substring(0, listOfImagesPath.get(0).lastIndexOf("/") + 1);
+        try {
+            MultipartUploadRequest multipartUploadRequest = new MultipartUploadRequest(this, fileID, STRUCMAC_IMAGE_UPLOAD);
+            multipartUploadRequest.addHeader("Accept", "application/json");
+            for (int i = 0; i < listOfImagesPath.size(); i++) {
+                String imageName = listOfImagesPath.get(i).substring(listOfImagesPath.get(i).lastIndexOf("/") + 1);
+                multipartUploadRequest.addParameter("name" + i, imageName);
+                multipartUploadRequest.addFileToUpload(listOfImagesPath.get(i), "document" + i);
+            }
+            multipartUploadRequest.addParameter("numberOfPict", String.valueOf(listOfImagesPath.size()));
+            multipartUploadRequest.addParameter("deliveryNoteId", String.valueOf(job_id));
+            multipartUploadRequest.setNotificationConfig(new UploadNotificationConfig());
+            multipartUploadRequest.setMaxRetries(3);
+            multipartUploadRequest.startUpload();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+    public boolean deleteFile(String path) {
+        File fileToDelete = new File(path);
+        if (fileToDelete.exists()) {
+            if (fileToDelete.delete()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public void uploadResponse(String response) {
+        try {
+            JSONObject result = new JSONObject(response);
+            int count = 0;
+            JSONArray pictures = result.getJSONArray("pictures");
+            if (pictures.length() > 0) {
+                for (int x = 0; x < pictures.length(); x++) {
+                    JSONObject obj = (JSONObject) pictures.get(x);
+                    String imageName = obj.getString("file_name");
+                    int imgSuccess = obj.getInt("success");
+                    if (imgSuccess == 1) {
+                        if (deleteFile(imgPath + imageName)) {
+                            jobDB.deletePicturesByPath(imgPath + imageName);
+                            count++;
+                        }
+                    }
+                }
+                commonFunction.showToast(count + " images uploaded");
+            }else{
+                commonFunction.showToast("No images were uploaded.");
+            }
+        } catch (JSONException e) {
+            Log.e("JobDetail", e.getMessage());
+            commonFunction.showToast("An error has occurred");
+        }
+    }
+
+    @Override
+    public void onProgress(int progress) {
+        commonFunction.showProgress(progress);
+    }
+
+    @Override
+    public void onProgress(long uploadedBytes, long totalBytes) {
+
+    }
+
+    @Override
+    public void onError(Exception exception) {
+
+    }
+
+    @Override
+    public void onCompleted(int serverResponseCode, byte[] serverResponseBody) {
+        commonFunction.dismissProgressDialog();
+        try {
+            String response = new String(serverResponseBody, "UTF-8");
+            uploadResponse(response);
+        } catch (UnsupportedEncodingException e) {
+            Log.e("DeliveryDetail", "UnsupportedEncodingException");
+        }
+    }
+
+    @Override
+    public void onCancelled() {
+
     }
 }

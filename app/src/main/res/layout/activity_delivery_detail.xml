@@ -73,6 +73,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDeliveryDate" />
 
+    <ImageView
+        android:id="@+id/imvPictures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cam"
+        android:tint="@color/black"
+        android:onClick="takePicture"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDeliveryTime"/>
+
+    <Button
+        android:id="@+id/btnViewImages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:onClick="showPictures"
+        android:text="Vew images"
+        app:layout_constraintStart_toEndOf="@+id/imvPictures"
+        app:layout_constraintTop_toBottomOf="@+id/txtDeliveryTime"/>
+
+    <Button
+        android:id="@+id/uploadImages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="uploadImages"
+        android:text="Upload Images"
+        app:layout_constraintStart_toEndOf="@+id/btnViewImages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDeliveryTime"/>
+
     <TextView
         android:id="@+id/txtAddresses"
         android:layout_width="wrap_content"
@@ -106,6 +136,6 @@
         android:layout_marginRight="10dp"
         android:background="@color/lightgray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDeliveryTime" />
+        app:layout_constraintTop_toBottomOf="@+id/imvPictures" />
 
 </android.support.constraint.ConstraintLayout>
