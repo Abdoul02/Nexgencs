@@ -7,19 +7,15 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.fgtit.fingermap.R;
-import com.fgtit.utils.ExtApi;
 import com.fgtit.data.GlobalData;
 import com.fgtit.data.ImageSimpleAdapter;
 import com.fgtit.data.UserItem;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+
 import android.text.TextPaint;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,18 +23,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.os.Build;
 
 public class EmployeesActivity extends AppCompatActivity {
 

@@ -1,12 +1,8 @@
 package com.fgtit.fingermap;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.fgtit.fingermap.R;
-import com.fgtit.utils.DataUtils;
-import com.fgtit.utils.ExtApi;
 import com.fgtit.device.BluetoothReader;
 import com.fgtit.printer.PrinterApi;
 import com.fgtit.printer.PrinterCmd;
@@ -18,13 +14,11 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;

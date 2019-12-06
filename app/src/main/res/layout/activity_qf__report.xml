@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.fgtit.fingermap.dryden.QF10_Report">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
         android:layout_width="match_parent"
@@ -83,7 +83,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/separator" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_id"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -98,16 +98,16 @@
             app:layout_constraintRight_toLeftOf="@+id/txt_input_weldMachine"
             app:layout_constraintTop_toBottomOf="@+id/verificationTitle">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dateOfWeld"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="false"
                 android:focusable="false"
                 android:inputType="date" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_weldMachine"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -120,13 +120,13 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/verificationTitle">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/weldMachineNo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_volts"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -139,14 +139,14 @@
             app:layout_constraintRight_toLeftOf="@+id/txt_input_amps"
             app:layout_constraintTop_toBottomOf="@+id/txt_input_id">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/actualVoltage"
                 android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_amps"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -161,14 +161,14 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_input_weldMachine"
             tools:ignore="HardcodedText,RtlHardcoded">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/actualAmps"
                 android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_preHeat"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -181,14 +181,14 @@
             app:layout_constraintRight_toLeftOf="@+id/txt_input_interPass"
             app:layout_constraintTop_toBottomOf="@+id/txt_input_volts">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/actualPreheat"
                 android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_interPass"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -202,12 +202,12 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_input_amps"
             tools:ignore="HardcodedText,RtlHardcoded">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/actualInterPass"
                 android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/captureVerification"
@@ -244,7 +244,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/verificationSeparator" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_issueDate"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -259,16 +259,16 @@
             app:layout_constraintRight_toLeftOf="@+id/txt_input_welderNo"
             app:layout_constraintTop_toBottomOf="@+id/consumableTitle">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/issueDate"
                 android:clickable="false"
                 android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="date" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_welderNo"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -282,13 +282,13 @@
             app:layout_constraintTop_toBottomOf="@+id/consumableTitle"
             tools:ignore="HardcodedText,RtlHardcoded">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/welderNo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_consSize"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -301,13 +301,13 @@
             app:layout_constraintRight_toLeftOf="@+id/txt_input_consBatch"
             app:layout_constraintTop_toBottomOf="@+id/txt_input_issueDate">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/consSize"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_consBatch"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -321,13 +321,13 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_input_welderNo"
             tools:ignore="HardcodedText,RtlHardcoded">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/consBatch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_receivedKg"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -340,14 +340,14 @@
             app:layout_constraintRight_toLeftOf="@+id/txt_input_returnedKg"
             app:layout_constraintTop_toBottomOf="@+id/txt_input_consSize">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/receivedKg"
                 android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_returnedKg"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -361,14 +361,14 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_input_consBatch"
             tools:ignore="HardcodedText,RtlHardcoded">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/returnedKg"
                 android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/txt_input_typeAWS"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
@@ -382,11 +382,11 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_input_returnedKg"
             tools:ignore="HardcodedText,RtlHardcoded">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/type"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/signature"
@@ -418,5 +418,5 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintRight_toLeftOf="@+id/signature"
             app:layout_constraintTop_toBottomOf="@+id/txt_input_typeAWS" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

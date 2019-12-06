@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +33,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.fgtit.data.MyConstants.STRUCMAC_CHECKLIST;
 import static com.fgtit.data.MyConstants.STRUCMAC_DATA_URL;
 import static com.fgtit.data.MyConstants.STRUCMAC_VEHICLE;
 

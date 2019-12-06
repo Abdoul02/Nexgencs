@@ -1,6 +1,5 @@
 package com.fgtit.fingermap.erd;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -12,14 +11,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -29,8 +27,6 @@ import android.widget.Toast;
 
 import com.fgtit.adapter.CustomSpinnerAdapter;
 import com.fgtit.data.ImageSimpleAdapter;
-import com.fgtit.device.BluetoothReaderService;
-import com.fgtit.fingermap.BTScale;
 import com.fgtit.fingermap.DBHandler;
 import com.fgtit.fingermap.JobDB;
 import com.fgtit.fingermap.MenuActivity;
@@ -38,7 +34,6 @@ import com.fgtit.fingermap.R;
 import com.fgtit.fpcore.FPMatch;
 import com.fgtit.models.ERDSubTask;
 import com.fgtit.models.User;
-import com.fgtit.service.ClockService;
 import com.fgtit.service.DownloadService;
 import com.fgtit.utils.ExtApi;
 
@@ -57,11 +52,8 @@ import java.util.TimerTask;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
-import static com.fgtit.service.DownloadService.CUSTOMER;
-import static com.fgtit.service.DownloadService.ERD;
 import static com.fgtit.service.DownloadService.ERD_CLOCK;
 import static com.fgtit.service.DownloadService.ERD_CLOCK_URL;
-import static com.fgtit.service.DownloadService.ERD_DATA_URL;
 
 public class ERDClock extends AppCompatActivity {
 

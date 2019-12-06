@@ -157,7 +157,7 @@
             android:value="mapbox.streets" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="co.za.nexgencs.clocking.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
