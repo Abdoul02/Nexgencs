@@ -130,22 +130,23 @@ public class LoginActivity extends AppCompatActivity {
 	}*/
 	
     @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		switch (resultCode){
-		case 0:{
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (resultCode) {
+			case 0: {
 				this.setResult(0);
 				this.finish();
 			}
 			break;
-		case 1:{
+			case 1: {
 				this.setResult(1);
 				this.finish();
 			}
 			break;
-		case 2:
-			break;
-		default:
-			break;
+			case 2:
+				break;
+			default:
+				break;
 		}
 	}
 

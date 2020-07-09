@@ -504,7 +504,7 @@ public class SignOffActivity extends AppCompatActivity {
 						if (us.getFinger1() != null && us.getFinger1().length() >= 512) {
 
 							byte[] ref = ExtApi.Base64ToBytes(us.getFinger1());
-							if (FPMatch.getInstance().MatchTemplate(model, ref) > 80) {
+							if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
 								AddPersonItem(us);
 								tvFpStatus.setText(getString(R.string.txt_fpmatchok) + "with "+FPMatch.getInstance().MatchTemplate(model, ref) + "%");
 								break;
@@ -513,7 +513,7 @@ public class SignOffActivity extends AppCompatActivity {
 						if (us.getFinger2() != null && us.getFinger2().length() >= 512) {
 
 							byte[] ref = ExtApi.Base64ToBytes(us.getFinger2());
-							if (FPMatch.getInstance().MatchTemplate(model, ref) > 80) {
+							if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
 								AddPersonItem(us);
 								tvFpStatus.setText(getString(R.string.txt_fpmatchok)+ "with "+FPMatch.getInstance().MatchTemplate(model, ref) + "%");
 								break;
