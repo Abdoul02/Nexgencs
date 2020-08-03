@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.fgtit.data.MyConstants;
 import com.fgtit.fingermap.dryden.DrydenJobList;
 import com.fgtit.fingermap.erd.ERDJobActivity;
 import com.fgtit.fingermap.strucmac.DeliveryList;
@@ -40,9 +41,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
@@ -131,25 +134,12 @@ public class MenuActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     break;
+
                     case 1: {
-
-                        if (companyID == 117) {
-                            Intent intent = new Intent(MenuActivity.this, ERDJobActivity.class);
-                            startActivity(intent);
-                        } else if (companyID == 8 || companyID == 132) {
-                            Intent intent = new Intent(MenuActivity.this, DrydenJobList.class);
-                            startActivity(intent);
-                        } else if(companyID == 3 || companyID == 135){
-                            Intent intent = new Intent(MenuActivity.this, DeliveryList.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            Intent intent = new Intent(MenuActivity.this, JobActivity.class);
-                            startActivity(intent);
-                        }
-
+                        gotoJobCardFeature();
                     }
                     break;
+
                     case 2: {
 
                         // Get User records from SQLite DB
@@ -163,16 +153,17 @@ public class MenuActivity extends AppCompatActivity {
                         }
                     }
                     break;
+
                     case 3: {
                         Intent intent = new Intent(MenuActivity.this, UtilitiesActivity.class);
                         startActivity(intent);
                     }
                     break;
+
                     case 4: {
                         passwordDialog();
                     }
                     break;
-
 
                     case 5: {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(MenuActivity.this);
@@ -199,10 +190,10 @@ public class MenuActivity extends AppCompatActivity {
                     break;
 
                     case 7: {
-                        if(companyID == 135){
+                        if (companyID == 135) {
                             Intent intent = new Intent(MenuActivity.this, StrucMacReport.class);
                             startActivity(intent);
-                        }else{
+                        } else {
                             Intent intent = new Intent(MenuActivity.this, BTScale.class);
                             startActivity(intent);
                         }
@@ -248,19 +239,11 @@ public class MenuActivity extends AppCompatActivity {
             list.add(map);
         }
 
-        if(companyID == 135 || companyID == 3){
-            map = new HashMap<>();
-            map.put("title", "StrucMac Deliver Note");
-            map.put("info", "View or Download available Delivery Note(s) from Cloud");
-            map.put("img", R.drawable.view_details);
-            list.add(map);
-        }else {
-            map = new HashMap<>();
-            map.put("title", "Cloud Job Card");
-            map.put("info", "View or Download available Job Card(s) from Cloud");
-            map.put("img", R.drawable.view_details);
-            list.add(map);
-        }
+        map = new HashMap<>();
+        map.put("title", getTittle());
+        map.put("info", "View or Download available Job Card(s) from Cloud");
+        map.put("img", R.drawable.view_details);
+        list.add(map);
 
         map = new HashMap<>();
         map.put("title", getString(R.string.txt_title_02));
@@ -322,6 +305,35 @@ public class MenuActivity extends AppCompatActivity {
 
         mData = list;
         return list;
+    }
+
+    private String getTittle() {
+        if (companyID == MyConstants.COMPANY_TURN_MILL) {
+            return "Turnmill Job Card";
+        } else if (companyID == MyConstants.COMPANY_STRUCMAC) {
+            return "StrucMac Deliver Note";
+        }
+        return "Job Card";
+    }
+
+    private void gotoJobCardFeature() {
+        Intent intent;
+        switch (companyID) {
+            case MyConstants.COMPANY_ERD:
+            case MyConstants.COMPANY_TURN_MILL:
+                intent = new Intent(MenuActivity.this, ERDJobActivity.class);
+                break;
+            case MyConstants.COMPANY_DRYDEN:
+                intent = new Intent(MenuActivity.this, DrydenJobList.class);
+                break;
+            case MyConstants.COMPANY_STRUCMAC:
+                intent = new Intent(MenuActivity.this, DeliveryList.class);
+                break;
+            default:
+                intent = new Intent(MenuActivity.this, JobActivity.class);
+                break;
+        }
+        startActivity(intent);
     }
 
 

@@ -13,12 +13,21 @@ public class MyConstants {
     public static final String WELD_MAP = "weld_map";
     public static final String JOB_DETAIL = "job_detail";
     public static final String CONSUMABLE = "consumable";
+
+    //URL
     public static final String DRYDEN_GET_JOB_URL = "http://nexgencs.co.za/alos/dryden_combustion/getDrydenJobs.php";
     public static final String DRYDEN_UPLOAD = "http://nexgencs.co.za/alos/dryden_combustion/uploadData.php";
     public static final String STRUCMAC_DATA_URL = "http://nexgencs.co.za/alos/strucmac/getStrucMacData.php";
     public static final String STRUCMAC_UPLOAD_URL = "http://nexgencs.co.za/alos/strucmac/insertData.php";
+    public static final String TURNMILL_GET_JOB_URL = "http://nexgencs.co.za/alos/turnmill/getData.php";
+    public static final String TURNMILL_CLOCK_URL = "http://nexgencs.co.za/alos/turnmill/jobClock.php";
+
+    //Filters
+    public static final String TURNMILL_GET_JOB = "turn_mill_job";
+    public static final String TURNMILL_CLOCK = "turn_mill_clock";
+
     public static final String STRUCMAC_CHECKLIST = "strucMacCheckList";
-    public static final String STRUCMAC_IMAGE_UPLOAD ="http://www.nexgencs.co.za/alos/strucmac/uploadPictures.php";
+    public static final String STRUCMAC_IMAGE_UPLOAD = "http://www.nexgencs.co.za/alos/strucmac/uploadPictures.php";
     public static final String STRUCMAC_VEHICLE = "strucMacVehicle";
     public static final String STRUCMAC_UPLOAD = "StrucMacUpload";
     public static final String DELIVERY = "delivery";
@@ -38,6 +47,12 @@ public class MyConstants {
     public static final int CONSUMABLE_REQUEST_CLOCK = 104;
     public static final int CONSUMABLE_REQUEST_SIGN = 105;
     public static final int STRUCMAC_REPORT_CLOCK = 106;
+
+    //Companies
+    public static final int COMPANY_ERD = 117;
+    public static final int COMPANY_TURN_MILL = 124;
+    public static final int COMPANY_DRYDEN = 132;
+    public static final int COMPANY_STRUCMAC = 135;
 
 
 }

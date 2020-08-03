@@ -13,9 +13,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,13 +32,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fgtit.data.CommonFunction;
+import com.fgtit.data.MyConstants;
 import com.fgtit.fingermap.DBHandler;
 import com.fgtit.fingermap.JobDB;
 import com.fgtit.fingermap.MenuActivity;
 import com.fgtit.fingermap.R;
 import com.fgtit.fpcore.FPMatch;
 import com.fgtit.models.ERDSubTask;
-import com.fgtit.models.ERDjobCard;
+import com.fgtit.models.CustomJobCard;
 import com.fgtit.models.User;
 import com.fgtit.service.DownloadService;
 import com.fgtit.utils.ExtApi;
@@ -62,11 +66,13 @@ public class ERDJobActivity extends AppCompatActivity {
     private static final String TAG = "ERDJobActivity";
     JobDB jobDB = new JobDB(this);
     DBHandler userDB = new DBHandler(this);
+    CommonFunction cf = new CommonFunction(this);
     private MyAppAdapter myAppAdapter;
-    ArrayList<ERDjobCard> list_of_jobs;
+    ArrayList<CustomJobCard> list_of_jobs;
     ListView myList;
     int supervisor_id;
     String job_id;
+    int companyId;
 
 
     //Fingerprint
@@ -89,58 +95,71 @@ public class ERDJobActivity extends AppCompatActivity {
     private ImageView fpImage;
 
 
-
     //Receiving Downloaded info
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
             Bundle bundle = intent.getExtras();
+            assert bundle != null;
             String filter = bundle.getString(DownloadService.FILTER);
             int resultCode = bundle.getInt(DownloadService.RESULT);
 
-            if (resultCode == RESULT_OK && filter.equals(ERD)) {
+            assert filter != null;
+            if (resultCode == RESULT_OK && (filter.equals(ERD) || filter.equals(MyConstants.TURNMILL_GET_JOB))) {
                 String response = bundle.getString(DownloadService.CALL_RESPONSE);
                 Log.d(TAG, "onReceive: " + response);
 
-                int success = 0;
-                String message = "";
+                int success;
+                String message;
 
                 try {
                     JSONObject result = new JSONObject(response);
                     success = result.getInt("success");
                     message = result.getString("message");
 
-                    if(success == 1){
+                    if (success == 1) {
                         JSONArray arr = result.getJSONArray("data");
                         if (arr.length() != 0) {
                             jobDB.deleteAllERD();
                             for (int i = 0; i < arr.length(); i++) {
                                 JSONObject obj = (JSONObject) arr.get(i);
-                                ERDjobCard jobCard = new ERDjobCard();
+                                CustomJobCard jobCard = new CustomJobCard();
                                 jobCard.setId(obj.getInt("id"));
                                 jobCard.setSupervisorId(obj.getInt("supervisor_id"));
                                 jobCard.setJobNo(obj.getString("job_no"));
-                                jobCard.setAddress(obj.getString("address"));
                                 jobCard.setDescription(obj.getString("description"));
-                                jobCard.setProgress(obj.getString("progress"));
-                                jobCard.setName(obj.getString("name"));
                                 jobCard.setFromDate(obj.getString("from_date"));
                                 jobCard.setToDate(obj.getString("to_date"));
-                                String tasks = obj.getString("sub_task");
-                                JSONArray taskArray = new JSONArray(tasks);
 
-                                if(taskArray.length() !=0){
-                                    Log.d(TAG, "Tasks: "+taskArray);
-                                    for (int x = 0; x < taskArray.length(); x++) {
-                                        JSONObject taskObject = (JSONObject) taskArray.get(x);
-                                            Log.d(TAG, "Name: "+taskObject.getString("name"));
-                                            Log.d(TAG, "job_card_id: "+taskObject.getString("job_card_id"));
+                                if (obj.has("address")) {
+                                    jobCard.setAddress(obj.getString("address"));
+                                }
+
+                                if (obj.has("progress")) {
+                                    jobCard.setProgress(obj.getString("progress"));
+                                }
+
+                                if (obj.has("name")) {
+                                    jobCard.setName(obj.getString("name"));
+                                }
+
+                                if (obj.has("sub_task")) {
+                                    String tasks = obj.getString("sub_task");
+                                    JSONArray taskArray = new JSONArray(tasks);
+
+                                    if (taskArray.length() != 0) {
+                                        Log.d(TAG, "Tasks: " + taskArray);
+                                        for (int x = 0; x < taskArray.length(); x++) {
+                                            JSONObject taskObject = (JSONObject) taskArray.get(x);
+                                            Log.d(TAG, "Name: " + taskObject.getString("name"));
+                                            Log.d(TAG, "job_card_id: " + taskObject.getString("job_card_id"));
                                             ERDSubTask subTask = new ERDSubTask();
                                             subTask.setName(taskObject.getString("name"));
                                             subTask.setJobCardId(taskObject.getInt("job_card_id"));
                                             subTask.setId(taskObject.getInt("id"));
                                             jobDB.insertERDSubTask(subTask);
+                                        }
                                     }
                                 }
                                 jobDB.insertERDJob(jobCard);
@@ -151,31 +170,25 @@ public class ERDJobActivity extends AppCompatActivity {
                             }
                             refresh(message);
                         }
-                    }else{
-
-                        if(dialog != null && dialog.isShowing()){
+                    } else {
+                        if (dialog != null && dialog.isShowing()) {
                             dialog.dismiss();
                         }
-                        showToast(message);
+                        cf.showToast(message);
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.d(TAG, "JSON: "+e.getMessage());
+                    cf.showToast("Json error: " + e.getMessage());
                 }
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-
-            } else {
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-               // showToast("Something went wrong");
             }
-
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            cf.showToast("Data error has occurred");
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,22 +203,23 @@ public class ERDJobActivity extends AppCompatActivity {
             myAppAdapter = new MyAppAdapter(list_of_jobs, this);
             myList.setAdapter(myAppAdapter);
 
-            myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            myList.setOnItemClickListener((parent, view, position, id) -> {
 
-                    TextView txt_job_id =  view.findViewById(R.id.txt_job_id);
-                    TextView txt_supervisor_id = view.findViewById(R.id.txt_supervisor_id);
-                    job_id = txt_job_id.getText().toString();
-                    supervisor_id = Integer.parseInt(txt_supervisor_id.getText().toString());
+                TextView txt_job_id = view.findViewById(R.id.txt_job_id);
+                TextView txt_supervisor_id = view.findViewById(R.id.txt_supervisor_id);
+                job_id = txt_job_id.getText().toString();
+                supervisor_id = Integer.parseInt(txt_supervisor_id.getText().toString());
+                if (companyId == MyConstants.COMPANY_ERD) {
                     FPDialog(1);
-
+                } else {
+                    gotoDetails();
                 }
             });
-        }else{
-            showToast("No jobs");
+        } else {
+            cf.showToast("No jobs");
         }
 
+        companyId = cf.companyId();
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
         FPInit();
     }
@@ -265,9 +279,9 @@ public class ERDJobActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String searchQuery) {
 
-                if(list_of_jobs.isEmpty()){
+                if (list_of_jobs.isEmpty()) {
                     Toast.makeText(ERDJobActivity.this, "Download jobs first", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     myAppAdapter.filter(searchQuery.trim());
                     myList.invalidate();
                 }
@@ -295,9 +309,6 @@ public class ERDJobActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
@@ -305,7 +316,7 @@ public class ERDJobActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.refresh:
-                downloadERDJobs();
+                downloadJobs();
                 return true;
             case R.id.job_search:
                 return true;
@@ -326,22 +337,41 @@ public class ERDJobActivity extends AppCompatActivity {
             dialog.cancel();
         }
     }
-    private void downloadERDJobs(){
+
+    private void downloadERDJobs() {
         setDialog(true);
         Intent client_intent = new Intent(this, DownloadService.class);
         client_intent.putExtra(DownloadService.POST_JSON, "erd_data");
-        client_intent.putExtra(DownloadService.URL,ERD_DATA_URL);
+        client_intent.putExtra(DownloadService.URL, ERD_DATA_URL);
         client_intent.putExtra(DownloadService.FILTER, ERD);
         startService(client_intent);
     }
 
+    private void downloadTurnMillJobs() {
+        setDialog(true);
+        Intent client_intent = new Intent(this, DownloadService.class);
+        client_intent.putExtra(DownloadService.POST_JSON, "turnmill_data");
+        client_intent.putExtra(DownloadService.URL, MyConstants.TURNMILL_GET_JOB_URL);
+        client_intent.putExtra(DownloadService.FILTER, MyConstants.TURNMILL_GET_JOB);
+        startService(client_intent);
+    }
+
+    private void downloadJobs() {
+        cf.showToast("Company: " + companyId);
+        switch (companyId) {
+            case MyConstants.COMPANY_TURN_MILL:
+                downloadTurnMillJobs();
+                break;
+            case MyConstants.COMPANY_ERD:
+                downloadERDJobs();
+                break;
+        }
+    }
+
     public void refresh(String message) {
-        showToast(message);
+        cf.showToast(message);
         Intent intent = new Intent(this, ERDJobActivity.class);
         startActivity(intent);
-    }
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void workExit() {
@@ -351,6 +381,7 @@ public class ERDJobActivity extends AppCompatActivity {
             this.finish();
         }
     }
+
     private void FPDialog(int i) {
         iFinger = i;
         AlertDialog.Builder builder = new AlertDialog.Builder(ERDJobActivity.this);
@@ -420,7 +451,7 @@ public class ERDJobActivity extends AppCompatActivity {
                     vFingerprint.FP_GetImage();
                     //SignLocalActivity.this.AddStatus("Error");
                 } else {
-                   showToast("Cancel OK");
+                    cf.showToast("Cancel OK");
                 }
             }
         });
@@ -460,13 +491,11 @@ public class ERDJobActivity extends AppCompatActivity {
             @Override
             public void onUpCharSuccess(byte[] model) {
 
-
                 //Check the fingerprints here
                 List<User> user = empList;
                 int count = 0;
                 if (empList.size() > 0) {
 
-                    //for(int i=0; i<emplist.size(); i++)
                     for (User us : user) {
 
                         if (us.getFinger1() != null && us.getFinger1().length() >= 512) {
@@ -476,19 +505,13 @@ public class ERDJobActivity extends AppCompatActivity {
 
                                 if (us.getuId() == supervisor_id) {
                                     fpDialog.cancel();
-                                    Bundle dataBundle = new Bundle();
-                                    dataBundle.putString("job_id", job_id);
-                                    Intent intent = new Intent(getApplicationContext(), ERDClock.class);
-                                    intent.putExtras(dataBundle);
-                                    workExit();
-                                    startActivity(intent);
+                                    gotoDetails();
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
                                 } else
-                                showToast("Wrong user");
+                                    cf.showToast("Wrong user");
                             }
                         }
-
 
                         if (us.getFinger2() != null && us.getFinger2().length() >= 512) {
 
@@ -496,16 +519,11 @@ public class ERDJobActivity extends AppCompatActivity {
                             if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
                                 if (us.getuId() == supervisor_id) {
                                     fpDialog.cancel();
-                                    Bundle dataBundle = new Bundle();
-                                    dataBundle.putString("job_id", job_id);
-                                    Intent intent = new Intent(getApplicationContext(), ERDClock.class);
-                                    intent.putExtras(dataBundle);
-                                    workExit();
-                                    startActivity(intent);
+                                    gotoDetails();
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                     break;
                                 } else
-                                    showToast("Wrong user");
+                                    cf.showToast("Wrong user");
                             }
                         }
 
@@ -530,6 +548,15 @@ public class ERDJobActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void gotoDetails() {
+        Bundle dataBundle = new Bundle();
+        dataBundle.putString("job_id", job_id);
+        Intent intent = new Intent(getApplicationContext(), ERDClock.class);
+        intent.putExtras(dataBundle);
+        workExit();
+        startActivity(intent);
     }
 
     @SuppressLint("HandlerLeak")
@@ -568,22 +595,22 @@ public class ERDJobActivity extends AppCompatActivity {
 
 
     //Adapter
-    public class MyAppAdapter extends BaseAdapter  {
+    public class MyAppAdapter extends BaseAdapter {
 
         public class ViewHolder {
-            TextView txt_job_name, txt_local_id,txt_supervisor,txt_job_code,txt_job_id,txt_supervisor_id;
+            TextView txt_job_name, txt_local_id, txt_supervisor, txt_job_code, txt_job_id, txt_supervisor_id;
         }
 
-        public List<ERDjobCard> JobList;
+        public List<CustomJobCard> JobList;
 
         public Context context;
-        ArrayList<ERDjobCard> arraylist;
+        ArrayList<CustomJobCard> arrayList;
 
-        private MyAppAdapter(List<ERDjobCard> apps, Context context) {
+        private MyAppAdapter(List<CustomJobCard> apps, Context context) {
             this.JobList = apps;
             this.context = context;
-            arraylist = new ArrayList<>();
-            arraylist.addAll(JobList);
+            arrayList = new ArrayList<>();
+            arrayList.addAll(JobList);
 
         }
 
@@ -626,16 +653,19 @@ public class ERDJobActivity extends AppCompatActivity {
                 viewHolder = (ERDJobActivity.MyAppAdapter.ViewHolder) convertView.getTag();
             }
 
-            viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
-            viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId())+"");
-            viewHolder.txt_job_code.setText(JobList.get(position).getJobNo()+"");
-            viewHolder.txt_local_id.setText(JobList.get(position).getLocal_id()+ "");
+            if (companyId == 124) {
+                viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
+                viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
+            } else {
+                viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
+            }
+            viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId()) + "");
+            viewHolder.txt_job_code.setText(JobList.get(position).getJobNo() + "");
+            viewHolder.txt_local_id.setText(JobList.get(position).getLocal_id() + "");
             viewHolder.txt_job_id.setText(JobList.get(position).getId() + "");
-            viewHolder.txt_supervisor_id.setText(JobList.get(position).getSupervisorId()+"");
+            viewHolder.txt_supervisor_id.setText(JobList.get(position).getSupervisorId() + "");
 
             return rowView;
-
-
         }
 
         public void filter(String charText) {
@@ -644,14 +674,13 @@ public class ERDJobActivity extends AppCompatActivity {
 
             JobList.clear();
             if (charText.length() == 0) {
-                JobList.addAll(arraylist);
+                JobList.addAll(arrayList);
 
             } else {
-                for (ERDjobCard jobCard : arraylist) {
+                for (CustomJobCard jobCard : arrayList) {
                     if (charText.length() != 0 && jobCard.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                         JobList.add(jobCard);
-                    }
-                    else if (charText.length() != 0 && jobCard.getJobNo().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (charText.length() != 0 && jobCard.getJobNo().toLowerCase(Locale.getDefault()).contains(charText)) {
                         JobList.add(jobCard);
                     }
                 }
