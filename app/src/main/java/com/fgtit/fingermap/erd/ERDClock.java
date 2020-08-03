@@ -117,11 +117,7 @@ public class ERDClock extends AppCompatActivity {
                             JSONObject obj = (JSONObject) arr.get(i);
                             int success = obj.getInt("success");
                             String msg = obj.getString("message");
-                            if (success == 1) {
-                                showToast(msg);
-                            } else {
-                                showToast(msg);
-                            }
+                            showToast(msg);
                         }
                     }
 

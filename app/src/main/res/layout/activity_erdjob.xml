@@ -12,7 +12,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:orientation="vertical"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true">
 
         <ListView
             android:id="@+id/erd_job_list"
@@ -21,7 +22,8 @@
             android:divider="#FFF"
             tools:listitem="@layout/erd_entry"
             android:dividerHeight="4px"
-            android:layout_alignParentLeft="true">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
         </ListView>
 
     </RelativeLayout>
