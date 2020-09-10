@@ -7,6 +7,37 @@
     android:padding="8dp"
     tools:context="com.fgtit.fingermap.erd.ERDClock">
 
+    <LinearLayout
+        android:id="@+id/fingerprintImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/fingerprint" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/fingerprintImage"
+        android:layout_below="@+id/rL_clock"
+        android:layout_marginTop="10dp" />
+
     <RelativeLayout
         android:id="@+id/rlJobInfo"
         android:layout_width="match_parent"
@@ -19,18 +50,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txt_name_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Job Name: "
-                android:textColor="@color/black" />
-
-            <TextView
                 android:id="@+id/txt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/txt_name_info"
-                android:text="Testing Job"
+                android:text="@string/job_name"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -43,17 +66,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txt_code_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Job Code:  "
-                android:textColor="@color/black" />
-
-            <TextView
                 android:id="@+id/txt_code"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0001"
+                android:text="@string/job_no"
                 android:textColor="@color/black" />
 
         </LinearLayout>
@@ -66,149 +82,120 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txt_address_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Address:  "
-                android:textColor="@color/black"></TextView>
-
-            <TextView
                 android:id="@+id/txt_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="123 Main Street"
-                android:textColor="@color/black"></TextView>
+                android:text="@string/address"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_below="@+id/ll_address"
             android:id="@+id/ll_supervisor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_address"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txt_supervisor_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="Supervisor :  ">
-            </TextView>
 
             <TextView
                 android:id="@+id/txt_supervisor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="John Doe">
-            </TextView>
+                android:text="@string/supervisor"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_below="@+id/ll_supervisor"
             android:id="@+id/ll_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_supervisor"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txt_description_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="Description :  ">
-            </TextView>
+                android:text="Description :  "
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/txt_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:text="This is the description">
-            </TextView>
+                android:text="This is the description"
+                android:textColor="@color/black" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_description"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start_date"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/txt_end_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_date"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rL_clock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
+        android:layout_marginTop="20dp">
+
+        <Spinner
+            android:id="@+id/trade_spinner"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_spinner"
+            android:spinnerMode="dropdown"
+            android:visibility="gone" />
+
+        <Spinner
+            android:id="@+id/status_spinner"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/trade_spinner"
+            android:background="@drawable/custom_spinner"
+            android:spinnerMode="dropdown" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/erd_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_fingerprint"
+            android:visibility="gone">
+
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
     </RelativeLayout>
 
     <View
         android:id="@+id/separator"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/rlJobInfo"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lightgray"
+        android:layout_below="@+id/rlJobInfo"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
-
-    <RelativeLayout
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/separator"
-        android:id="@+id/rL_clock">
-
-        <Spinner
-            android:visibility="gone"
-            android:id="@+id/trade_spinner"
-            android:background="@drawable/custom_spinner"
-            android:spinnerMode="dropdown"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            />
-
-        <Spinner
-            android:id="@+id/status_spinner"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/trade_spinner"
-            android:background="@drawable/custom_spinner"
-            android:spinnerMode="dropdown"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:visibility="gone"
-            android:id="@+id/erd_clock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_fingerprint">
-
-        </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-    </RelativeLayout>
-    <ListView
-        android:layout_marginTop="10dp"
-        android:id="@+id/listView1"
-        android:layout_below="@+id/rL_clock"
-        android:layout_above="@+id/fingerprintImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
-
-    <LinearLayout
-        android:id="@+id/fingerprintImage"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/fingerprint" />
-
-    </LinearLayout>
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/lightgray" />
 
 </RelativeLayout>

@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.fgtit.fingermap.R;
+import com.fgtit.models.SessionManager;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class CommonFunction {
@@ -50,7 +52,7 @@ public class CommonFunction {
         }
     }
 
-    public void showProgressDialog(){
+    public void showProgressDialog() {
         pDialog = new ProgressDialog(context);
         pDialog.setMessage("Uploading information...");
         pDialog.setIndeterminate(false);
@@ -60,13 +62,13 @@ public class CommonFunction {
         pDialog.show();
     }
 
-    public void dismissProgressDialog(){
-        if (pDialog != null && pDialog.isShowing()){
+    public void dismissProgressDialog() {
+        if (pDialog != null && pDialog.isShowing()) {
             pDialog.dismiss();
         }
     }
 
-    public void showProgress(int progress){
+    public void showProgress(int progress) {
         pDialog.setProgress(progress);
     }
 
@@ -75,10 +77,11 @@ public class CommonFunction {
         return sdf.format(new Date());
     }
 
-    public String getDate(){
+    public String getDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.format(new Date());
     }
+
     public boolean checkTextLength(String text) {
         if (text.trim().length() > 0) {
             return true;
@@ -115,5 +118,10 @@ public class CommonFunction {
         return tFileList;
     }
 
+    public int companyId() {
+        SessionManager session = new SessionManager(context);
+        HashMap<String, String> manager = session.getUserDetails();
+        return Integer.parseInt(manager.get(SessionManager.KEY_COMPID));
+    }
 
 }

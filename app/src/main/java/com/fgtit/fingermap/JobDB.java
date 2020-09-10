@@ -15,7 +15,7 @@ import android.util.Log;
 import com.fgtit.models.Delivery;
 import com.fgtit.models.DrydenJobCard;
 import com.fgtit.models.ERDSubTask;
-import com.fgtit.models.ERDjobCard;
+import com.fgtit.models.CustomJobCard;
 import com.fgtit.models.EcCustomer;
 import com.fgtit.models.EcProduct;
 import com.fgtit.models.JobCard;
@@ -366,7 +366,7 @@ public class JobDB extends SQLiteOpenHelper {
     //ERD Job Card
 
     //Insert
-    public void insertERDJob(ERDjobCard jobCard) {
+    public void insertERDJob(CustomJobCard jobCard) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("id", jobCard.getId());
@@ -393,15 +393,15 @@ public class JobDB extends SQLiteOpenHelper {
     }
 
     //Get
-    public ArrayList<ERDjobCard> getERDJobList() {
-        ArrayList<ERDjobCard> jobList = new ArrayList<>();
+    public ArrayList<CustomJobCard> getERDJobList() {
+        ArrayList<CustomJobCard> jobList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM erd_job";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
 
-                ERDjobCard jobCard = new ERDjobCard();
+                CustomJobCard jobCard = new CustomJobCard();
                 jobCard.setLocal_id(cursor.getInt(0));
                 jobCard.setId(cursor.getInt(1));
                 jobCard.setSupervisorId(cursor.getInt(2));

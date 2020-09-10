@@ -4,7 +4,7 @@ import java.util.List;
 
 
 @SuppressWarnings("all")
-public class ERDjobCard {
+public class CustomJobCard {
 
     String name;
     String jobNo;
@@ -30,7 +30,7 @@ public class ERDjobCard {
         this.toDate = toDate;
     }*/
 
-    public ERDjobCard() {
+    public CustomJobCard() {
     }
 
     public int getLocal_id() {
