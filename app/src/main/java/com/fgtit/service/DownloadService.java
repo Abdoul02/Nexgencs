@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
 import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -35,7 +37,7 @@ public class DownloadService extends IntentService {
     public static final String CUSTOMER = "customer";
     public static final String PRODUCTS = "product";
     public static final String ERD = "erd_job";
-    public static final String ERD_CLOCK = "erd_clock";
+    public static final String JOB_CLOCK = "job_clock";
 
     public static final String URL = "url";
     public static final String RESULT = "result";
@@ -66,7 +68,7 @@ public class DownloadService extends IntentService {
         Log.d(TAG, filter);
 
         String jsonValue = "";
-        if (filter.equals(ERD_CLOCK)) {
+        if (filter.equals(JOB_CLOCK)) {
             jsonValue = intent.getStringExtra(JSON_VAL);
         }
 

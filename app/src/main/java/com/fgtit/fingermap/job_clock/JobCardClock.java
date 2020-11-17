@@ -1,5 +1,6 @@
-package com.fgtit.fingermap.erd;
+package com.fgtit.fingermap.job_clock;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -9,12 +10,9 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,6 +24,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.fgtit.adapter.CustomSpinnerAdapter;
 import com.fgtit.data.CommonFunction;
@@ -57,10 +57,10 @@ import java.util.TimerTask;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
-import static com.fgtit.service.DownloadService.ERD_CLOCK;
 import static com.fgtit.service.DownloadService.ERD_CLOCK_URL;
+import static com.fgtit.service.DownloadService.JOB_CLOCK;
 
-public class ERDClock extends AppCompatActivity {
+public class JobCardClock extends AppCompatActivity {
 
     private static final String TAG = "ERDClock";
 
@@ -93,7 +93,8 @@ public class ERDClock extends AppCompatActivity {
     //Spinners
     Spinner spn_trade, spn_status;
     //TextView
-    TextView txt_job_name, txt_job_code, txt_address, txt_supervisor, txt_description, txt_start_date, txt_end_date;
+    TextView txt_job_name, txt_job_code, txt_address, txt_supervisor,
+            txt_description, txt_start_date, txt_end_date, txt_notify;
     int job_id;
     int companyId;
     HashMap<String, Integer> tradeMap;
@@ -114,7 +115,7 @@ public class ERDClock extends AppCompatActivity {
             int resultCode = bundle.getInt(DownloadService.RESULT);
             clearInfo();
 
-            if (resultCode == RESULT_OK && filter.equals(ERD_CLOCK)) {
+            if (resultCode == RESULT_OK && filter.equals(JOB_CLOCK)) {
                 String response = bundle.getString(DownloadService.CALL_RESPONSE);
                 Log.d(TAG, "onReceive: " + response);
                 try {
@@ -175,6 +176,10 @@ public class ERDClock extends AppCompatActivity {
 
             hideViews(job_name, txt_job_name);
             hideViews(address, txt_address);
+
+            if (companyId == MyConstants.COMPANY_DRYDEN) {
+                txt_notify.setVisibility(View.VISIBLE);
+            }
 
             txt_job_name.setText(getString(R.string.job_name, job_name));
             txt_job_code.setText(getString(R.string.job_no, job_code));
@@ -239,6 +244,7 @@ public class ERDClock extends AppCompatActivity {
         txt_supervisor = findViewById(R.id.txt_supervisor);
         txt_start_date = findViewById(R.id.txt_start_date);
         txt_end_date = findViewById(R.id.txt_end_date);
+        txt_notify = findViewById(R.id.txtNotify);
 
         tvFpStatus = findViewById(R.id.textView1);
         tvFpStatus.setText("");
@@ -500,18 +506,25 @@ public class ERDClock extends AppCompatActivity {
         Log.d(TAG, "upload: " + postDataParams);
 
         setDialog(true);
-        Intent client_intent = new Intent(ERDClock.this, DownloadService.class);
+        Intent client_intent = new Intent(JobCardClock.this, DownloadService.class);
         client_intent.putExtra(DownloadService.POST_JSON, "erd_clock");
-        if (companyId == MyConstants.COMPANY_TURN_MILL) {
-            client_intent.putExtra(DownloadService.URL, MyConstants.TURNMILL_CLOCK_URL);
-        } else {
-            client_intent.putExtra(DownloadService.URL, ERD_CLOCK_URL);
+        switch (companyId) {
+            case MyConstants.COMPANY_TURN_MILL:
+                client_intent.putExtra(DownloadService.URL, MyConstants.TURNMILL_CLOCK_URL);
+                break;
+            case MyConstants.COMPANY_ERD:
+                client_intent.putExtra(DownloadService.URL, ERD_CLOCK_URL);
+                break;
+            case MyConstants.COMPANY_DRYDEN:
+                client_intent.putExtra(DownloadService.URL, MyConstants.DRYDEN_CLOCK_URL);
+                break;
         }
-        client_intent.putExtra(DownloadService.FILTER, ERD_CLOCK);
+        client_intent.putExtra(DownloadService.FILTER, JOB_CLOCK);
         client_intent.putExtra(DownloadService.JSON_VAL, postDataParams.toString());
         startService(client_intent);
     }
 
+    @SuppressLint("HandlerLeak")
     public void TimerStart() {
         if (startTimer == null) {
             startTimer = new Timer();

@@ -31,8 +31,12 @@
             android:name=".dryden.QF10_Report"
             android:label="QF10 Job Card" />
         <activity android:name=".DisplayLocalPictures" />
-        <activity android:name=".erd.ERDClock" />
-        <activity android:name=".erd.ERDJobActivity" />
+        <activity
+            android:name=".job_clock.JobCardClock"
+            android:label="Job clock" />
+        <activity
+            android:name=".job_clock.JobClockActivity"
+            android:label="Job card" />
         <activity android:name=".effective_cooling.CreateEffectiveJob" />
         <activity android:name=".effective_cooling.EffectiveCooling" />
         <activity
@@ -217,6 +221,7 @@
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
