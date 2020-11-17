@@ -17,14 +17,19 @@ public class MyConstants {
     //URL
     public static final String DRYDEN_GET_JOB_URL = "http://nexgencs.co.za/alos/dryden_combustion/getDrydenJobs.php";
     public static final String DRYDEN_UPLOAD = "http://nexgencs.co.za/alos/dryden_combustion/uploadData.php";
+    public static final String DRYDEN_GET_JOB_CARDS_URL = "http://nexgencs.co.za/alos/dryden_combustion/getJobs.php";
+    public static final String DRYDEN_CLOCK_URL = "http://nexgencs.co.za/alos/dryden_combustion/clock.php";
+
     public static final String STRUCMAC_DATA_URL = "http://nexgencs.co.za/alos/strucmac/getStrucMacData.php";
     public static final String STRUCMAC_UPLOAD_URL = "http://nexgencs.co.za/alos/strucmac/insertData.php";
+
     public static final String TURNMILL_GET_JOB_URL = "http://nexgencs.co.za/alos/turnmill/getData.php";
     public static final String TURNMILL_CLOCK_URL = "http://nexgencs.co.za/alos/turnmill/jobClock.php";
 
     //Filters
     public static final String TURNMILL_GET_JOB = "turn_mill_job";
     public static final String TURNMILL_CLOCK = "turn_mill_clock";
+    public static final String DRYDEN_GET_JOB = "dryden_job";
 
     public static final String STRUCMAC_CHECKLIST = "strucMacCheckList";
     public static final String STRUCMAC_IMAGE_UPLOAD = "http://www.nexgencs.co.za/alos/strucmac/uploadPictures.php";

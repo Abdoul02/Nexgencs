@@ -1,4 +1,4 @@
-package com.fgtit.fingermap.erd;
+package com.fgtit.fingermap.job_clock;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -25,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -61,7 +60,7 @@ import android_serialport_api.SerialPortManager;
 import static com.fgtit.service.DownloadService.ERD;
 import static com.fgtit.service.DownloadService.ERD_DATA_URL;
 
-public class ERDJobActivity extends AppCompatActivity {
+public class JobClockActivity extends AppCompatActivity {
     Dialog dialog;
     private static final String TAG = "ERDJobActivity";
     JobDB jobDB = new JobDB(this);
@@ -106,7 +105,7 @@ public class ERDJobActivity extends AppCompatActivity {
             int resultCode = bundle.getInt(DownloadService.RESULT);
 
             assert filter != null;
-            if (resultCode == RESULT_OK && (filter.equals(ERD) || filter.equals(MyConstants.TURNMILL_GET_JOB))) {
+            if (resultCode == RESULT_OK && (filter.equals(ERD) || filter.equals(MyConstants.TURNMILL_GET_JOB) || filter.equals(MyConstants.DRYDEN_GET_JOB))) {
                 String response = bundle.getString(DownloadService.CALL_RESPONSE);
                 Log.d(TAG, "onReceive: " + response);
 
@@ -280,7 +279,7 @@ public class ERDJobActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String searchQuery) {
 
                 if (list_of_jobs.isEmpty()) {
-                    Toast.makeText(ERDJobActivity.this, "Download jobs first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JobClockActivity.this, "Download jobs first", Toast.LENGTH_SHORT).show();
                 } else {
                     myAppAdapter.filter(searchQuery.trim());
                     myList.invalidate();
@@ -356,21 +355,32 @@ public class ERDJobActivity extends AppCompatActivity {
         startService(client_intent);
     }
 
+    private void getJobs(String jsonName, String url, String filter) {
+        setDialog(true);
+        Intent client_intent = new Intent(this, DownloadService.class);
+        client_intent.putExtra(DownloadService.POST_JSON, jsonName);
+        client_intent.putExtra(DownloadService.URL, url);
+        client_intent.putExtra(DownloadService.FILTER, filter);
+        startService(client_intent);
+    }
+
     private void downloadJobs() {
-        cf.showToast("Company: " + companyId);
         switch (companyId) {
             case MyConstants.COMPANY_TURN_MILL:
-                downloadTurnMillJobs();
+                getJobs("turnmill_data", MyConstants.TURNMILL_GET_JOB_URL, MyConstants.TURNMILL_GET_JOB);
                 break;
             case MyConstants.COMPANY_ERD:
-                downloadERDJobs();
+                getJobs("erd_data", ERD_DATA_URL, ERD);
+                break;
+            case MyConstants.COMPANY_DRYDEN:
+                getJobs("dryden_data", MyConstants.DRYDEN_GET_JOB_CARDS_URL, MyConstants.DRYDEN_GET_JOB);
                 break;
         }
     }
 
     public void refresh(String message) {
         cf.showToast(message);
-        Intent intent = new Intent(this, ERDJobActivity.class);
+        Intent intent = new Intent(this, JobClockActivity.class);
         startActivity(intent);
     }
 
@@ -384,9 +394,9 @@ public class ERDJobActivity extends AppCompatActivity {
 
     private void FPDialog(int i) {
         iFinger = i;
-        AlertDialog.Builder builder = new AlertDialog.Builder(ERDJobActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(JobClockActivity.this);
         builder.setTitle("fingerprint Reader ");
-        final LayoutInflater inflater = LayoutInflater.from(ERDJobActivity.this);
+        final LayoutInflater inflater = LayoutInflater.from(JobClockActivity.this);
         View vl = inflater.inflate(R.layout.dialog_enrolfinger, null);
         fpImage = vl.findViewById(R.id.imageView1);
         tvFpStatus = vl.findViewById(R.id.textview1);
@@ -553,7 +563,7 @@ public class ERDJobActivity extends AppCompatActivity {
     private void gotoDetails() {
         Bundle dataBundle = new Bundle();
         dataBundle.putString("job_id", job_id);
-        Intent intent = new Intent(getApplicationContext(), ERDClock.class);
+        Intent intent = new Intent(getApplicationContext(), JobCardClock.class);
         intent.putExtras(dataBundle);
         workExit();
         startActivity(intent);
@@ -634,13 +644,13 @@ public class ERDJobActivity extends AppCompatActivity {
 
 
             View rowView = convertView;
-            ERDJobActivity.MyAppAdapter.ViewHolder viewHolder;
+            JobClockActivity.MyAppAdapter.ViewHolder viewHolder;
 
             if (rowView == null) {
                 LayoutInflater inflater = getLayoutInflater();
                 rowView = inflater.inflate(R.layout.erd_entry, null);
                 // configure view holder
-                viewHolder = new ERDJobActivity.MyAppAdapter.ViewHolder();
+                viewHolder = new JobClockActivity.MyAppAdapter.ViewHolder();
                 viewHolder.txt_job_name = rowView.findViewById(R.id.jbName);
                 viewHolder.txt_local_id = rowView.findViewById(R.id.txt_local_id);
                 viewHolder.txt_job_code = rowView.findViewById(R.id.erd_job_no);
@@ -650,7 +660,7 @@ public class ERDJobActivity extends AppCompatActivity {
                 rowView.setTag(viewHolder);
 
             } else {
-                viewHolder = (ERDJobActivity.MyAppAdapter.ViewHolder) convertView.getTag();
+                viewHolder = (JobClockActivity.MyAppAdapter.ViewHolder) convertView.getTag();
             }
 
             if (companyId == 124) {

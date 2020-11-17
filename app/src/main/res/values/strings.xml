@@ -176,6 +176,7 @@
     <string name="verification_and_validation">Verification and validation of welding machine &amp; material temperature</string>
     <string name="consumable_control">Consumable Control</string>
     <string name="target_ip">NET Server Address</string>
+    <string name="warning_message">Please remember to clock OUT from previous job before clocking IN for this job</string>
 
     <!--StrucMac -->
     <string name="delivery_no">Delivery No: %1$s</string>

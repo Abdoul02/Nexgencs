@@ -20,7 +20,7 @@ import java.util.Map;
 
 import com.fgtit.data.MyConstants;
 import com.fgtit.fingermap.dryden.DrydenJobList;
-import com.fgtit.fingermap.erd.ERDJobActivity;
+import com.fgtit.fingermap.job_clock.JobClockActivity;
 import com.fgtit.fingermap.strucmac.DeliveryList;
 import com.fgtit.fingermap.strucmac.StrucMacReport;
 import com.fgtit.models.SessionManager;
@@ -120,99 +120,98 @@ public class MenuActivity extends AppCompatActivity {
                 new int[]{R.id.title, R.id.info, R.id.img});
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                //Map<String, Object> item = (Map<String, Object>)parent.getItemAtPosition(pos);
-                Log.d("MenuActivity", "Position=>" + pos);
+        listView.setOnItemClickListener((parent, view, pos, id) -> {
 
-                switch (pos) {
+            switch (pos) {
 
-                    case 0: {
+                case 0: {
+                    Intent intent;
+                    if (companyID == MyConstants.COMPANY_DRYDEN) {
+                        intent = new Intent(MenuActivity.this, JobClockActivity.class);
+                    } else {
+                        intent = new Intent(MenuActivity.this, Project.class);
+                    }
+                    startActivity(intent);
+                }
+                break;
 
-                        Intent intent = new Intent(MenuActivity.this, Project.class);
+                case 1: {
+                    gotoJobCardFeature();
+                }
+                break;
+
+                case 2: {
+
+                    // Get User records from SQLite DB
+                    userList = myDB.getAllUsers();
+                    if (userList.size() != 0) {
+                        Intent intent = new Intent(MenuActivity.this, UserList.class);
                         startActivity(intent);
+                    } else {
+
+                        Toast.makeText(getApplicationContext(), "List is empty please download employee record first", Toast.LENGTH_SHORT).show();
                     }
-                    break;
+                }
+                break;
 
-                    case 1: {
-                        gotoJobCardFeature();
-                    }
-                    break;
+                case 3: {
+                    Intent intent = new Intent(MenuActivity.this, UtilitiesActivity.class);
+                    startActivity(intent);
+                }
+                break;
 
-                    case 2: {
+                case 4: {
+                    passwordDialog();
+                }
+                break;
 
-                        // Get User records from SQLite DB
-                        userList = myDB.getAllUsers();
-                        if (userList.size() != 0) {
-                            Intent intent = new Intent(MenuActivity.this, UserList.class);
-                            startActivity(intent);
-                        } else {
+                case 5: {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MenuActivity.this);
+                    dialog.setTitle("About - NexGen Clocking System");
+                    dialog.setMessage("\nBiometric System " + versionName + "\n" +
+                            "\t  \n"
+                            + "\tAll rights reserved, 2015-2018.\n "
+                    );
+                    dialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
 
-                            Toast.makeText(getApplicationContext(), "List is empty please download employee record first", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
                         }
-                    }
-                    break;
+                    });
+                    dialog.show();
+                }
+                break;
 
-                    case 3: {
-                        Intent intent = new Intent(MenuActivity.this, UtilitiesActivity.class);
-                        startActivity(intent);
-                    }
-                    break;
+                case 6: {
 
-                    case 4: {
-                        passwordDialog();
-                    }
-                    break;
+                    new checkUpdate().execute();
+                }
+                break;
 
-                    case 5: {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(MenuActivity.this);
-                        dialog.setTitle("About - NexGen Clocking System");
-                        dialog.setMessage("\nBiometric System " + versionName + "\n" +
-                                "\t  \n"
-                                + "\tAll rights reserved, 2015-2018.\n "
-                        );
-                        dialog.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        dialog.show();
-                    }
-                    break;
-
-                    case 6: {
-
-                        new checkUpdate().execute();
-                    }
-                    break;
-
-                    case 7: {
-                        if (companyID == 135) {
-                            Intent intent = new Intent(MenuActivity.this, StrucMacReport.class);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(MenuActivity.this, BTScale.class);
-                            startActivity(intent);
-                        }
-                    }
-                    break;
-
-                    case 8: {
-                        //Go to Alcohol  activity
-                        Intent intent = new Intent(MenuActivity.this, Alcohol.class);
-                        startActivity(intent);
-                    }
-                    break;
-
-                    case 9: {
+                case 7: {
+                    if (companyID == 135) {
                         Intent intent = new Intent(MenuActivity.this, StrucMacReport.class);
                         startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(MenuActivity.this, BTScale.class);
+                        startActivity(intent);
                     }
-                    break;
                 }
+                break;
+
+                case 8: {
+                    //Go to Alcohol  activity
+                    Intent intent = new Intent(MenuActivity.this, Alcohol.class);
+                    startActivity(intent);
+                }
+                break;
+
+                case 9: {
+                    Intent intent = new Intent(MenuActivity.this, StrucMacReport.class);
+                    startActivity(intent);
+                }
+                break;
             }
         });
 
@@ -222,22 +221,8 @@ public class MenuActivity extends AppCompatActivity {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         Map<String, Object> map;
-        if (companyID == 3 || companyID == 116) {
-
-            map = new HashMap<>();
-            map.put("title", "Machine Job Card");
-            map.put("info", "Create Job card from machine");
-            map.put("img", R.drawable.view_details);
-            list.add(map);
-
-        } else {
-
-            map = new HashMap<>();
-            map.put("title", "Projects");
-            map.put("info", "Create Projects");
-            map.put("img", R.drawable.timesheet);
-            list.add(map);
-        }
+        map = new HashMap<>();
+        list.add(getProjectInfo(map));
 
         map = new HashMap<>();
         map.put("title", getTittle());
@@ -312,8 +297,33 @@ public class MenuActivity extends AppCompatActivity {
             return "Turnmill Job Card";
         } else if (companyID == MyConstants.COMPANY_STRUCMAC) {
             return "StrucMac Deliver Note";
+        } else if (companyID == MyConstants.COMPANY_DRYDEN) {
+            return "QF10 Job Card";
         }
         return "Job Card";
+    }
+
+    private Map<String, Object> getProjectInfo(Map<String, Object> map) {
+        switch (companyID) {
+            case MyConstants.COMPANY_DRYDEN:
+                map.put("title", "Dryden Job Card");
+                map.put("info", "Download Dryden job cards");
+                map.put("img", R.drawable.timesheet);
+                break;
+            case 3:
+            case 116:
+                map.put("title", "Machine Job Card");
+                map.put("info", "Create Job card from machine");
+                map.put("img", R.drawable.view_details);
+                break;
+            default:
+                map.put("title", "Projects");
+                map.put("info", "Create Projects");
+                map.put("img", R.drawable.timesheet);
+                break;
+        }
+
+        return map;
     }
 
     private void gotoJobCardFeature() {
@@ -321,7 +331,7 @@ public class MenuActivity extends AppCompatActivity {
         switch (companyID) {
             case MyConstants.COMPANY_ERD:
             case MyConstants.COMPANY_TURN_MILL:
-                intent = new Intent(MenuActivity.this, ERDJobActivity.class);
+                intent = new Intent(MenuActivity.this, JobClockActivity.class);
                 break;
             case MyConstants.COMPANY_DRYDEN:
                 intent = new Intent(MenuActivity.this, DrydenJobList.class);

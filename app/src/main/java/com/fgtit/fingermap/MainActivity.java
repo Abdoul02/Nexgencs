@@ -487,6 +487,7 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
 			case RE_WORK0:
 				break;
@@ -525,26 +526,16 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	private void NetLocationInit() {
-		// ��ȡ��LocationManager����
 		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		// ����һ��Criteria����
 		Criteria criteria = new Criteria();
-		// ���ô��Ծ�ȷ��
 		criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-		// �����Ƿ���Ҫ���غ�����Ϣ
 		criteria.setAltitudeRequired(false);
-		// �����Ƿ���Ҫ���ط�λ��Ϣ
 		criteria.setBearingRequired(false);
-		// �����Ƿ����?�ѷ���
 		criteria.setCostAllowed(true);
-		// ���õ�����ĵȼ�
 		criteria.setPowerRequirement(Criteria.POWER_HIGH);
-		// �����Ƿ���Ҫ�����ٶ���Ϣ
 		criteria.setSpeedRequired(false);
-		// ������õ�Criteria���󣬻�ȡ���ϴ˱�׼��provider���� 41
 		String currentProvider = locationManager.getBestProvider(criteria, true);
 
-		// ��ݵ�ǰprovider�����ȡ���һ��λ����Ϣ 44
 		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			// TODO: Consider calling
 			//    ActivityCompat#requestPermissions
@@ -589,15 +580,12 @@ public class MainActivity extends AppCompatActivity
 
 	private void GpsLocationInit() {
 		LocationManager gpslocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		// ���ҵ�������Ϣ
 		Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
-		// �߾���
 		criteria.setAltitudeRequired(false);
 		criteria.setBearingRequired(false);
 		criteria.setCostAllowed(true);
 		criteria.setPowerRequirement(Criteria.POWER_LOW);
-		// �͹���
 		String currentProvider = gpslocationManager.getBestProvider(criteria, true);
 		if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			// TODO: Consider calling
@@ -644,7 +632,6 @@ public class MainActivity extends AppCompatActivity
 	};
 
 	private GpsStatus.Listener gpsListener = new GpsStatus.Listener() {
-		// GPS״̬����仯ʱ����
 		@Override
 		public void onGpsStatusChanged(int event) {
 
