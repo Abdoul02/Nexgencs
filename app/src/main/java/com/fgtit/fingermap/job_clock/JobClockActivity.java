@@ -75,7 +75,6 @@ public class JobClockActivity extends AppCompatActivity {
 
 
     //Fingerprint
-    //Fingerprint
     private AsyncFingerprint vFingerprint;
     private boolean bIsCancel = false;
     private boolean bfpWork = false;
@@ -335,24 +334,6 @@ public class JobClockActivity extends AppCompatActivity {
         } else {
             dialog.cancel();
         }
-    }
-
-    private void downloadERDJobs() {
-        setDialog(true);
-        Intent client_intent = new Intent(this, DownloadService.class);
-        client_intent.putExtra(DownloadService.POST_JSON, "erd_data");
-        client_intent.putExtra(DownloadService.URL, ERD_DATA_URL);
-        client_intent.putExtra(DownloadService.FILTER, ERD);
-        startService(client_intent);
-    }
-
-    private void downloadTurnMillJobs() {
-        setDialog(true);
-        Intent client_intent = new Intent(this, DownloadService.class);
-        client_intent.putExtra(DownloadService.POST_JSON, "turnmill_data");
-        client_intent.putExtra(DownloadService.URL, MyConstants.TURNMILL_GET_JOB_URL);
-        client_intent.putExtra(DownloadService.FILTER, MyConstants.TURNMILL_GET_JOB);
-        startService(client_intent);
     }
 
     private void getJobs(String jsonName, String url, String filter) {
@@ -639,6 +620,7 @@ public class JobClockActivity extends AppCompatActivity {
             return position;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -663,13 +645,22 @@ public class JobClockActivity extends AppCompatActivity {
                 viewHolder = (JobClockActivity.MyAppAdapter.ViewHolder) convertView.getTag();
             }
 
-            if (companyId == 124) {
-                viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
-                viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
-            } else {
-                viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
+            switch (companyId) {
+                case MyConstants.COMPANY_TURN_MILL:
+                    viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
+                    viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
+                    viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId()) + "");
+                    break;
+                case MyConstants.COMPANY_DRYDEN:
+                    viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
+                    viewHolder.txt_supervisor.setText(getString(R.string.job_no, JobList.get(position).getJobNo()));
+                    viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
+                    break;
+                default:
+                    viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
+                    viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId()) + "");
+                    break;
             }
-            viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId()) + "");
             viewHolder.txt_job_code.setText(JobList.get(position).getJobNo() + "");
             viewHolder.txt_local_id.setText(JobList.get(position).getLocal_id() + "");
             viewHolder.txt_job_id.setText(JobList.get(position).getId() + "");
