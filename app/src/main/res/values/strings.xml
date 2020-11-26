@@ -190,6 +190,7 @@
     <string name="start_date" translatable="false">Start date: %1$s</string>
     <string name="end_date" translatable="false">End date: %1$s</string>
     <string name="job_name" translatable="false">Job Name: %1$s</string>
+    <string name="client_name" translatable="false">Client: %1$s</string>
     <string name="supervisor" translatable="false">Supervisor: %1$s</string>
     <string name="address" translatable="false">Address: %1$s</string>
 

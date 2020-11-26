@@ -645,22 +645,25 @@ public class JobClockActivity extends AppCompatActivity {
                 viewHolder = (JobClockActivity.MyAppAdapter.ViewHolder) convertView.getTag();
             }
 
-            switch (companyId) {
+            /* switch (companyId) {
                 case MyConstants.COMPANY_TURN_MILL:
                     viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
                     viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
-                    viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId()) + "");
                     break;
                 case MyConstants.COMPANY_DRYDEN:
-                    viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
-                    viewHolder.txt_supervisor.setText(getString(R.string.job_no, JobList.get(position).getJobNo()));
-                    viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
+                    viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
+
                     break;
                 default:
                     viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
-                    viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId()) + "");
                     break;
+            }*/
+            if (companyId == MyConstants.COMPANY_TURN_MILL) {
+                viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
+                viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
             }
+            viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
+            viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId()) + "");
             viewHolder.txt_job_code.setText(JobList.get(position).getJobNo() + "");
             viewHolder.txt_local_id.setText(JobList.get(position).getLocal_id() + "");
             viewHolder.txt_job_id.setText(JobList.get(position).getId() + "");

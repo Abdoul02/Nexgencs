@@ -179,9 +179,11 @@ public class JobCardClock extends AppCompatActivity {
 
             if (companyId == MyConstants.COMPANY_DRYDEN) {
                 txt_notify.setVisibility(View.VISIBLE);
+                txt_job_name.setText(getString(R.string.client_name, job_name));
+            } else {
+                txt_job_name.setText(getString(R.string.job_name, job_name));
             }
 
-            txt_job_name.setText(getString(R.string.job_name, job_name));
             txt_job_code.setText(getString(R.string.job_no, job_code));
             txt_description.setText(getString(R.string.job_description, description));
             txt_address.setText(getString(R.string.address, address));

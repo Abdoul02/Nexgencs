@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
 		Button btn01=(Button)findViewById(R.id.button1);
 		editText1=(EditText)findViewById(R.id.editText1);
 		editText2=(EditText)findViewById(R.id.editText2);
-		Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
 
 		btn01.setOnClickListener(new View.OnClickListener() {
 			//@Override
