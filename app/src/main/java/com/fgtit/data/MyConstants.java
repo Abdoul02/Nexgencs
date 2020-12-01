@@ -14,6 +14,8 @@ public class MyConstants {
     public static final String JOB_DETAIL = "job_detail";
     public static final String CONSUMABLE = "consumable";
 
+    public static final int FINGERPRINT_SENSITIVITY = 55;
+
     //URL
     public static final String DRYDEN_GET_JOB_URL = "http://nexgencs.co.za/alos/dryden_combustion/getDrydenJobs.php";
     public static final String DRYDEN_UPLOAD = "http://nexgencs.co.za/alos/dryden_combustion/uploadData.php";
