@@ -620,6 +620,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("SetTextI18n")
     public void downloadDialog(final String url, String path, int status) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);

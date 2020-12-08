@@ -54,6 +54,7 @@ public class MyConstants {
     public static final int CONSUMABLE_REQUEST_CLOCK = 104;
     public static final int CONSUMABLE_REQUEST_SIGN = 105;
     public static final int STRUCMAC_REPORT_CLOCK = 106;
+    public static final int PROJECT_SIGN = 107;
 
     //Companies
     public static final int COMPANY_ERD = 117;

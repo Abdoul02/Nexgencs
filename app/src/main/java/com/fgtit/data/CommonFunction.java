@@ -4,8 +4,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fgtit.fingermap.R;
@@ -23,7 +28,11 @@ public class CommonFunction {
 
     Context context;
     public Dialog dialog;
+    Dialog customDialog;
     ProgressDialog pDialog;
+
+    ImageView customDialogImg;
+    TextView customDialogTextView;
 
     public CommonFunction(Context context) {
         this.context = context;
@@ -44,6 +53,42 @@ public class CommonFunction {
         } else {
             dialog.cancel();
         }
+    }
+
+    public void showCustomDialog(String title, String message, String imgPath,
+                                 DialogInterface.OnClickListener okBtn,
+                                 DialogInterface.OnClickListener cancelBtn,
+                                 String positiveBtnText, String negativeBtnText) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View vl = inflater.inflate(R.layout.dialog_enrolfinger, null);
+        customDialogImg = (ImageView) vl.findViewById(R.id.imageView1);
+        customDialogTextView = (TextView) vl.findViewById(R.id.textview1);
+        Bitmap image = getImage(imgPath);
+        if(image != null){
+            customDialogImg.setImageBitmap(image);
+        }
+        customDialogTextView.setText(message);
+
+        builder.setView(vl);
+        builder.setCancelable(false);
+        builder.setPositiveButton(positiveBtnText, okBtn);
+        builder.setNegativeButton(negativeBtnText, cancelBtn);
+        builder.setOnCancelListener(DialogInterface::dismiss);
+
+        customDialog = builder.create();
+        customDialog.setCanceledOnTouchOutside(false);
+        customDialog.show();
+    }
+
+    private Bitmap getImage(String path) {
+        File imgFile = new File(path);
+        if (imgFile.exists()) {
+            return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+        }
+        return null;
     }
 
     public void cancelDialog() {
@@ -92,11 +137,7 @@ public class CommonFunction {
     public boolean deleteFile(String path) {
         File fileToDelete = new File(path);
         if (fileToDelete.exists()) {
-            if (fileToDelete.delete()) {
-                return true;
-            } else {
-                return false;
-            }
+            return fileToDelete.delete();
         }
         return false;
     }

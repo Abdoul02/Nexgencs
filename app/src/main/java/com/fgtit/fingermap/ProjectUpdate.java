@@ -17,8 +17,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,6 +38,9 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fgtit.adapter.DrawingActivity;
+import com.fgtit.data.CommonFunction;
+import com.fgtit.data.MyConstants;
 import com.fgtit.fpcore.FPMatch;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
@@ -69,6 +74,10 @@ import java.util.UUID;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
+import static com.fgtit.data.MyConstants.CONSUMABLE_REQUEST_SIGN;
+import static com.fgtit.data.MyConstants.IMAGE;
+import static com.fgtit.data.MyConstants.IMAGE_NAME;
+import static com.fgtit.data.MyConstants.IMAGE_PATH;
 import static com.fgtit.service.NetworkService.PROJECT_URL;
 
 public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
@@ -84,6 +93,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     TabHost mTabHost;
     DBHandler mydb = new DBHandler(this);
     JobDB jobDB = new JobDB(this);
+    CommonFunction common = new CommonFunction(this);
     SessionManager session;
     HashMap<String, String> queryValues;
     private byte[] jpgbytes = null;
@@ -115,7 +125,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     private List<String> listOfImagesPath;
     Dialog dialog;
     ProgressDialog pDialog;
-    String imgPath;
+    String imgPath, signatureImg, signatureImgPath, signatureImgName;
     private final SingleUploadBroadcastReceiver uploadReceiver =
             new SingleUploadBroadcastReceiver();
 
@@ -328,14 +338,50 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            setPic();
-            jobDB.insertPictPath(0, currentPhotoPath, criticalAsset.getText().toString());
-            anotherPicture();
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_TAKE_PHOTO) {
+                setPic();
+                jobDB.insertPictPath(0, currentPhotoPath, criticalAsset.getText().toString());
+                anotherPicture();
+            }
+
+            if (requestCode == MyConstants.PROJECT_SIGN) {
+                if (data != null) {
+                    signatureImg = data.getStringExtra(IMAGE);
+                    signatureImgPath = data.getStringExtra(IMAGE_PATH);
+                    signatureImgName = data.getStringExtra(IMAGE_NAME);
+                    signatureDialog();
+                }
+            }
         } else {
             Toast.makeText(this, "Something went wrong, could not save picture", Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void signatureDialog() {
+        common.showCustomDialog(
+                "Signature",
+                "Please upload or delete signature",
+                signatureImgPath,
+                uploadSignature(),
+                deleteSignature(),
+                "upload",
+                "delete"
+        );
+    }
+
+    public DialogInterface.OnClickListener uploadSignature() {
+        return (dialog, which) -> common.showToast("Upload Worked");
+    }
+
+
+    public DialogInterface.OnClickListener deleteSignature() {
+        return (dialog, which) -> {
+            if (common.deleteFile(signatureImgPath)) {
+                common.showToast("Signature deleted");
+            }
+        };
     }
 
     public void showGrid(View v) {
@@ -490,7 +536,6 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                     Toast.makeText(getApplicationContext(), "Please update the progress", Toast.LENGTH_SHORT).show();
                 }
                 if (progres > 100) {
-
                     Toast.makeText(getApplicationContext(), "Progress can not be over 100%", Toast.LENGTH_SHORT).show();
                 }
 
@@ -499,7 +544,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                     FPDialog(1);
                     //createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat,dtim, coment, progres,status);
 
-                } else if (progres < 100 && trad.length() > 0 && status != selectStatus) {
+                } else if (progres < 100 && trad.length() > 0 && !status.equals(selectStatus)) {
                     FPDialog(1);
                     //createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat,dtim, coment, progres,status);
                 } else {
@@ -510,6 +555,11 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                 Toast.makeText(getApplicationContext(), "Please fill in fields with *", Toast.LENGTH_SHORT).show();
             }
 
+            return true;
+        }
+        if (id == R.id.sign) {
+            Intent signatureIntent = new Intent(this, DrawingActivity.class);
+            startActivityForResult(signatureIntent, MyConstants.PROJECT_SIGN);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -675,17 +725,17 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                             if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
                                 fpDialog.cancel();
                                 user_id = String.valueOf(us.getuId());
-                                    if (listOfImagesPath.size() > 0) {
-                                        String path = "/sdcard/fgtit/" + pictName + ".jpg";
-                                        String name = pictName + ".jpg";
-                                        pDialog.show();
-                                        fileUploadFunction(user_id, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
+                                if (listOfImagesPath.size() > 0) {
+                                    String path = "/sdcard/fgtit/" + pictName + ".jpg";
+                                    String name = pictName + ".jpg";
+                                    pDialog.show();
+                                    fileUploadFunction(user_id, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
 
-                                    } else {
-                                        //No Picture
-                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
-                                    }
-                                    tvFpStatus.setText(getString(R.string.txt_fpmatchok));
+                                } else {
+                                    //No Picture
+                                    createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
+                                }
+                                tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                 break;
                             }
                         }
@@ -967,12 +1017,10 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
 
     @Override
     public void onProgress(long uploadedBytes, long totalBytes) {
-
     }
 
     @Override
     public void onError(Exception exception) {
-
     }
 
     @Override
@@ -990,7 +1038,6 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
 
     @Override
     public void onCancelled() {
-
     }
 
     public void showToast(String message) {
@@ -1000,11 +1047,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     public boolean deleteFile(String path) {
         File fileToDelete = new File(path);
         if (fileToDelete.exists()) {
-            if (fileToDelete.delete()) {
-                return true;
-            } else {
-                return false;
-            }
+            return fileToDelete.delete();
         }
         return false;
     }
