@@ -1,7 +1,6 @@
 package com.fgtit.fingermap;
 
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,10 +19,9 @@ import com.google.gson.GsonBuilder;
 /**
  * Created by Abdoul on 27-06-2016.
  */
-public class DBHandler  extends SQLiteOpenHelper {
+public class DBHandler extends SQLiteOpenHelper {
 
     User user;
-
 
 
     public DBHandler(Context applicationcontext) {
@@ -33,15 +31,15 @@ public class DBHandler  extends SQLiteOpenHelper {
     //Creates Table
     @Override
     public void onCreate(SQLiteDatabase database) {
-        String query,query1,query2,pineUsers,cost_center,product;
+        String query, query1, query2, pineUsers, cost_center, product;
         query = "CREATE TABLE users ( userId INTEGER,idNum TEXT, name TEXT, finger1 TEXT, finger2 TEXT, status TEXT," +
                 "shifts_id INTEGER, shift_type INTEGER, costCenterId INTEGER,card TEXT)";
 
-        query1="CREATE TABLE project ( asset TEXT,requestedBy TEXT, site TEXT, location TEXT, criticalAsset TEXT" +
+        query1 = "CREATE TABLE project ( asset TEXT,requestedBy TEXT, site TEXT, location TEXT, criticalAsset TEXT" +
                 ", progress INTEGER, dateReq TEXT,workReq TEXT,id INTEGER,dateDone TEXT)";
-        query2="CREATE TABLE pine (pine_id INTEGER PRIMARY KEY, deliveryN TEXT,tag TEXT,status TEXT, diameter TEXT, " +
+        query2 = "CREATE TABLE pine (pine_id INTEGER PRIMARY KEY, deliveryN TEXT,tag TEXT,status TEXT, diameter TEXT, " +
                 "date TEXT)";
-        pineUsers="CREATE TABLE pine_user(pUserId INTEGER PRIMARY KEY,userId INTEGER)";
+        pineUsers = "CREATE TABLE pine_user(pUserId INTEGER PRIMARY KEY,userId INTEGER)";
         cost_center = "CREATE TABLE cost_center(cost_center_id INTEGER PRIMARY KEY, cost_center_name TEXT)";
         product = "CREATE TABLE product(id INTEGER PRIMARY KEY,name TEXT, code TEXT)";
 
@@ -57,7 +55,7 @@ public class DBHandler  extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, int version_old, int current_version) {
 
-        if(current_version < 2){
+        if (current_version < 2) {
 
             database.execSQL("ALTER TABLE users ADD COLUMN shifts_id INTEGER");
             database.execSQL("ALTER TABLE users ADD COLUMN shift_type INTEGER");
@@ -70,34 +68,30 @@ public class DBHandler  extends SQLiteOpenHelper {
             database.execSQL("CREATE TABLE pine_user(pUserId INTEGER PRIMARY KEY,userId INTEGER)");
             database.execSQL("CREATE TABLE cost_center(cost_center_id INTEGER PRIMARY KEY, cost_center_name TEXT)");
             database.execSQL("CREATE TABLE product(id INTEGER PRIMARY KEY,name TEXT, code TEXT)");
-        }else if(current_version > 2 && current_version < 4){
+        } else if (current_version > 2 && current_version < 4) {
 
             database.execSQL("CREATE TABLE pine ( pine_id INTEGER PRIMARY KEY,deliveryN TEXT, tag TEXT, status TEXT, diameter TEXT" +
                     ", date TEXT)");
             database.execSQL("CREATE TABLE pine_user(pUserId INTEGER PRIMARY KEY,userId INTEGER)");
             database.execSQL("CREATE TABLE cost_center(cost_center_id INTEGER PRIMARY KEY, cost_center_name TEXT)");
             database.execSQL("CREATE TABLE product(id INTEGER PRIMARY KEY,name TEXT, code TEXT)");
-        }
-        else if(current_version > 3 && current_version < 5){
+        } else if (current_version > 3 && current_version < 5) {
             database.execSQL("ALTER TABLE users ADD COLUMN card TEXT");
             database.execSQL("CREATE TABLE cost_center(cost_center_id INTEGER PRIMARY KEY, cost_center_name TEXT)");
             database.execSQL("CREATE TABLE product(id INTEGER PRIMARY KEY,name TEXT, code TEXT)");
-        }
-
-        else if (current_version > 4){
+        } else if (current_version > 4) {
 
             database.execSQL("CREATE TABLE cost_center(cost_center_id INTEGER PRIMARY KEY, cost_center_name TEXT)");
             database.execSQL("CREATE TABLE product(id INTEGER PRIMARY KEY,name TEXT, code TEXT)");
         }
 
-       // database.execSQL(query);
+        // database.execSQL(query);
         //database.execSQL(query1);
         //onCreate(database);
     }
 
     /**
      * Inserts User into SQLite DB
-     *
      */
 
     //User
@@ -110,15 +104,17 @@ public class DBHandler  extends SQLiteOpenHelper {
         values.put("finger1", user.getFinger1());
         values.put("finger2", user.getFinger2());
         values.put("status", "yes");
-        values.put("shifts_id",user.getShifts_id());
+        values.put("shifts_id", user.getShifts_id());
         values.put("shift_type", user.getShift_type());
         values.put("costCenterId", user.getCostCenterId());
-        values.put("card",user.getCard());
+        values.put("card", user.getCard());
         database.insert("users", null, values);
         database.close();
     }
+
     /**
      * Get list of Users from SQLite DB as Array List
+     *
      * @return
      */
     public ArrayList<User> getAllUsers() {
@@ -150,12 +146,14 @@ public class DBHandler  extends SQLiteOpenHelper {
         database.close();
         return usersList;
     }
-    public Cursor getUser(String id){
+
+    public Cursor getUser(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT  * FROM users WHERE userId ='"+id+"'", null );
+        Cursor res = db.rawQuery("SELECT  * FROM users WHERE userId ='" + id + "'", null);
         return res;
     }
-    public void update(User user){
+
+    public void update(User user) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -164,25 +162,28 @@ public class DBHandler  extends SQLiteOpenHelper {
         values.put("name", user.getuName());
         values.put("finger1", user.getFinger1());
         values.put("finger2", user.getFinger2());
-        values.put("card",user.getCard());
-        values.put("status","no");
+        values.put("card", user.getCard());
+        values.put("status", "no");
 
         db.update("users", values, "userId = ?", new String[]{String.valueOf(user.getuId())});
     }
-    public void delete(String id){
+
+    public void delete(String id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("users", "idNum = ?", new String[]{id});
         db.close();
     }
-    public void deleteAll(){
+
+    public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("users",null,null);
+        db.delete("users", null, null);
         db.close();
     }
-    public int dbSyncCount(){
+
+    public int dbSyncCount() {
         int count = 0;
-        String selectQuery = "SELECT  * FROM users where status = '"+"no"+"'";
+        String selectQuery = "SELECT  * FROM users where status = '" + "no" + "'";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         count = cursor.getCount();
@@ -192,12 +193,13 @@ public class DBHandler  extends SQLiteOpenHelper {
 
     /**
      * Compose JSON out of SQLite records
+     *
      * @return
      */
-    public String composeJSONfromSQLite(){
+    public String composeJSONfromSQLite() {
         ArrayList<HashMap<String, String>> wordList;
         wordList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  * FROM users where status = '"+"no"+"'";
+        String selectQuery = "SELECT  * FROM users where status = '" + "no" + "'";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -218,16 +220,16 @@ public class DBHandler  extends SQLiteOpenHelper {
         return gson.toJson(wordList);
     }
 
-    public Cursor getUserId(String idNumber){
+    public Cursor getUserId(String idNumber) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT  * FROM users WHERE idNum ='"+idNumber+"'", null );
+        Cursor res = db.rawQuery("SELECT  * FROM users WHERE idNum ='" + idNumber + "'", null);
         return res;
     }
 
-    public String getUserName(int id){
+    public String getUserName(int id) {
         String name = "user not found";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM users WHERE userId ="+id, null);
+        Cursor res = db.rawQuery("SELECT * FROM users WHERE userId =" + id, null);
         if (res.moveToFirst()) {
             name = res.getString((res.getColumnIndex("name")));
         }
@@ -235,23 +237,25 @@ public class DBHandler  extends SQLiteOpenHelper {
     }
 
     //Cost center
-    public void insertCostCenter(int cost_center_id, String cost_center_name){
+    public void insertCostCenter(int cost_center_id, String cost_center_name) {
 
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("cost_center_id", cost_center_id);
         values.put("cost_center_name", cost_center_name);
-        database.insert("cost_center",null,values);
+        database.insert("cost_center", null, values);
         database.close();
 
     }
-    public void deleteCostCenter(){
+
+    public void deleteCostCenter() {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("cost_center",null,null);
+        db.delete("cost_center", null, null);
         db.close();
     }
-    public List<String> getAllCostCenter(){
+
+    public List<String> getAllCostCenter() {
 
         List<String> cost_center_list = new ArrayList<String>();
         SQLiteDatabase database = this.getWritableDatabase();
@@ -265,9 +269,10 @@ public class DBHandler  extends SQLiteOpenHelper {
         database.close();
         return cost_center_list;
     }
-    public int getCostCenterId(String name){
 
-        String selectQuery = "SELECT * FROM cost_center where cost_center_name ='"+name+"'";
+    public int getCostCenterId(String name) {
+
+        String selectQuery = "SELECT * FROM cost_center where cost_center_name ='" + name + "'";
         SQLiteDatabase database = this.getWritableDatabase();
         int cost_center_id = 0;
 
@@ -284,23 +289,25 @@ public class DBHandler  extends SQLiteOpenHelper {
     }
 
     //product
-    public void insertProduct(int id, String name, String code){
+    public void insertProduct(int id, String name, String code) {
 
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("id", id);
         values.put("name", name);
         values.put("code", code);
-        database.insert("product",null,values);
+        database.insert("product", null, values);
         database.close();
     }
-    public void deleteProduct(){
+
+    public void deleteProduct() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("product",null,null);
+        db.delete("product", null, null);
         db.close();
 
     }
-    public List<String> getAllProduct(){
+
+    public List<String> getAllProduct() {
 
         List<String> product_list = new ArrayList<String>();
         SQLiteDatabase database = this.getWritableDatabase();
@@ -314,9 +321,10 @@ public class DBHandler  extends SQLiteOpenHelper {
         database.close();
         return product_list;
     }
-    public int getProductId(String name){
 
-        String selectQuery = "SELECT * FROM product where name ='"+name+"'";
+    public int getProductId(String name) {
+
+        String selectQuery = "SELECT * FROM product where name ='" + name + "'";
         SQLiteDatabase database = this.getWritableDatabase();
         int product_id = 0;
 
@@ -333,40 +341,44 @@ public class DBHandler  extends SQLiteOpenHelper {
     }
 
     //Pine
-    public void insertPine(HashMap<String, String> queryValues){
+    public void insertPine(HashMap<String, String> queryValues) {
 
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("deliveryN", queryValues.get("deliveryN"));
         values.put("tag", queryValues.get("tag"));
-        values.put("status",queryValues.get("status"));
-        values.put("diameter",queryValues.get("diameter"));
-        values.put("date",queryValues.get("date"));
-        database.insert("pine",null,values);
+        values.put("status", queryValues.get("status"));
+        values.put("diameter", queryValues.get("diameter"));
+        values.put("date", queryValues.get("date"));
+        database.insert("pine", null, values);
         database.close();
 
     }
-    public void insertPineUsers(int userId){
+
+    public void insertPineUsers(int userId) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("userId", userId);
-        database.insert("pine_user",null,values);
+        database.insert("pine_user", null, values);
         database.close();
     }
-    public void deletePine(int pine_id){
+
+    public void deletePine(int pine_id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("pine","pine_id = ?",new String[]{String.valueOf(pine_id)});
+        db.delete("pine", "pine_id = ?", new String[]{String.valueOf(pine_id)});
         db.close();
     }
-    public void deletePineUsers(){
+
+    public void deletePineUsers() {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("pine_user",null,null);
+        db.delete("pine_user", null, null);
         db.close();
     }
-    public List<String> getPineUsers(){
+
+    public List<String> getPineUsers() {
 
         List<String> pineUserList = new ArrayList<String>();
         SQLiteDatabase database = this.getWritableDatabase();
@@ -379,11 +391,12 @@ public class DBHandler  extends SQLiteOpenHelper {
         database.close();
         return pineUserList;
     }
-    public String pineJSON(String deliveryN){
+
+    public String pineJSON(String deliveryN) {
 
         ArrayList<HashMap<String, String>> wordList;
         wordList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  * FROM pine WHERE deliveryN ='"+deliveryN+"'";
+        String selectQuery = "SELECT  * FROM pine WHERE deliveryN ='" + deliveryN + "'";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -407,31 +420,33 @@ public class DBHandler  extends SQLiteOpenHelper {
     }
 
     //Project
-    public void insertProject(HashMap<String, String> queryValues){
+    public void insertProject(HashMap<String, String> queryValues) {
 
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("asset", queryValues.get("asset"));
         values.put("requestedBy", queryValues.get("requestedBy"));
-        values.put("site",queryValues.get("site"));
-        values.put("location",queryValues.get("location"));
-        values.put("criticalAsset",queryValues.get("criticalAsset"));
-        values.put("progress",queryValues.get("progress"));
+        values.put("site", queryValues.get("site"));
+        values.put("location", queryValues.get("location"));
+        values.put("criticalAsset", queryValues.get("criticalAsset"));
+        values.put("progress", queryValues.get("progress"));
         values.put("dateReq", queryValues.get("dateReq"));
         values.put("workReq", queryValues.get("workReq"));
         values.put("id", queryValues.get("id"));
         values.put("dateDone", queryValues.get("dateDone"));
-        database.insert("project",null,values);
+        database.insert("project", null, values);
         database.close();
 
     }
-    public void deleteProject(String criticalAsset){
+
+    public void deleteProject(String criticalAsset) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("project","criticalAsset = ?",new String[]{criticalAsset});
+        db.delete("project", "criticalAsset = ?", new String[]{criticalAsset});
         db.close();
     }
-    public void updateProDate(int prog,String date,String reqB,String sit,String local,String asset,String dateReq, String criticalAsset){
+
+    public void updateProDate(int prog, String date, String reqB, String sit, String local, String asset, String dateReq, String criticalAsset) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -446,12 +461,13 @@ public class DBHandler  extends SQLiteOpenHelper {
 
     }
 
-    void updateProgress(String ca, String progress){
+    void updateProgress(String ca, String progress) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("progress", progress);
         db.update("project", values, "criticalAsset = ?", new String[]{ca});
     }
+
     public ArrayList<HashMap<String, String>> getAllProjects() {
 
         ArrayList<HashMap<String, String>> wordList;
@@ -463,7 +479,7 @@ public class DBHandler  extends SQLiteOpenHelper {
             do {
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("criticalAsset",cursor.getString(4));
-                // map.put("userId", cursor.getString(1));
+                map.put("jobCode", cursor.getString(0));
                 map.put("requestedBy", cursor.getString(1));
                 wordList.add(map);
             } while (cursor.moveToNext());
@@ -471,45 +487,38 @@ public class DBHandler  extends SQLiteOpenHelper {
         database.close();
         return wordList;
     }
-    public Cursor getProject(String criticalAsset){
+
+    public Cursor getProject(String criticalAsset) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT  * FROM project WHERE criticalAsset ='"+criticalAsset+"'", null );
+        Cursor res = db.rawQuery("SELECT  * FROM project WHERE criticalAsset ='" + criticalAsset + "'", null);
         return res;
     }
 
 
-
-
     /**
      * Update Sync status against each User ID
+     *
      * @param id
      * @param status
      */
-    public void updateSyncStatus(String id, String status){
+    public void updateSyncStatus(String id, String status) {
         SQLiteDatabase database = this.getWritableDatabase();
-        String updateQuery = "Update users set status = '"+ status +"' where userId="+"'"+ id +"'";
-        Log.d("query",updateQuery);
+        String updateQuery = "Update users set status = '" + status + "' where userId=" + "'" + id + "'";
+        Log.d("query", updateQuery);
         database.execSQL(updateQuery);
         database.close();
     }
+
     /**
      * Get SQLite records that are yet to be Synced
+     *
      * @return
      */
 
-    public int checkTag(String tag,String deliveryN){
+    public int checkTag(String tag, String deliveryN) {
 
         int count = 0;
-        String selectQuery = "SELECT * FROM pine where tag = '"+tag+"' AND deliveryN = '"+deliveryN+"'";
-        SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        count = cursor.getCount();
-        database.close();
-        return count;
-    }
-    public int checkRemainingTag(String deliveryN){
-        int count = 0;
-        String selectQuery = "SELECT  * FROM pine WHERE deliveryN ='"+deliveryN+"'";
+        String selectQuery = "SELECT * FROM pine where tag = '" + tag + "' AND deliveryN = '" + deliveryN + "'";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
         count = cursor.getCount();
@@ -517,6 +526,15 @@ public class DBHandler  extends SQLiteOpenHelper {
         return count;
     }
 
+    public int checkRemainingTag(String deliveryN) {
+        int count = 0;
+        String selectQuery = "SELECT  * FROM pine WHERE deliveryN ='" + deliveryN + "'";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        count = cursor.getCount();
+        database.close();
+        return count;
+    }
 
 
 }

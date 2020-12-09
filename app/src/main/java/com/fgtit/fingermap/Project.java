@@ -3,8 +3,10 @@ package com.fgtit.fingermap;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,8 +52,7 @@ public class Project extends AppCompatActivity {
         linearLayout_jobCode = findViewById(R.id.linearLayout_jobCode);
 
 
-
-        if (companyID == 3 || companyID == 116) {
+        if (companyID == 116) {
             //effective Cooling JC
 
             setTitle("List Of Jobs");
@@ -94,10 +95,9 @@ public class Project extends AppCompatActivity {
         } else {
 
             //Normal Project
-            //linearLayout_jobCode.setVisibility(View.GONE);
             if (projectList.size() != 0) {
 
-                ListAdapter adapter = new SimpleAdapter(Project.this, projectList, R.layout.project_entry, new String[]{"criticalAsset", "requestedBy"}, new int[]{R.id.criticalAsset, R.id.clientName});
+                ListAdapter adapter = new SimpleAdapter(Project.this, projectList, R.layout.project_entry, new String[]{"criticalAsset", "requestedBy", "jobCode"}, new int[]{R.id.criticalAsset, R.id.clientName, R.id.code});
                 myList.setAdapter(adapter);
             }
 
@@ -122,7 +122,7 @@ public class Project extends AppCompatActivity {
 
     public void createJob(View v) {
 
-        if (companyID == 3 || companyID == 116) {
+        if (companyID == 116) {
 
             Intent intent = new Intent(Project.this, CreateEffectiveJob.class);
             startActivity(intent);
@@ -164,7 +164,7 @@ public class Project extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_add) {
 
-            if (companyID == 3 || companyID == 116) {
+            if (companyID == 116) {
 
                 Intent intent = new Intent(Project.this, CreateEffectiveJob.class);
                 startActivity(intent);
@@ -185,7 +185,7 @@ public class Project extends AppCompatActivity {
 
         dialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-               jobDB.delete_ec_job(id);
+                jobDB.delete_ec_job(id);
                 reload();
             }
         });
@@ -199,7 +199,7 @@ public class Project extends AppCompatActivity {
 
     }
 
-    public void reload(){
+    public void reload() {
         Intent intent = new Intent(this, Project.class);
         startActivity(intent);
     }
