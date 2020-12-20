@@ -58,6 +58,8 @@ import javax.net.ssl.HttpsURLConnection;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class PineDetail extends AppCompatActivity {
 
     EditText delNote,tag,diameter;
@@ -504,7 +506,7 @@ public class PineDetail extends AppCompatActivity {
 
             try{
 
-                URL url = new URL("http://nexgencs.co.za/api/insertPine.php");
+                URL url = new URL(BASE_URL + "/api/insertPine.php");
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("pineJSON", args[0]);
                 postDataParams.put("id", args[1]);

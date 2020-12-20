@@ -54,6 +54,8 @@ import javax.net.ssl.HttpsURLConnection;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class PineCapture extends AppCompatActivity {
 
     private Spinner loadTypeSpinner, vehicleLoadSpinner;
@@ -61,7 +63,7 @@ public class PineCapture extends AppCompatActivity {
     String selectVehicleLoad = "Select load vehicle type";
     EditText edtTallyId,edtBill,edtSupervisor,edtDateReceived,edtCrosscut,edtDrDeliveryN,edtSupplier,
     edtSupplierDN,edtPlantation,edtVehicleReg,edtCompartment,edtPlacardNo;
-    String serverURL = "http://nexgencs.co.za/api/createPine.php";
+    String serverURL = BASE_URL + "/api/createPine.php";
     String userId,dRDeliveryNote,supplierDn,currentDateandTime;
     int responseCode;
     ProgressDialog prgDialog;

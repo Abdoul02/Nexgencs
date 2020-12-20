@@ -22,6 +22,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
 	private ProgressDialog pDialog;
 
-	private static final String LOGIN_URL = "http://www.nexgencs.co.za/alos/login.php";
+	private static final String LOGIN_URL = BASE_URL + "/alos/login.php";
 
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_MESSAGE = "message";

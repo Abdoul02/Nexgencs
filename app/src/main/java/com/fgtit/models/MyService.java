@@ -44,6 +44,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
 import static com.fgtit.models.App.CHANNEL_ID;
 
 public class MyService extends Service {
@@ -152,7 +153,7 @@ public class MyService extends Service {
 
                 params.put("recordJSON", mydb.composeJSONfromSQLite());
                 client.setTimeout(50*1000);
-                client.post("http://www.nexgencs.co.za/version2/syncRecord.php",params ,new AsyncHttpResponseHandler() {
+                client.post(BASE_URL + "/version2/syncRecord.php",params ,new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
                         System.out.println(response);
@@ -213,7 +214,7 @@ public class MyService extends Service {
                 .add("compID",param)
                 .build();
         Request request = new Request.Builder()
-                .url("http://www.nexgencs.co.za/avl_api/getUsers.php")
+                .url(BASE_URL + "/avl_api/getUsers.php")
                 .post(body)
                 .build();
         //Log.d("PARAM:+++",param[0]+ " "+param[1]);

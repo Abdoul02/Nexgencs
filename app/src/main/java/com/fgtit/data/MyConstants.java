@@ -18,18 +18,20 @@ public class MyConstants {
     public static final int FINGERPRINT_SENSITIVITY = 55;
 
     //URL
-    public static final String DRYDEN_GET_JOB_URL = "http://nexgencs.co.za/alos/dryden_combustion/getDrydenJobs.php";
-    public static final String DRYDEN_UPLOAD = "http://nexgencs.co.za/alos/dryden_combustion/uploadData.php";
-    public static final String DRYDEN_GET_JOB_CARDS_URL = "http://nexgencs.co.za/alos/dryden_combustion/getJobs.php";
-    public static final String DRYDEN_CLOCK_URL = "http://nexgencs.co.za/alos/dryden_combustion/clock.php";
 
-    public static final String STRUCMAC_DATA_URL = "http://nexgencs.co.za/alos/strucmac/getStrucMacData.php";
-    public static final String STRUCMAC_UPLOAD_URL = "http://nexgencs.co.za/alos/strucmac/insertData.php";
+    public static final String BASE_URL = "http://nexgencs.co.za";
+    public static final String DRYDEN_GET_JOB_URL = BASE_URL + "/alos/dryden_combustion/getDrydenJobs.php";
+    public static final String DRYDEN_UPLOAD = BASE_URL + "/alos/dryden_combustion/uploadData.php";
+    public static final String DRYDEN_GET_JOB_CARDS_URL = BASE_URL + "/alos/dryden_combustion/getJobs.php";
+    public static final String DRYDEN_CLOCK_URL = BASE_URL + "/alos/dryden_combustion/clock.php";
 
-    public static final String TURNMILL_GET_JOB_URL = "http://nexgencs.co.za/alos/turnmill/getData.php";
-    public static final String TURNMILL_CLOCK_URL = "http://nexgencs.co.za/alos/turnmill/jobClock.php";
+    public static final String STRUCMAC_DATA_URL = BASE_URL + "/alos/strucmac/getStrucMacData.php";
+    public static final String STRUCMAC_UPLOAD_URL = BASE_URL + "/alos/strucmac/insertData.php";
 
-    public static final String PROJECT_SIGNATURE_URL = "http://nexgencs.co.za/alos/project_signature.php";
+    public static final String TURNMILL_GET_JOB_URL = BASE_URL + "/alos/turnmill/getData.php";
+    public static final String TURNMILL_CLOCK_URL = BASE_URL + "/alos/turnmill/jobClock.php";
+
+    public static final String PROJECT_SIGNATURE_URL = BASE_URL + "/alos/project_signature.php";
 
     //Filters
     public static final String TURNMILL_GET_JOB = "turn_mill_job";
@@ -37,7 +39,7 @@ public class MyConstants {
     public static final String DRYDEN_GET_JOB = "dryden_job";
 
     public static final String STRUCMAC_CHECKLIST = "strucMacCheckList";
-    public static final String STRUCMAC_IMAGE_UPLOAD = "http://www.nexgencs.co.za/alos/strucmac/uploadPictures.php";
+    public static final String STRUCMAC_IMAGE_UPLOAD = BASE_URL + "/alos/strucmac/uploadPictures.php";
     public static final String STRUCMAC_VEHICLE = "strucMacVehicle";
     public static final String STRUCMAC_UPLOAD = "StrucMacUpload";
     public static final String DELIVERY = "delivery";

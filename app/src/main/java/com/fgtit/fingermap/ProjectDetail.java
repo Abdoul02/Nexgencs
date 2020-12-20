@@ -59,6 +59,8 @@ import java.util.TimerTask;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class ProjectDetail extends AppCompatActivity {
 
     EditText location, asset, requestedBy, criticalAsset, dateRequired, workRequired, site, name, date, progress;
@@ -665,7 +667,7 @@ public class ProjectDetail extends AppCompatActivity {
             prgDialog.show();
             params.put("projectJSON", json);
             client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 
@@ -732,7 +734,7 @@ public class ProjectDetail extends AppCompatActivity {
             prgDialog.show();
             params.put("projectJSON", json);
             client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 

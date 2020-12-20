@@ -47,6 +47,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 
 public class Signature extends AppCompatActivity {
 
@@ -208,7 +210,7 @@ public class Signature extends AppCompatActivity {
 
                 // open a URL connection to the Servlet
                 FileInputStream fileInputStream = new FileInputStream(sourceFile);
-                final URL url = new URL("http://www.nexgencs.co.za/api/sign.php");
+                final URL url = new URL(BASE_URL + "/api/sign.php");
 
                 // Open a HTTP  connection to  the URL
                 conn = (HttpURLConnection) url.openConnection();

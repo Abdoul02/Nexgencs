@@ -67,6 +67,8 @@ import android_serialport_api.AsyncFingerprint.OnUpCharListener;
 import android_serialport_api.SerialPort;
 import android_serialport_api.SerialPortManager;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class EnrollActivity extends AppCompatActivity {
 	
 	private EditText editText1,editText2,editText6,editText7,editText8,editText9,edtCard,edtID,photo;
@@ -676,7 +678,7 @@ public class EnrollActivity extends AppCompatActivity {
 			saveDialog.show();
 			params.put("save", json);
 
-			client.post("http://www.nexgencs.co.za/api/save.php", params, new AsyncHttpResponseHandler() {
+			client.post(BASE_URL + "/api/save.php", params, new AsyncHttpResponseHandler() {
 				@Override
 				public void onSuccess(String response) {
 					System.out.println(response);

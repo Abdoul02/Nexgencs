@@ -80,6 +80,7 @@ import java.util.UUID;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
 import static com.fgtit.data.MyConstants.DRYDEN_UPLOAD;
 import static com.fgtit.data.MyConstants.IMAGE;
 import static com.fgtit.data.MyConstants.IMAGE_NAME;
@@ -944,7 +945,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
             prgDialog.show();
             params.put("projectJSON", json);
             client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/project/update.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/project/update.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                    /* System.out.println("+++++++++++++++++++++++++");

@@ -83,6 +83,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class BTScale extends AppCompatActivity {
 
     //DB
@@ -143,8 +145,8 @@ public class BTScale extends AppCompatActivity {
     Button btnWeigt;
 
     int responseCode;
-    String serverURL = "http://www.nexgencs.co.za/alos/bt_scale.php";
-    String infoURL = "http://nexgencs.co.za/alos/get_info.php";
+    String serverURL = BASE_URL + "/alos/bt_scale.php";
+    String infoURL = BASE_URL + "/alos/get_info.php";
 
     Spinner spn_cost_center,spn_product;
     String cost_center_prompt = "--Cost center--";

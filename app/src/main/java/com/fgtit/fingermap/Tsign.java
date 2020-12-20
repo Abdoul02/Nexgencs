@@ -39,6 +39,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class Tsign extends AppCompatActivity {
 
     DrawingView dv ;
@@ -46,7 +48,7 @@ public class Tsign extends AppCompatActivity {
     ProgressDialog dialog = null;
     String ba1;
     int saveStatus = 0;
-    public static String URL = "http://www.nexgencs.co.za/api/timesheet/timesheet.php";
+    public static String URL = BASE_URL + "/api/timesheet/timesheet.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

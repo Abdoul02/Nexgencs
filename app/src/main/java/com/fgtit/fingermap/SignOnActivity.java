@@ -71,6 +71,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class SignOnActivity extends AppCompatActivity {
 
     private ListView listView1;
@@ -119,7 +121,7 @@ public class SignOnActivity extends AppCompatActivity {
     String db_user_id_number, db_name, db_longitude, db_latitude, db_date, db_imei, db_status;
 
     int db_user_id, db_shift_id, db_shift_type, db_cost_center_id;
-    String clockURL = "http://www.nexgencs.co.za/alos/alcohol.php";
+    String clockURL = BASE_URL + "/alos/alcohol.php";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     @Override
@@ -959,7 +961,7 @@ public class SignOnActivity extends AppCompatActivity {
 			prgDialog.show();
 			params.put("recordJSON", json);
 			//client.setTimeout(5000);
-			client.post("http://www.nexgencs.co.za/alos/clock.php", params, new AsyncHttpResponseHandler() {
+			client.post(BASE_URL + "/alos/clock.php", params, new AsyncHttpResponseHandler() {
 				@Override
 				public void onSuccess(String response) {
 					//System.out.println(response);

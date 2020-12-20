@@ -74,6 +74,7 @@ import java.util.UUID;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
 import static com.fgtit.service.NetworkService.JOBCARD_URL;
 
 public class JobDetail extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
@@ -236,7 +237,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
                                 open(value);
                             } else {
                                 //Toast.makeText(getApplicationContext(), "Downloading, please wait...", Toast.LENGTH_LONG).show();
-                                download("http://nexgencs.co.za/nexgen" + link, value);
+                                download(BASE_URL + "/nexgen" + link, value);
                             }
 
                         } else {
@@ -373,7 +374,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
                         String code = jCode.getText().toString();
                         Bundle dataBundle = new Bundle();
                         dataBundle.putString("code", code);
-                        dataBundle.putString("url", "http://www.nexgencs.co.za/api/signatures/sign.php");
+                        dataBundle.putString("url", BASE_URL + "/api/signatures/sign.php");
                         Intent intent = new Intent(getApplicationContext(), Signature.class);
                         intent.putExtras(dataBundle);
                         startActivity(intent);
@@ -874,7 +875,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
             prgDialog.show();
             params.put("jCardJSON", json);
             client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/signatures/job.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/signatures/job.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 
@@ -938,7 +939,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
 
             params.put("jCardJSON", json);
             client.setTimeout(5000);
-            client.post("http://www.nexgencs.co.za/api/insertJob.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/insertJob.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     /*System.out.println("+++++++++++++++++++++++++");

@@ -40,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 
 public class JobActivity extends AppCompatActivity {
 
@@ -292,7 +294,7 @@ public class JobActivity extends AppCompatActivity {
             params.put("jobJSON", json);
 
             // Make Http call to getJobs.php
-            client.post("http://www.nexgencs.co.za/api/getJobs.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/getJobs.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 

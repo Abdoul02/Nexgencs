@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class SampleBC extends BroadcastReceiver {
     static int noOfTimes = 0;
     GPSTracker gps;
@@ -90,7 +92,7 @@ public class SampleBC extends BroadcastReceiver {
 
                 params.put("recordJSON", mydb.composeJSONfromSQLite());
                 client.setTimeout(50*1000);
-                client.post("http://www.nexgencs.co.za/api/recInsert.php",params ,new AsyncHttpResponseHandler() {
+                client.post(BASE_URL + "/api/recInsert.php",params ,new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
                         System.out.println(response);
@@ -152,7 +154,7 @@ public class SampleBC extends BroadcastReceiver {
             if(db.dbSyncCount() != 0){
                 //Updating users fingerprints to the server
                 params.put("usersJSON", db.composeJSONfromSQLite());
-                client.post("http://www.nexgencs.co.za/api/updateUser.php",params ,new AsyncHttpResponseHandler() {
+                client.post(BASE_URL + "/api/updateUser.php",params ,new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
                         System.out.println(response);
@@ -224,7 +226,7 @@ public class SampleBC extends BroadcastReceiver {
 
 
             params.put("userJSON",json);
-            client.post("http://www.nexgencs.co.za/api/getusers.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/getusers.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
                     // Hide ProgressBar
@@ -298,7 +300,7 @@ public class SampleBC extends BroadcastReceiver {
 
 
                 // Inform Remote MySQL DB about the completion of Sync activity by passing Sync status of Users
-                updateMySQLSyncSts(gson.toJson(usersynclist),arr.length(),context);
+                //updateMySQLSyncSts(gson.toJson(usersynclist),arr.length(),context);
                 // Reload the Main Activity
                // reloadActivity();
             }
@@ -316,7 +318,7 @@ public class SampleBC extends BroadcastReceiver {
         RequestParams params = new RequestParams();
         params.put("syncsts", json);
         // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post("http://www.nexgencs.co.za/api/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
+        client.post(BASE_URL + "/api/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
                 Toast.makeText(context, String.valueOf(c)+" employees imported", Toast.LENGTH_LONG).show();
@@ -382,7 +384,7 @@ public class SampleBC extends BroadcastReceiver {
             json = jsonObject.toString();
             params.put("locate", json);
 
-            client.post("http://www.nexgencs.co.za/api/location.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/location.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 
