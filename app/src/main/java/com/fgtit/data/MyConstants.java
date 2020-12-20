@@ -12,6 +12,7 @@ public class MyConstants {
     public static final String CHECKLIST = "checklist";
     public static final String WELD_MAP = "weld_map";
     public static final String JOB_DETAIL = "job_detail";
+    public static final String PROJECT_SIGNATURE = "project_signature";
     public static final String CONSUMABLE = "consumable";
 
     public static final int FINGERPRINT_SENSITIVITY = 55;
@@ -27,6 +28,8 @@ public class MyConstants {
 
     public static final String TURNMILL_GET_JOB_URL = "http://nexgencs.co.za/alos/turnmill/getData.php";
     public static final String TURNMILL_CLOCK_URL = "http://nexgencs.co.za/alos/turnmill/jobClock.php";
+
+    public static final String PROJECT_SIGNATURE_URL = "http://nexgencs.co.za/alos/project_signature.php";
 
     //Filters
     public static final String TURNMILL_GET_JOB = "turn_mill_job";
@@ -54,6 +57,7 @@ public class MyConstants {
     public static final int CONSUMABLE_REQUEST_CLOCK = 104;
     public static final int CONSUMABLE_REQUEST_SIGN = 105;
     public static final int STRUCMAC_REPORT_CLOCK = 106;
+    public static final int PROJECT_SIGN = 107;
 
     //Companies
     public static final int COMPANY_ERD = 117;

@@ -1,11 +1,15 @@
 package com.fgtit.fingermap;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,8 +21,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,9 +42,14 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fgtit.adapter.DrawingActivity;
+import com.fgtit.data.CommonFunction;
+import com.fgtit.data.MyConstants;
 import com.fgtit.fpcore.FPMatch;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
+import com.fgtit.service.DownloadService;
+import com.fgtit.service.NetworkService;
 import com.fgtit.service.SingleUploadBroadcastReceiver;
 import com.fgtit.utils.ExtApi;
 import com.loopj.android.http.AsyncHttpClient;
@@ -69,6 +80,13 @@ import java.util.UUID;
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
+import static com.fgtit.data.MyConstants.DRYDEN_UPLOAD;
+import static com.fgtit.data.MyConstants.IMAGE;
+import static com.fgtit.data.MyConstants.IMAGE_NAME;
+import static com.fgtit.data.MyConstants.IMAGE_PATH;
+import static com.fgtit.data.MyConstants.JOB_DETAIL;
+import static com.fgtit.data.MyConstants.PROJECT_SIGNATURE;
+import static com.fgtit.data.MyConstants.PROJECT_SIGNATURE_URL;
 import static com.fgtit.service.NetworkService.PROJECT_URL;
 
 public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroadcastReceiver.Delegate {
@@ -84,6 +102,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     TabHost mTabHost;
     DBHandler mydb = new DBHandler(this);
     JobDB jobDB = new JobDB(this);
+    CommonFunction common = new CommonFunction(this);
     SessionManager session;
     HashMap<String, String> queryValues;
     private byte[] jpgbytes = null;
@@ -115,9 +134,17 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     private List<String> listOfImagesPath;
     Dialog dialog;
     ProgressDialog pDialog;
-    String imgPath;
+    String imgPath, signatureImg, signatureImgPath, signatureImgName;
     private final SingleUploadBroadcastReceiver uploadReceiver =
             new SingleUploadBroadcastReceiver();
+
+    private BroadcastReceiver signatureReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            handleSignatureResponse(bundle);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -328,14 +355,71 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            setPic();
-            jobDB.insertPictPath(0, currentPhotoPath, criticalAsset.getText().toString());
-            anotherPicture();
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_TAKE_PHOTO) {
+                setPic();
+                jobDB.insertPictPath(0, currentPhotoPath, criticalAsset.getText().toString());
+                anotherPicture();
+            }
+
+            if (requestCode == MyConstants.PROJECT_SIGN) {
+                if (data != null) {
+                    signatureImg = data.getStringExtra(IMAGE);
+                    signatureImgPath = data.getStringExtra(IMAGE_PATH);
+                    signatureImgName = data.getStringExtra(IMAGE_NAME);
+                    signatureDialog();
+                }
+            }
         } else {
             Toast.makeText(this, "Something went wrong, could not save picture", Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void signatureDialog() {
+        common.showCustomDialog(
+                "Signature",
+                "Please upload or delete signature",
+                signatureImgPath,
+                onSign(),
+                deleteSignature(),
+                "upload",
+                "delete"
+        );
+    }
+
+    public DialogInterface.OnClickListener onSign() {
+        return (dialog, which) -> uploadSignature();
+    }
+
+    private void uploadSignature() {
+        JSONObject postDataParams = new JSONObject();
+        String cAsset = criticalAsset.getText().toString();
+        String jobNumber = asset.getText().toString();
+        try {
+            postDataParams.accumulate("job_number", jobNumber);
+            postDataParams.accumulate("critical_asset", cAsset);
+            postDataParams.accumulate("image_name", signatureImgName);
+            postDataParams.accumulate("image", signatureImg);
+
+            common.setDialog(true);
+            Intent client_intent = new Intent(this, NetworkService.class);
+            client_intent.putExtra(DownloadService.POST_JSON, "signature");
+            client_intent.putExtra(DownloadService.JSON_VAL, postDataParams.toString());
+            client_intent.putExtra(DownloadService.FILTER, PROJECT_SIGNATURE);
+            client_intent.putExtra(DownloadService.URL, PROJECT_SIGNATURE_URL);
+            startService(client_intent);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DialogInterface.OnClickListener deleteSignature() {
+        return (dialog, which) -> {
+            if (common.deleteFile(signatureImgPath)) {
+                common.showToast("Signature deleted");
+            }
+        };
     }
 
     public void showGrid(View v) {
@@ -490,7 +574,6 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                     Toast.makeText(getApplicationContext(), "Please update the progress", Toast.LENGTH_SHORT).show();
                 }
                 if (progres > 100) {
-
                     Toast.makeText(getApplicationContext(), "Progress can not be over 100%", Toast.LENGTH_SHORT).show();
                 }
 
@@ -499,7 +582,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                     FPDialog(1);
                     //createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat,dtim, coment, progres,status);
 
-                } else if (progres < 100 && trad.length() > 0 && status != selectStatus) {
+                } else if (progres < 100 && trad.length() > 0 && !status.equals(selectStatus)) {
                     FPDialog(1);
                     //createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, nam, trad, dat,dtim, coment, progres,status);
                 } else {
@@ -512,6 +595,11 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
 
             return true;
         }
+        if (id == R.id.sign) {
+            Intent signatureIntent = new Intent(this, DrawingActivity.class);
+            startActivityForResult(signatureIntent, MyConstants.PROJECT_SIGN);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -519,12 +607,15 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     protected void onResume() {
         super.onResume();
         uploadReceiver.register(this);
+        registerReceiver(signatureReceiver, new IntentFilter(
+                NetworkService._SERVICE));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         uploadReceiver.unregister(this);
+        unregisterReceiver(signatureReceiver);
     }
 
     private void FPDialog(int i) {
@@ -675,17 +766,17 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                             if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
                                 fpDialog.cancel();
                                 user_id = String.valueOf(us.getuId());
-                                    if (listOfImagesPath.size() > 0) {
-                                        String path = "/sdcard/fgtit/" + pictName + ".jpg";
-                                        String name = pictName + ".jpg";
-                                        pDialog.show();
-                                        fileUploadFunction(user_id, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
+                                if (listOfImagesPath.size() > 0) {
+                                    String path = "/sdcard/fgtit/" + pictName + ".jpg";
+                                    String name = pictName + ".jpg";
+                                    pDialog.show();
+                                    fileUploadFunction(user_id, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
 
-                                    } else {
-                                        //No Picture
-                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
-                                    }
-                                    tvFpStatus.setText(getString(R.string.txt_fpmatchok));
+                                } else {
+                                    //No Picture
+                                    createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
+                                }
+                                tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                 break;
                             }
                         }
@@ -730,10 +821,12 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
 
     }
 
+    @SuppressLint("HandlerLeak")
     public void TimerStart() {
         if (startTimer == null) {
             startTimer = new Timer();
             startHandler = new Handler() {
+                @SuppressLint("HandlerLeak")
                 @Override
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);
@@ -840,9 +933,6 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
             jsonObject.accumulate("nam", nam);
             jsonObject.accumulate("trade", trad);
             jsonObject.accumulate("dat", dat);
-            //jsonObject.accumulate("nt", nt);
-            //jsonObject.accumulate("ot1", ot1);
-            //jsonObject.accumulate("ot2", ot2);
             jsonObject.accumulate("dt", dt);
             jsonObject.accumulate("comment", com);
             jsonObject.accumulate("progress", pro);
@@ -967,12 +1057,10 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
 
     @Override
     public void onProgress(long uploadedBytes, long totalBytes) {
-
     }
 
     @Override
     public void onError(Exception exception) {
-
     }
 
     @Override
@@ -982,7 +1070,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
         }
         try {
             String response = new String(serverResponseBody, "UTF-8");
-            uploadResponse(response);
+            handleResponse(response);
         } catch (UnsupportedEncodingException e) {
             Log.e(ProjectUpdate.class.getSimpleName(), "UnsupportedEncodingException");
         }
@@ -990,7 +1078,6 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
 
     @Override
     public void onCancelled() {
-
     }
 
     public void showToast(String message) {
@@ -1000,16 +1087,12 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
     public boolean deleteFile(String path) {
         File fileToDelete = new File(path);
         if (fileToDelete.exists()) {
-            if (fileToDelete.delete()) {
-                return true;
-            } else {
-                return false;
-            }
+            return fileToDelete.delete();
         }
         return false;
     }
 
-    public void uploadResponse(String response) {
+    public void handleResponse(String response) {
         try {
             String databaseRes, message;
             JSONObject result = new JSONObject(response);
@@ -1035,6 +1118,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                     }
                 }
             }
+            //        Log.d("ImagePath", "Critical Asset "+ criticalAsset.getText().toString() + " Progress: "+ progress);
             if (success == 1) {
                 if (progress.equals("100")) {
                     mydb.deleteProject(criticalAsset.getText().toString());
@@ -1049,4 +1133,25 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
         }
     }
 
+    private void handleSignatureResponse(Bundle bundle) {
+        String filter = bundle.getString(DownloadService.FILTER);
+        int resultCode = bundle.getInt(DownloadService.RESULT);
+        common.cancelDialog();
+        if (resultCode == RESULT_OK && filter.equals(PROJECT_SIGNATURE)) {
+            String response = bundle.getString(DownloadService.CALL_RESPONSE);
+            try {
+                JSONObject result = new JSONObject(response);
+                int success = result.getInt("success");
+                String message = result.getString("message");
+
+                if (success == 1) {
+                    common.deleteFile(signatureImgPath);
+                }
+                common.showToast(message);
+
+            } catch (JSONException e) {
+                Log.e(ProjectUpdate.class.getSimpleName(), "jsonError: " + e.getMessage());
+            }
+        }
+    }
 }

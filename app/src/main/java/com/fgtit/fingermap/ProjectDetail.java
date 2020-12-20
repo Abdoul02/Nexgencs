@@ -1,5 +1,6 @@
 package com.fgtit.fingermap;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -16,6 +17,7 @@ import android.os.Message;
 
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,6 +41,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -58,17 +61,17 @@ import android_serialport_api.SerialPortManager;
 
 public class ProjectDetail extends AppCompatActivity {
 
-    EditText location,asset,requestedBy,criticalAsset,dateRequired,workRequired,site,name,date,progress;
-    private ImageView camBtn,pImage,fpImage;
+    EditText location, asset, requestedBy, criticalAsset, dateRequired, workRequired, site, name, date, progress;
+    private ImageView camBtn, pImage, fpImage;
     ProgressDialog prgDialog;
-    Calendar myCal,mycal2;
+    Calendar myCal, mycal2;
     String pictName;
     String ba1;
     TabHost mTabHost;
     DBHandler mydb = new DBHandler(this);
     SessionManager session;
     HashMap<String, String> queryValues;
-    private byte[] jpgbytes=null;
+    private byte[] jpgbytes = null;
 
     //Progress Circle
     private TextView txtProgress;
@@ -80,17 +83,16 @@ public class ProjectDetail extends AppCompatActivity {
     private AsyncFingerprint vFingerprint;
     private Dialog fpDialog;
     private TextView tvFpStatus;
-    private boolean bcheck=false;
-    private boolean	bIsUpImage=true;
-    private boolean	bIsCancel=false;
-    private boolean	bfpWork=false;
+    private boolean bcheck = false;
+    private boolean bIsUpImage = true;
+    private boolean bIsCancel = false;
+    private boolean bfpWork = false;
     private Timer startTimer;
     private TimerTask startTask;
     private Handler startHandler;
-    private int	iFinger=0;
+    private int iFinger = 0;
     private int count;
     private ArrayList<User> empList;
-
 
 
     @Override
@@ -99,60 +101,21 @@ public class ProjectDetail extends AppCompatActivity {
         setContentView(R.layout.activity_project_detail);
 
         //EditTexts
-        location = (EditText) findViewById(R.id.edtPlocation);
-        asset = (EditText) findViewById(R.id.edtAsset);
-        requestedBy = (EditText) findViewById(R.id.edtPrequest);
-        criticalAsset = (EditText) findViewById(R.id.edtCAsset);
-        dateRequired = (EditText) findViewById(R.id.edtDateReq);
-        workRequired = (EditText) findViewById(R.id.edtWorkReq);
-        site = (EditText) findViewById(R.id.edtPsite);
-       // name = (EditText) findViewById(R.id.edtPName);
-        //trade = (EditText) findViewById(R.id.edtPTrade);
-       // date = (EditText) findViewById(R.id.edtPdate);
-       // nt = (EditText) findViewById(R.id.edtNT);
-        //ot1 = (EditText) findViewById(R.id.edtOT1);
-       // ot2 = (EditText) findViewById(R.id.edtOT2);
-       // dt = (EditText) findViewById(R.id.edtDT);
-       // comment = (EditText) findViewById(R.id.edtPComment);
-       // progress = (EditText) findViewById(R.id.edtPprogress);
+        location = findViewById(R.id.edtPlocation);
+        asset = findViewById(R.id.edtAsset);
+        requestedBy = findViewById(R.id.edtPrequest);
+        criticalAsset = findViewById(R.id.edtCAsset);
+        dateRequired = findViewById(R.id.edtDateReq);
+        workRequired = findViewById(R.id.edtWorkReq);
+        site = findViewById(R.id.edtPsite);
 
-        txtProgress = (TextView) findViewById(R.id.txtProgress);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        txtProgress = findViewById(R.id.txtProgress);
+        progressBar = findViewById(R.id.progressBar);
 
-       /* mTabHost = (TabHost)findViewById(R.id.tabHost);
-        mTabHost.setup();
-
-        //Lets add the first Tab
-        TabHost.TabSpec mSpec = mTabHost.newTabSpec("Tab One");
-        mSpec.setContent(R.id.first_Tab);
-        mSpec.setIndicator("Description");
-        mTabHost.addTab(mSpec);
-
-        //Lets add the second Tab
-        mSpec = mTabHost.newTabSpec("Progress");
-        mSpec.setContent(R.id.second_Tab);
-        mSpec.setIndicator("Progress");
-        mTabHost.addTab(mSpec);
-
-        //Lets add the third Tab
-        mSpec = mTabHost.newTabSpec("Signature");
-        mSpec.setContent(R.id.third_Tab);
-        mSpec.setIndicator("Signature");
-        mTabHost.addTab(mSpec);
-
-        for(int i =0; i<mTabHost.getTabWidget().getChildCount();i++){
-
-            TextView tv = (TextView) mTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-            tv.setTextColor(Color.WHITE);
-            //tv.setPadding(10,10,10,15);
-            tv.setTextSize((float) 10.0);
-            tv.setTypeface(null, Typeface.BOLD_ITALIC);
-            //tv.setBackgroundResource(R.mipmap.email);
-        }*/
 
         //ImageView
-        camBtn =  findViewById(R.id.imgPCam);
-        pImage =  findViewById(R.id.imgPPict);
+        camBtn = findViewById(R.id.imgPCam);
+        pImage = findViewById(R.id.imgPPict);
 
         //Progress Dialog
         prgDialog = new ProgressDialog(this);
@@ -225,9 +188,9 @@ public class ProjectDetail extends AppCompatActivity {
             public void onClick(View v) {
 
                 Random r = new Random();
-                int random = r.nextInt(100-1)+1;
-                if(criticalAsset.length() > 0){
-                    pictName = criticalAsset.getText().toString() +"_"+ random;
+                int random = r.nextInt(100 - 1) + 1;
+                if (criticalAsset.length() > 0) {
+                    pictName = criticalAsset.getText().toString() + "_" + random;
                     Intent intent = new Intent(ProjectDetail.this, CameraExActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("id", pictName);
@@ -235,11 +198,10 @@ public class ProjectDetail extends AppCompatActivity {
                     startActivityForResult(intent, 0);
 
 
-                }else
+                } else
                     Toast.makeText(getApplicationContext(), "Please Provide the Critical Asset first", Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
@@ -248,34 +210,33 @@ public class ProjectDetail extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        switch(resultCode){
-            case 1:{
-                Bundle bl= data.getExtras();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case 1: {
+                Bundle bl = data.getExtras();
             }
             break;
             case 2:
                 break;
-            case 3:{
-                Bundle bl= data.getExtras();
-                String id=bl.getString("id");
+            case 3: {
+                Bundle bl = data.getExtras();
+                String id = bl.getString("id");
                 Toast.makeText(ProjectDetail.this, "Pictures Finish", Toast.LENGTH_SHORT).show();
-                byte[] photo=bl.getByteArray("photo");
-                if(photo!=null){
-                    try{
+                byte[] photo = bl.getByteArray("photo");
+                if (photo != null) {
+                    try {
                         Matrix matrix = new Matrix();
                         Bitmap bm = BitmapFactory.decodeByteArray(photo, 0, photo.length);
                         matrix.preRotate(90);
-                        Bitmap nbm=Bitmap.createBitmap(bm ,0,0, bm .getWidth(), bm .getHeight(),matrix,true);
+                        Bitmap nbm = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
                         ByteArrayOutputStream out = new ByteArrayOutputStream();
                         nbm.compress(Bitmap.CompressFormat.JPEG, 80, out);
-                        jpgbytes= out.toByteArray();
+                        jpgbytes = out.toByteArray();
 
-                        Bitmap bitmap =BitmapFactory.decodeByteArray(jpgbytes, 0, jpgbytes.length);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(jpgbytes, 0, jpgbytes.length);
                         pImage.setImageBitmap(bitmap);
 
-                    }catch(Exception e){
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -293,7 +254,7 @@ public class ProjectDetail extends AppCompatActivity {
     }
 
 
-    public void upload(String path,String imgName,String loc,String asset,String rb,String ca,String dr,String wr,String sit,int pro){
+    public void upload(String path, String imgName, String loc, String asset, String rb, String ca, String dr, String wr, String sit, int pro) {
 
         Bitmap bm = BitmapFactory.decodeFile(path);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
@@ -302,11 +263,11 @@ public class ProjectDetail extends AppCompatActivity {
         ba1 = Base64.encodeToString(ba, Base64.DEFAULT);
 
         ///Upload image to server
-        createProject(imgName, loc, asset, rb, ca, dr, wr, sit,pro);
+        createProject(imgName, loc, asset, rb, ca, dr, wr, sit, pro);
 
     }
 
-    public void updateProBar(final int progress){
+    public void updateProBar(final int progress) {
 
         new Thread(new Runnable() {
             @Override
@@ -316,7 +277,7 @@ public class ProjectDetail extends AppCompatActivity {
                         @Override
                         public void run() {
                             progressBar.setProgress(pStatus);
-                            txtProgress.setText("Progress: "+pStatus + " %");
+                            txtProgress.setText("Progress: " + pStatus + " %");
                         }
                     });
                     try {
@@ -340,20 +301,20 @@ public class ProjectDetail extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if (SerialPortManager.getInstance().isOpen()) {
                 bIsCancel = true;
                 SerialPortManager.getInstance().closeSerialPort();
             }
             exitApplication();
             return true;
-        } else if(keyCode == KeyEvent.KEYCODE_HOME){
+        } else if (keyCode == KeyEvent.KEYCODE_HOME) {
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    public void exitApplication(){
+    public void exitApplication() {
         Intent intent = new Intent(getApplicationContext(), Project.class);
         startActivity(intent);
     }
@@ -363,10 +324,10 @@ public class ProjectDetail extends AppCompatActivity {
 
         int id = item.getItemId();
         if (id == R.id.upload) {
-        /*
-         * Upload information here.
-          * */
-            String locatio,asse,requestedB,criticalAsse,dateRequire,workRequire,sit;
+            /*
+             * Upload information here.
+             * */
+            String locatio, jobNumber, requestedB, criticalAsse, dateRequire, workRequire, sit;
             int progres;
            /* locatio = location.getText().toString();
             asse = asset.getText().toString();
@@ -378,11 +339,9 @@ public class ProjectDetail extends AppCompatActivity {
             progres = Integer.parseInt(progress.getText().toString());*/
 
 
-
             // int loc,asset,rb,ca,wr,sit,pro,dr;
-            if(location.length()>0 && asset.length()>0 && requestedBy.length()>0 && criticalAsset.length()>0 && workRequired.length()>0
-                    && site.length()>0 &&dateRequired.length()>0){
-
+            if (location.length() > 0 && asset.length() > 0 && requestedBy.length() > 0 && criticalAsset.length() > 0 && workRequired.length() > 0
+                    && site.length() > 0 && dateRequired.length() > 0) {
 
                 //FPDialog(1);
 
@@ -392,19 +351,16 @@ public class ProjectDetail extends AppCompatActivity {
 
 
                 locatio = location.getText().toString();
-                asse = asset.getText().toString();
+                jobNumber = asset.getText().toString();
                 requestedB = requestedBy.getText().toString();
                 criticalAsse = criticalAsset.getText().toString();
                 dateRequire = dateRequired.getText().toString();
                 workRequire = workRequired.getText().toString();
                 sit = site.getText().toString();
                 progres = 0;
-                createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit,progres);
+                createNopict(locatio, jobNumber, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
 
-            }
-
-            else{
-
+            } else {
                 Toast.makeText(getApplicationContext(), "Please fill in fields with *", Toast.LENGTH_SHORT).show();
             }
 
@@ -413,14 +369,14 @@ public class ProjectDetail extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void FPDialog(int i){
-        iFinger=i;
+    private void FPDialog(int i) {
+        iFinger = i;
         AlertDialog.Builder builder = new AlertDialog.Builder(ProjectDetail.this);
         builder.setTitle("fingerprint Registration ");
         final LayoutInflater inflater = LayoutInflater.from(ProjectDetail.this);
         View vl = inflater.inflate(R.layout.dialog_enrolfinger, null);
-        fpImage = (ImageView) vl.findViewById(R.id.imageView1);
-        tvFpStatus= (TextView) vl.findViewById(R.id.textview1);
+        fpImage = vl.findViewById(R.id.imageView1);
+        tvFpStatus = vl.findViewById(R.id.textview1);
         builder.setView(vl);
         builder.setCancelable(false);
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -445,35 +401,34 @@ public class ProjectDetail extends AppCompatActivity {
         FPProcess();
     }
 
-    private void FPProcess(){
+    private void FPProcess() {
 
-        if(!bfpWork){
+        if (!bfpWork) {
             tvFpStatus.setText(getString(R.string.txt_fpplace));
             try {
                 Thread.currentThread();
                 Thread.sleep(500);
-            }catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
             //imgFeed.setImageResource(R.drawable.green_trans);
 
             vFingerprint.FP_GetImage();
-            bfpWork=true;
+            bfpWork = true;
         }
     }
 
     //Finger Print Registration
-    private void FPInit(){
+    private void FPInit() {
         //ָ�ƴ���
-        vFingerprint.setOnGetImageListener(new AsyncFingerprint.OnGetImageListener()  {
+        vFingerprint.setOnGetImageListener(new AsyncFingerprint.OnGetImageListener() {
             @Override
             public void onGetImageSuccess() {
-                if(bIsUpImage){
+                if (bIsUpImage) {
                     vFingerprint.FP_UpImage();
                     tvFpStatus.setText(getString(R.string.txt_fpdisplay));
-                }else{
+                } else {
                     tvFpStatus.setText(getString(R.string.txt_fpprocess));
                     vFingerprint.FP_GenChar(1);
                 }
@@ -559,11 +514,11 @@ public class ProjectDetail extends AppCompatActivity {
 
                                         String path = "/sdcard/fgtit/" + pictName + ".jpg";
                                         String name = pictName + ".jpg";
-                                        upload(path, name, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit,progres);
+                                        upload(path, name, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
 
                                     } else {
                                         //No Picture
-                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit,progres);
+                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
                                         //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
                                     }
 
@@ -585,11 +540,11 @@ public class ProjectDetail extends AppCompatActivity {
                                     if (myFile.exists()) {
                                         String path = "/sdcard/fgtit/" + pictName + ".jpg";
                                         String name = pictName + ".jpg";
-                                        upload(path, name, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit,progres);
+                                        upload(path, name, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
 
                                     } else {
                                         //No Picture
-                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit,progres);
+                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
                                     }
                                     //Toast.makeText(getApplicationContext(), "Job Done " + us.getuName(), Toast.LENGTH_SHORT).show();
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
@@ -621,8 +576,9 @@ public class ProjectDetail extends AppCompatActivity {
 
     }
 
-    public void TimerStart(){
-        if(startTimer==null){
+    @SuppressLint("HandlerLeak")
+    public void TimerStart() {
+        if (startTimer == null) {
             startTimer = new Timer();
             startHandler = new Handler() {
                 @Override
@@ -645,13 +601,12 @@ public class ProjectDetail extends AppCompatActivity {
         }
     }
 
-    public void TimeStop(){
-        if (startTimer!=null)
-        {
+    public void TimeStop() {
+        if (startTimer != null) {
             startTimer.cancel();
             startTimer = null;
             startTask.cancel();
-            startTask=null;
+            startTask = null;
         }
     }
 
@@ -663,9 +618,9 @@ public class ProjectDetail extends AppCompatActivity {
         dateRequired.setText(sdf.format(myCal.getTime()));
     }
 
-    public void createProject(String imgName,String loc ,String asset,String rb,final String ca,String dr,String wr,String sit,final int pro){
+    public void createProject(String imgName, String loc, String asset, String rb, final String ca, String dr, String wr, String sit, final int pro) {
 
-        try{
+        try {
 
             //Create AsycHttpClient object
             AsyncHttpClient client = new AsyncHttpClient();
@@ -689,15 +644,7 @@ public class ProjectDetail extends AppCompatActivity {
             jsonObject.accumulate("dr", dr);
             jsonObject.accumulate("wr", wr);
             jsonObject.accumulate("site", sit);
-            //jsonObject.accumulate("nam", nam);
-            // jsonObject.accumulate("trade", trad);
-            // jsonObject.accumulate("dat", dat);
-            // jsonObject.accumulate("nt", nt);
-            //jsonObject.accumulate("ot1", ot1);
-            //jsonObject.accumulate("ot2", ot2);
-            //jsonObject.accumulate("dt", dt);
-            //jsonObject.accumulate("comment", com);
-            //jsonObject.accumulate("progress",pro);
+
             jsonObject.accumulate("id", userID);
             jsonObject.accumulate("dateDone", currentDateandTime);
 
@@ -718,23 +665,13 @@ public class ProjectDetail extends AppCompatActivity {
             prgDialog.show();
             params.put("projectJSON", json);
             client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/project/project.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://www.nexgencs.co.za/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
-                   /* System.out.println("+++++++++++++++++++++++++");
-                    System.out.println(response);
-                    System.out.println("+++++++++++++++++++++++++");*/
-                    prgDialog.hide();
-                    mydb.insertProject(queryValues);
-                    Toast.makeText(getApplicationContext(), "Project created", Toast.LENGTH_LONG).show();
 
-                  /*  if(Integer.parseInt(response) == 100){
-                        mydb.deleteProject(ca);
-                        reloadActivity();
-                    }else{
-
-                        updateProBar(pro);
-                    }*/
+                        prgDialog.hide();
+                        mydb.insertProject(queryValues);
+                        Toast.makeText(getApplicationContext(), "Project created", Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -742,23 +679,18 @@ public class ProjectDetail extends AppCompatActivity {
                                       String content) {
                     // TODO Auto-generated method stub
                     prgDialog.hide();
-                    //controller.insertRecord(idN, name, dat, lat, lon, id, "IN");
-                    //jdb.insertJInfo(comment, time, dat, job_code,strt,fnsh);
-                    //jdb.updateJob(job_code, progres);
-                    Toast.makeText(getApplicationContext(), "Network error "+ String.valueOf(statusCode), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Network error " + statusCode, Toast.LENGTH_LONG).show();
 
                 }
             });
-
-
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
         }
     }
 
-    public void createNopict(String loc ,String asset,String rb,final String ca,String dr,String wr,String sit,final int pro){
+    public void createNopict(String loc, String asset, String rb, final String ca, String dr, String wr, String sit, final int pro) {
 
-        try{
+        try {
 
             //Create AsycHttpClient object
             AsyncHttpClient client = new AsyncHttpClient();
@@ -779,15 +711,6 @@ public class ProjectDetail extends AppCompatActivity {
             jsonObject.accumulate("dr", dr);
             jsonObject.accumulate("wr", wr);
             jsonObject.accumulate("site", sit);
-            //jsonObject.accumulate("nam", nam);
-            //jsonObject.accumulate("trade", trad);
-            //jsonObject.accumulate("dat", dat);
-            //jsonObject.accumulate("nt", nt);
-            //jsonObject.accumulate("ot1", ot1);
-            //jsonObject.accumulate("ot2", ot2);
-            //jsonObject.accumulate("dt", dt);
-            //jsonObject.accumulate("comment", com);
-            //jsonObject.accumulate("progress",pro);
             jsonObject.accumulate("id", userID);
             jsonObject.accumulate("dateDone", currentDateandTime);
 
@@ -809,50 +732,47 @@ public class ProjectDetail extends AppCompatActivity {
             prgDialog.show();
             params.put("projectJSON", json);
             client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/project/project.php", params, new AsyncHttpResponseHandler() {
+            client.post("http://www.nexgencs.co.za/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
-                   /* System.out.println("+++++++++++++++++++++++++");
-                    System.out.println(response);
-                    System.out.println("+++++++++++++++++++++++++");*/
-                    prgDialog.hide();
-                    mydb.insertProject(queryValues);
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                    reloadActivity();
 
-                   /* if(Integer.parseInt(response) == 100){
-                        mydb.deleteProject(ca);
-                        reloadActivity();
-                    }else{
+                    try {
+                        JSONObject result = new JSONObject(response);
+                        int success = result.getInt("success");
+                        String message = result.getString("message");
 
-                        updateProBar(pro);
-                    }*/
+                        prgDialog.hide();
+                        if(success == 1){
+                            mydb.insertProject(queryValues);
+                            reloadActivity();
+                        }
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
                 public void onFailure(int statusCode, Throwable error,
                                       String content) {
-                    // TODO Auto-generated method stub
                     prgDialog.hide();
-                    //controller.insertRecord(idN, name, dat, lat, lon, id, "IN");
-                    //jdb.insertJInfo(comment, time, dat, job_code,strt,fnsh);
-                    //jdb.updateJob(job_code, progres);
-                    Toast.makeText(getApplicationContext(), "Error occurred with code: "+statusCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProjectDetail.this, "Error occurred with code: " + statusCode, Toast.LENGTH_LONG).show();
 
                 }
             });
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("InputStream", e.getLocalizedMessage());
+            Toast.makeText(this, "A JSON error occurred", Toast.LENGTH_LONG).show();
         }
     }
 
 
-
     // Reload ProjectActivity
     public void reloadActivity() {
-        Intent objIntent = new Intent(getApplicationContext(), Project.class);
+        Intent objIntent = new Intent(this, Project.class);
         startActivity(objIntent);
     }
 }
