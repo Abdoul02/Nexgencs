@@ -81,11 +81,9 @@ import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
 
 import static com.fgtit.data.MyConstants.BASE_URL;
-import static com.fgtit.data.MyConstants.DRYDEN_UPLOAD;
 import static com.fgtit.data.MyConstants.IMAGE;
 import static com.fgtit.data.MyConstants.IMAGE_NAME;
 import static com.fgtit.data.MyConstants.IMAGE_PATH;
-import static com.fgtit.data.MyConstants.JOB_DETAIL;
 import static com.fgtit.data.MyConstants.PROJECT_SIGNATURE;
 import static com.fgtit.data.MyConstants.PROJECT_SIGNATURE_URL;
 import static com.fgtit.service.NetworkService.PROJECT_URL;
@@ -775,7 +773,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
 
                                 } else {
                                     //No Picture
-                                    createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
+                                    createNoPict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
                                 }
                                 tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                 break;
@@ -793,7 +791,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                                     fileUploadFunction(user_id, locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
                                 } else {
                                     //No Picture
-                                    createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
+                                    createNoPict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, user_id, trad, dat, dtim, coment, progres, status);
                                 }
                                 tvFpStatus.setText(getString(R.string.txt_fpmatchok));
                                 break;
@@ -907,7 +905,7 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
         dialog.show();
     }
 
-    public void createNopict(final String loc, final String asset, final String rb, final String ca, final String dr, final String wr, final String sit, String nam, String trad,
+    public void createNoPict(final String loc, final String asset, final String rb, final String ca, final String dr, final String wr, final String sit, String nam, String trad,
                              String dat, String dt, String com, final int pro, final String status) {
 
         try {
@@ -956,12 +954,11 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
                     Toast.makeText(getApplicationContext(), "Project Updated", Toast.LENGTH_LONG).show();
                     if (response.equals("100")) {
                         mydb.deleteProject(ca);
-                        reloadActivity();
                     } else {
                         //updateProBar(pro);
                         Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                        reloadActivity();
                     }
+                    reloadActivity();
                 }
 
                 @Override

@@ -15,6 +15,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -53,7 +54,7 @@ import static com.fgtit.data.MyConstants.BASE_URL;
 public class Signature extends AppCompatActivity {
 
 
-    DrawingView dv ;
+    DrawingView dv;
     private Paint mPaint;
     String upLoadServerUri = null;
     int serverResponseCode = 0;
@@ -70,10 +71,10 @@ public class Signature extends AppCompatActivity {
 
 
         Bundle extras = getIntent().getExtras();
-        if(extras != null){
+        if (extras != null) {
             URL = extras.getString("url");
 
-        }else{
+        } else {
             finish();
         }
 
@@ -93,7 +94,7 @@ public class Signature extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_drawing,menu);
+        getMenuInflater().inflate(R.menu.menu_drawing, menu);
         return true;
     }
 
@@ -101,20 +102,20 @@ public class Signature extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        switch(id){
+        switch (id) {
 
             case R.id.done:
                 shareDrawing();
                 Bundle extras = getIntent().getExtras();
                 String value = extras.getString("code");
-                final String path = Environment.getExternalStorageDirectory().toString()+"/signature/" + value+".png";
+                final String path = Environment.getExternalStorageDirectory().toString() + "/signature/" + value + ".png";
                 File myFile = new File(path);
 
-                if(myFile.exists()) {
+                if (myFile.exists()) {
                     //upload(path, value);
-                    clientDialog(path,value);
-                }else{
-                    Toast.makeText(getApplicationContext(),"Please save signature first",Toast.LENGTH_SHORT).show();
+                    clientDialog(path, value);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please save signature first", Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
@@ -122,7 +123,7 @@ public class Signature extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void shareDrawing()  {
+    private void shareDrawing() {
         final boolean cachePreviousState = dv.isDrawingCacheEnabled();
         final int backgroundPreviousColor = dv.getDrawingCacheBackgroundColor();
         dv.setDrawingCacheEnabled(true);
@@ -136,27 +137,27 @@ public class Signature extends AppCompatActivity {
         if (extras != null) {
 
             final String value = extras.getString("code");
-            final String path = Environment.getExternalStorageDirectory().toString()+"/signature/";
+            final String path = Environment.getExternalStorageDirectory().toString() + "/signature/";
             OutputStream fOut = null;
-            File file = new File(path, value +".png");
+            File file = new File(path, value + ".png");
             file.getParentFile().mkdirs();
 
             try {
                 file.createNewFile();
             } catch (Exception e) {
                 //Log.e("log", e.getCause() + e.getMessage());
-                Toast.makeText(this,e.getCause() + e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getCause() + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             try {
                 fOut = new FileOutputStream(file);
             } catch (Exception e) {
-                Toast.makeText(this,e.getCause() + e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getCause() + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             if (dv.getDrawingCache() == null) {
                 //Log.e(LOG_CAT,"Unable to get drawing cache ");
-                Toast.makeText(this,"Unable to get drawing cache",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Unable to get drawing cache", Toast.LENGTH_SHORT).show();
             }
 
             // dv.getDrawingCache()
@@ -167,12 +168,13 @@ public class Signature extends AppCompatActivity {
                 fOut.close();
                 dv.invalidate();
             } catch (IOException e) {
-                Toast.makeText(this,e.getCause() + e.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getCause() + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }
 
     }
+
     public int uploadFile(String sourceFileUri) {
 
 
@@ -197,15 +199,13 @@ public class Signature extends AppCompatActivity {
                 public void run() {
                   /*  messageText.setText("Source File not exist :"
                             +uploadFilePath + "" + uploadFileName);  */
-                    Toast.makeText(getApplicationContext(),"Signature not saved, please save before uploading ",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Signature not saved, please save before uploading ", Toast.LENGTH_SHORT).show();
                 }
             });
 
             return 0;
 
-        }
-        else
-        {
+        } else {
             try {
 
                 // open a URL connection to the Servlet
@@ -226,7 +226,7 @@ public class Signature extends AppCompatActivity {
                 dos = new DataOutputStream(conn.getOutputStream());
 
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\"; filename=\""+ fileName+ "\"" + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"uploaded_file\"; filename=\"" + fileName + "\"" + lineEnd);
                 dos.writeBytes(lineEnd);
 
                 // create a buffer of  maximum size
@@ -256,19 +256,19 @@ public class Signature extends AppCompatActivity {
                 String serverResponseMessage = conn.getResponseMessage();
 
                 Log.i("uploadFile", "HTTP Response is : "
-                        + serverResponseMessage + ": " + serverResponseCode+ " "+String.valueOf(url));
+                        + serverResponseMessage + ": " + serverResponseCode + " " + String.valueOf(url));
 
-                if(serverResponseCode == 200){
+                if (serverResponseCode == 200) {
 
                     runOnUiThread(new Runnable() {
                         public void run() {
 
-                            Toast.makeText(getApplicationContext(),"Signature Upload Complete",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Signature Upload Complete", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
 
-                if(serverResponseCode == 403){
+                if (serverResponseCode == 403) {
 
                     runOnUiThread(new Runnable() {
                         public void run() {
@@ -279,12 +279,12 @@ public class Signature extends AppCompatActivity {
 
                 }
 
-                if(serverResponseCode == 500){
+                if (serverResponseCode == 500) {
 
                     runOnUiThread(new Runnable() {
                         public void run() {
 
-                            Toast.makeText(getApplicationContext(), "Server error: "+String.valueOf(url), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Server error: " + String.valueOf(url), Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -305,7 +305,7 @@ public class Signature extends AppCompatActivity {
                         Toast.makeText(UploadToServer.this, "MalformedURLException",
                                 Toast.LENGTH_SHORT).show(); */
 
-                        Toast.makeText(getApplicationContext(),"Error occurred please check connection",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Error occurred please check connection", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -321,7 +321,7 @@ public class Signature extends AppCompatActivity {
                         Toast.makeText(UploadToServer.this, "Got Exception : see logcat ",
                                 Toast.LENGTH_SHORT).show(); */
 
-                        Toast.makeText(getApplicationContext(),"Error occurred please check connection",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Error occurred please check connection", Toast.LENGTH_SHORT).show();
                     }
                 });
                 Log.e("server Exception", "Exception : " + e.getMessage(), e);
@@ -333,16 +333,16 @@ public class Signature extends AppCompatActivity {
     }
 
 
-    public void upload(String path,String name,String client){
+    public void upload(String path, String name, String client) {
 
         Bitmap bm = BitmapFactory.decodeFile(path);
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 50, bao);
         byte[] ba = bao.toByteArray();
-        ba1 = Base64.encodeToString(ba,Base64.DEFAULT);
+        ba1 = Base64.encodeToString(ba, Base64.DEFAULT);
 
         // Upload image to server
-        new uploadToServer().execute(name,client);
+        new uploadToServer().execute(name, client);
     }
 
     public class uploadToServer extends AsyncTask<String, Void, String> {
@@ -361,15 +361,15 @@ public class Signature extends AppCompatActivity {
             ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             nameValuePairs.add(new BasicNameValuePair("base64", ba1));
             nameValuePairs.add(new BasicNameValuePair("ImageName", params[0] + ".png"));
-            nameValuePairs.add(new BasicNameValuePair("jCode",params[0]));
-            nameValuePairs.add(new BasicNameValuePair("clientName",params[1]));
+            nameValuePairs.add(new BasicNameValuePair("jCode", params[0]));
+            nameValuePairs.add(new BasicNameValuePair("clientName", params[1]));
             String st = "Success";
             try {
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost httppost = new HttpPost(URL);
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
-                 st = EntityUtils.toString(response.getEntity());
+                st = EntityUtils.toString(response.getEntity());
                 Log.v("log_tag", "In the try Loop" + st);
 
             } catch (Exception e) {
@@ -382,7 +382,7 @@ public class Signature extends AppCompatActivity {
             super.onPostExecute(result);
             pd.hide();
             pd.dismiss();
-            Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
             reload();
             //Log.v("Result",  result);
         }
@@ -391,18 +391,18 @@ public class Signature extends AppCompatActivity {
     public class DrawingView extends View {
 
         public int width;
-        public  int height;
+        public int height;
         private Bitmap mBitmap;
         private Canvas mCanvas;
         private Path mPath;
-        private Paint   mBitmapPaint;
+        private Paint mBitmapPaint;
         Context context;
         private Paint circlePaint;
         private Path circlePath;
 
         public DrawingView(Context c) {
             super(c);
-            context=c;
+            context = c;
             mPath = new Path();
             mBitmapPaint = new Paint(Paint.DITHER_FLAG);
             circlePaint = new Paint();
@@ -425,9 +425,9 @@ public class Signature extends AppCompatActivity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            canvas.drawBitmap( mBitmap, 0, 0, mBitmapPaint);
-            canvas.drawPath( mPath,  mPaint);
-            canvas.drawPath( circlePath,  circlePaint);
+            canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
+            canvas.drawPath(mPath, mPaint);
+            canvas.drawPath(circlePath, circlePaint);
         }
 
         private float mX, mY;
@@ -444,7 +444,7 @@ public class Signature extends AppCompatActivity {
             float dx = Math.abs(x - mX);
             float dy = Math.abs(y - mY);
             if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-                mPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
+                mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
                 mX = x;
                 mY = y;
 
@@ -457,7 +457,7 @@ public class Signature extends AppCompatActivity {
             mPath.lineTo(mX, mY);
             circlePath.reset();
             // commit the path to our offscreen
-            mCanvas.drawPath(mPath,  mPaint);
+            mCanvas.drawPath(mPath, mPaint);
             // kill this so we don't double draw
             mPath.reset();
         }
@@ -485,11 +485,11 @@ public class Signature extends AppCompatActivity {
         }
     }
 
-    public void clientDialog(final String path, final String value){
+    public void clientDialog(final String path, final String value) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.client_name,null);
+        final View dialogView = inflater.inflate(R.layout.client_name, null);
         dialogBuilder.setView(dialogView);
         final EditText edtClient = dialogView.findViewById(R.id.edtClientName);
 
@@ -498,14 +498,14 @@ public class Signature extends AppCompatActivity {
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //do something with edt.getText().toString();
-                if(edtClient.getText().length() > 0 ){
+                if (edtClient.getText().length() > 0) {
 
                     String clientName = edtClient.getText().toString();
-                    upload(path,value,clientName);
+                    upload(path, value, clientName);
 
-                }else{
+                } else {
 
-                    Toast.makeText(getApplicationContext(),"enter client name",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "enter client name", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -519,8 +519,8 @@ public class Signature extends AppCompatActivity {
         b.show();
     }
 
-    public void reload(){
-        Intent intent = new Intent(this, Project.class);
+    public void reload() {
+        Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 }

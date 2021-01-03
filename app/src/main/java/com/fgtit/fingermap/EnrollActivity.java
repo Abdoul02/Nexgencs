@@ -657,58 +657,6 @@ public class EnrollActivity extends AppCompatActivity {
 		vFingerprint.FP_GetImage();
 	}
 
-
-	public void saveInfo(String name, String fing1, String fing2, String idN){
-
-
-		try {
-			AsyncHttpClient client = new AsyncHttpClient();
-			RequestParams params = new RequestParams();
-			String json = "";
-			JSONObject jsonObject = new JSONObject();
-
-
-			jsonObject.accumulate("name", name);
-			jsonObject.accumulate("fing1", fing1);
-			jsonObject.accumulate("fing2", fing2);
-			jsonObject.accumulate("idn", idN);
-
-			json = jsonObject.toString();
-
-			saveDialog.show();
-			params.put("save", json);
-
-			client.post(BASE_URL + "/api/save.php", params, new AsyncHttpResponseHandler() {
-				@Override
-				public void onSuccess(String response) {
-					System.out.println(response);
-					saveDialog.hide();
-					Toast.makeText(getApplicationContext(), "save successful", Toast.LENGTH_SHORT).show();
-				}
-
-				@Override
-				public void onFailure(int statusCode, Throwable error,
-									  String content) {
-					// TODO Auto-generated method stub
-					saveDialog.hide();
-					//mydb.insertRecord(idN, name, dat, lat, lon, id, "IN", imei);
-					Toast.makeText(getApplicationContext(), "User uploaded.", Toast.LENGTH_LONG).show();
-
-				}
-			});
-
-
-		}catch (Exception e){
-
-			Log.d("InputStream", e.getLocalizedMessage());
-		}
-
-
-
-
-
-	}
-
 	//Barcode registration
 	public void BarcodeOpen() {
 		if (mDeviceType == 0) {

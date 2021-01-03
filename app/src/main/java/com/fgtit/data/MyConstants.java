@@ -19,7 +19,7 @@ public class MyConstants {
 
     //URL
 
-    public static final String BASE_URL = "http://nexgencs.co.za";
+    public static final String BASE_URL = "http://nexgencs.net";
     public static final String DRYDEN_GET_JOB_URL = BASE_URL + "/alos/dryden_combustion/getDrydenJobs.php";
     public static final String DRYDEN_UPLOAD = BASE_URL + "/alos/dryden_combustion/uploadData.php";
     public static final String DRYDEN_GET_JOB_CARDS_URL = BASE_URL + "/alos/dryden_combustion/getJobs.php";

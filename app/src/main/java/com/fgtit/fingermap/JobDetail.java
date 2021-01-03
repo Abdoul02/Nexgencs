@@ -21,8 +21,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+
 import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -334,7 +336,6 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
                                 Toast.makeText(getApplicationContext(), "Please press finish", Toast.LENGTH_SHORT).show();
                             }
 
-
                         } else {
 
                             if (Integer.parseInt(pro) > 100) {
@@ -355,9 +356,9 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
                                     String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
                                     String name = code + "_" + pro + ".jpg";
                                     pDialog.show();
-                                    uploadFunction(com,currentDateandTime,currentDateandTime,Integer.parseInt(pro),code,startK,endK,clientSatisfaction,timeOnSite);
+                                    uploadFunction(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, startK, endK, clientSatisfaction, timeOnSite);
                                 } else {
-                                    nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, startK, endK, clientSatisfaction, timeOnSite);
+                                    noPict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, startK, endK, clientSatisfaction, timeOnSite);
                                     //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -691,13 +692,11 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
                                     if (listOfImagesPath.size() > 0) {
                                         String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
                                         String name = code + "_" + pro + ".jpg";
-                                        //upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
                                         pDialog.show();
                                         uploadFunction(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
 
                                     } else {
-                                        nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
-                                        //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
+                                        noPict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
                                     }
 
                                     //Toast.makeText(getApplicationContext(), "Job Done " + us.getuName(), Toast.LENGTH_SHORT).show();
@@ -718,13 +717,12 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
                                     if (listOfImagesPath.size() > 0) {
                                         String path = "/sdcard/fgtit/" + code + "_" + pro + ".jpg";
                                         String name = code + "_" + pro + ".jpg";
-                                        //upload(path, name, com, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
                                         pDialog.show();
                                         uploadFunction(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
 
 
                                     } else {
-                                        nopict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
+                                        noPict(com, currentDateandTime, currentDateandTime, Integer.parseInt(pro), code, strt, fnsh, clientSatisfaction, timeOnSite);
 
                                         //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
                                     }
@@ -834,86 +832,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
         }
     }
 
-    public void upload(String path, String name, String com, String currentDateandTime, int pro, String code, String strt, String finish, int cs, String timeOnSite) {
-
-        Bitmap bm = BitmapFactory.decodeFile(path);
-        ByteArrayOutputStream bao = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 50, bao);
-        byte[] ba = bao.toByteArray();
-        ba1 = Base64.encodeToString(ba, Base64.DEFAULT);
-
-        // Upload image to server
-        updateJob(name, com, currentDateandTime, currentDateandTime, pro, code, strt, finish, cs, timeOnSite);
-        // new uploadToServer().execute(name);
-    }
-
-    public void updateJob(final String name, final String comment, final String dat, final String time, final int progres, final String job_code, final String strt, final String fnsh, final int cs, final String timeOnSite) {
-
-        try {
-
-            //Create AsycHttpClient object
-            AsyncHttpClient client = new AsyncHttpClient();
-            RequestParams params = new RequestParams();
-            String json = "";
-
-            //  build jsonObject
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("base64", ba1);
-            jsonObject.accumulate("ImageName", name);
-            jsonObject.accumulate("dat", dat);
-            jsonObject.accumulate("jobCode", job_code);
-            jsonObject.accumulate("comment", comment);
-            jsonObject.accumulate("tim", time);
-            jsonObject.accumulate("progress", progres);
-            jsonObject.accumulate("start", strt);
-            jsonObject.accumulate("finish", fnsh);
-            jsonObject.accumulate("cs", cs);
-            jsonObject.accumulate("timeOnSite", timeOnSite);
-
-
-            json = jsonObject.toString();
-            prgDialog.show();
-            params.put("jCardJSON", json);
-            client.setTimeout(7000);
-            client.post(BASE_URL + "/api/signatures/job.php", params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(String response) {
-
-                    System.out.println("+++++++++++++++++++++++++");
-                    System.out.println(response);
-                    System.out.println("+++++++++++++++++++++++++");
-                    prgDialog.hide();
-                    Toast.makeText(getApplicationContext(), "Job card updated", Toast.LENGTH_LONG).show();
-                    if (Integer.parseInt(response) == 100) {
-                        jdb.deletejobcard(job_code);
-                        jdb.deleteJinfo(job_code);
-                        reloadActivity();
-                    } else {
-                        jdb.updateJob(job_code, progres);
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Throwable error,
-                                      String content) {
-                    // TODO Auto-generated method stub
-                    System.out.println(content);
-                    prgDialog.hide();
-                    //controller.insertRecord(idN, name, dat, lat, lon, id, "IN");
-                    jdb.insertJInfo(comment, time, dat, job_code, strt, fnsh);
-                    //jdb.updateJob(job_code, progres);
-                    Toast.makeText(getApplicationContext(), "Network error " + statusCode, Toast.LENGTH_LONG).show();
-
-                }
-            });
-
-
-        } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
-    }
-
-    public void nopict(final String comment, final String dat, final String time, final int progres, final String job_code, final String strt, final String fnsh, final int cs, final String timeOnSite) {
+    public void noPict(final String comment, final String dat, final String time, final int progres, final String job_code, final String strt, final String fnsh, final int cs, final String timeOnSite) {
 
         try {
 
@@ -936,18 +855,15 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
 
             json = jsonObject.toString();
             prgDialog.show();
-
+            Log.d("Migration",json);
             params.put("jCardJSON", json);
             client.setTimeout(5000);
-            client.post(BASE_URL + "/api/insertJob.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/alos/insertJob.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
-                    /*System.out.println("+++++++++++++++++++++++++");
-                    System.out.println(response);
-                    System.out.println("+++++++++++++++++++++++++");*/
                     prgDialog.hide();
                     Toast.makeText(getApplicationContext(), "Job card updated", Toast.LENGTH_LONG).show();
-                    if (Integer.parseInt(response) == 100100) {
+                    if (Integer.parseInt(response) == 100) {
                         jdb.deletejobcard(job_code);
                         jdb.deleteJinfo(job_code);
                         reloadActivity();
@@ -959,8 +875,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
                 @Override
                 public void onFailure(int statusCode, Throwable error,
                                       String content) {
-                    // TODO Auto-generated method stub
-                    System.out.println(content);
+                    Log.d("Migration", "error: " + error.getMessage() + " Content: " + content);
                     prgDialog.hide();
                     //controller.insertRecord(idN, name, dat, lat, lon, id, "IN");
                     jdb.insertJInfo(comment, time, dat, job_code, strt, fnsh);
@@ -1178,7 +1093,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
     }
 
     public void uploadResponse(String response) {
-        Log.e("JobDetail",response);
+        Log.d("Migration", response);
         try {
             String databaseRes, message;
             JSONObject result = new JSONObject(response);

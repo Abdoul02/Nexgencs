@@ -392,26 +392,6 @@ public class UtilitiesActivity extends AppCompatActivity {
         }
     }
 
-    // Method to inform remote MySQL DB about completion of Sync activity
-    public void updateMySQLSyncSts(String json, final int c) {
-        System.out.println(json);
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.put("syncsts", json);
-        // Make Http call to updatesyncsts.php with JSON parameter which has Sync statuses of Users
-        client.post(BASE_URL + "/api/updatesyncsts.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(String response) {
-                Toast.makeText(getApplicationContext(), String.valueOf(c) + " employees imported", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable error, String content) {
-                Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     // Move to employeeList
     public void gotoUserList() {
 
