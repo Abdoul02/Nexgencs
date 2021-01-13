@@ -148,7 +148,7 @@ public class UtilitiesActivity extends AppCompatActivity {
                     }
                     break;
                     case 2: {
-                        //Upload employee record to online server
+                        //Upload Clocking record to online server
                         syncRecord();
                     }
                     break;
@@ -479,7 +479,6 @@ public class UtilitiesActivity extends AppCompatActivity {
                                 //System.out.println(obj.get("status"));
                                 String status = obj.get("status").toString();
                                 if (status.equals("yes")) {
-                                    mydb.updateSyncStatus(obj.get("recId").toString(), obj.get("status").toString());
                                     mydb.deleteRecord(obj.get("recId").toString());
                                     count++;
                                 } else {
@@ -758,8 +757,6 @@ public class UtilitiesActivity extends AppCompatActivity {
     public void displayResponse(String response) {
 
         try {
-
-
             int count = 0;
             JSONArray arr = new JSONArray(response);
 
@@ -782,5 +779,4 @@ public class UtilitiesActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 }

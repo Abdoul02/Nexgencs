@@ -114,11 +114,7 @@ public class UserList extends AppCompatActivity {
 
       }
   });
-
-
-
     }
-
 
     public class MyAppAdapter extends BaseAdapter {
 
@@ -208,9 +204,6 @@ public class UserList extends AppCompatActivity {
             notifyDataSetChanged();
         }
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
