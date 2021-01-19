@@ -993,8 +993,8 @@ public class ProjectUpdate extends AppCompatActivity implements SingleUploadBroa
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "co.za.nexgencs.clocking.fileprovider",
+                Uri photoURI = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +
+                                ".fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

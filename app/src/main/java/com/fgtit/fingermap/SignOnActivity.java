@@ -44,6 +44,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -121,7 +122,7 @@ public class SignOnActivity extends AppCompatActivity {
     String db_user_id_number, db_name, db_longitude, db_latitude, db_date, db_imei, db_status;
 
     int db_user_id, db_shift_id, db_shift_type, db_cost_center_id;
-    String clockURL = BASE_URL + "/alos/alcohol.php";
+    String clockURL = MyConstants.getMainClockURL(); //BASE_URL + "/alos/alcohol.php";
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
     @Override
@@ -284,7 +285,7 @@ public class SignOnActivity extends AppCompatActivity {
         }
 
         try {
-
+            Log.d("SchoolDebug", "recordJSON " + postDataParams.toString());
             postRequest(postDataParams.toString());
             alcohol_val = "0";
 

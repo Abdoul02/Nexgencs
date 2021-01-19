@@ -41,7 +41,7 @@
         <activity android:name=".effective_cooling.EffectiveCooling" />
         <activity
             android:name=".MainActivity"
-            android:label="NexgenCS">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -162,7 +162,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="co.za.nexgencs.clocking.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

@@ -123,7 +123,7 @@ public class SignOffActivity extends AppCompatActivity {
 
     int db_user_id, db_shift_id, db_shift_type, db_cost_center_id;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
-    String clockURL = BASE_URL + "/alos/alcohol.php";
+    String clockURL = MyConstants.getMainClockURL(); //BASE_URL + "/alos/alcohol.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

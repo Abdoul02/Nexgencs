@@ -855,7 +855,7 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
 
             json = jsonObject.toString();
             prgDialog.show();
-            Log.d("Migration",json);
+            Log.d("Migration", json);
             params.put("jCardJSON", json);
             client.setTimeout(5000);
             client.post(BASE_URL + "/alos/insertJob.php", params, new AsyncHttpResponseHandler() {
@@ -922,7 +922,8 @@ public class JobDetail extends AppCompatActivity implements SingleUploadBroadcas
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "co.za.nexgencs.clocking.fileprovider",
+                        BuildConfig.APPLICATION_ID +
+                                ".fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

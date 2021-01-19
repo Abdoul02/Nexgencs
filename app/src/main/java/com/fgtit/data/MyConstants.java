@@ -1,5 +1,7 @@
 package com.fgtit.data;
 
+import com.fgtit.fingermap.BuildConfig;
+
 public class MyConstants {
 
     public static final String USERNAME = "username";
@@ -32,6 +34,14 @@ public class MyConstants {
     public static final String TURNMILL_CLOCK_URL = BASE_URL + "/alos/turnmill/jobClock.php";
 
     public static final String PROJECT_SIGNATURE_URL = BASE_URL + "/alos/project_signature.php";
+
+    public static String getMainClockURL() {
+        String mainClock = BASE_URL + "/alos/alcohol.php";
+        if (BuildConfig.FLAVOR == "school") {
+            mainClock = BASE_URL + "/alos/school.php";
+        }
+        return mainClock;
+    }
 
     //Filters
     public static final String TURNMILL_GET_JOB = "turn_mill_job";
