@@ -14,6 +14,9 @@ public class CustomJobCard {
     String progress;
     String fromDate;
     String toDate;
+    String customerName;
+    String drawingNo;
+    String qty;
 
 
 /*    public ERDjobCard(int id, String name, String jobNo, String description, String address,
@@ -111,6 +114,30 @@ public class CustomJobCard {
 
     public String getToDate() {
         return toDate;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getDrawingNo() {
+        return drawingNo;
+    }
+
+    public void setDrawingNo(String drawingNo) {
+        this.drawingNo = drawingNo;
+    }
+
+    public String getQty() {
+        return qty;
+    }
+
+    public void setQty(String qty) {
+        this.qty = qty;
     }
 
 }

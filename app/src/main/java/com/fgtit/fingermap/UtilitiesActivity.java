@@ -326,8 +326,8 @@ public class UtilitiesActivity extends AppCompatActivity {
     }
 
     public void updateSQLite(String response) {
-        ArrayList<HashMap<String, String>> usersynclist;
-        usersynclist = new ArrayList<HashMap<String, String>>();
+/*        ArrayList<HashMap<String, String>> usersynclist;
+        usersynclist = new ArrayList<HashMap<String, String>>();*/
         // Create GSON object
         Gson gson = new GsonBuilder().create();
         try {
@@ -342,47 +342,24 @@ public class UtilitiesActivity extends AppCompatActivity {
                 for (int i = 0; i < arr.length(); i++) {
                     // Get JSON object
                     JSONObject obj = (JSONObject) arr.get(i);
-					/*System.out.println(obj.get("userId"));
-					System.out.println(obj.get("idNum"));
-					System.out.println(obj.get("name"));  */
-
                     User user = new User();
-
-                    // Add userID extracted from Object
                     user.setuId(Integer.parseInt(obj.get("userId").toString()));
-
-                    //Add ID Number from Object
                     user.setIdNum(obj.get("idNum").toString());
-
-                    // Add name extracted from Object
                     user.setuName(obj.get("name").toString());
-
-                    // Add finger1 extracted from Object
                     user.setFinger1(obj.get("finger1").toString());
-
-                    // Add finger2 extracted from Object
                     user.setFinger2(obj.get("finger2").toString());
 
                     user.setCostCenterId(Integer.parseInt(obj.get("costCenterId").toString()));
                     user.setShifts_id(Integer.parseInt(obj.get("shifts_id").toString()));
                     user.setShift_type(Integer.parseInt(obj.get("shift_type").toString()));
                     user.setCard(obj.get("card").toString());
-
-                    //delete duplicate before entering them
-                    //db.delete(obj.get("idNum").toString());
-                    // Insert User into SQLite DB
                     db.insertUser(user);
                     HashMap<String, String> map = new HashMap<String, String>();
                     // Add status for each User in Hashmap
-                    map.put("Id", obj.get("userId").toString());
+/*                    map.put("Id", obj.get("userId").toString());
                     map.put("status", "1");
-                    usersynclist.add(map);
+                    usersynclist.add(map);*/
                 }
-
-
-                // Inform Remote MySQL DB about the completion of Sync activity by passing Sync status of Users
-                //updateMySQLSyncSts(gson.toJson(usersynclist),arr.length());
-                // Reload the Main Activity
                 gotoUserList();
             }
         } catch (JSONException e) {

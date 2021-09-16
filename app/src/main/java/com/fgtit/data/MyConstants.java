@@ -16,6 +16,7 @@ public class MyConstants {
     public static final String JOB_DETAIL = "job_detail";
     public static final String PROJECT_SIGNATURE = "project_signature";
     public static final String CONSUMABLE = "consumable";
+    public static final String SCHOOL_FLAVOR = "school";
 
     public static final int FINGERPRINT_SENSITIVITY = 55;
 
@@ -33,11 +34,14 @@ public class MyConstants {
     public static final String TURNMILL_GET_JOB_URL = BASE_URL + "/alos/turnmill/getData.php";
     public static final String TURNMILL_CLOCK_URL = BASE_URL + "/alos/turnmill/jobClock.php";
 
+    public static final String MECHFIT_GET_JOB_URL = BASE_URL + "/alos/mechfit/mpt_job_card.php";
+    public static final String MECHFIT_JOB_CLOCK_URL = BASE_URL + "/alos/mechfit/mpt_job_clock.php";
+
     public static final String PROJECT_SIGNATURE_URL = BASE_URL + "/alos/project_signature.php";
 
     public static String getMainClockURL() {
         String mainClock = BASE_URL + "/alos/alcohol.php";
-        if (BuildConfig.FLAVOR == "school") {
+        if (BuildConfig.FLAVOR == SCHOOL_FLAVOR) {
             mainClock = BASE_URL + "/alos/school.php";
         }
         return mainClock;
@@ -47,6 +51,7 @@ public class MyConstants {
     public static final String TURNMILL_GET_JOB = "turn_mill_job";
     public static final String TURNMILL_CLOCK = "turn_mill_clock";
     public static final String DRYDEN_GET_JOB = "dryden_job";
+    public static final String MECHFIT_GET_JOB = "mechfit_job";
 
     public static final String STRUCMAC_CHECKLIST = "strucMacCheckList";
     public static final String STRUCMAC_IMAGE_UPLOAD = BASE_URL + "/alos/strucmac/uploadPictures.php";
@@ -76,6 +81,8 @@ public class MyConstants {
     public static final int COMPANY_TURN_MILL = 124;
     public static final int COMPANY_DRYDEN = 132;
     public static final int COMPANY_STRUCMAC = 135;
+    public static final int COMPANY_MECHFIT = 143;
+    public static final int COMPANY_NEXGEN = 8;
 
 
 }

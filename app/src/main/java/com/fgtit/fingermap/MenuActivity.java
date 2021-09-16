@@ -333,6 +333,7 @@ public class MenuActivity extends AppCompatActivity {
         switch (companyID) {
             case MyConstants.COMPANY_ERD:
             case MyConstants.COMPANY_TURN_MILL:
+            case MyConstants.COMPANY_MECHFIT:
                 intent = new Intent(MenuActivity.this, JobClockActivity.class);
                 break;
             case MyConstants.COMPANY_DRYDEN:

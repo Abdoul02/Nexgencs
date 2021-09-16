@@ -85,6 +85,7 @@ public class JobCardClock extends AppCompatActivity {
     Dialog dialog;
     String trade_prompt = "--Trade--";
     String status_prompt = "--Status--";
+    String stage_prompt = "--Stage--";
 
     DBHandler userDB = new DBHandler(this);
     JobDB jobDB = new JobDB(this);
@@ -105,8 +106,9 @@ public class JobCardClock extends AppCompatActivity {
     private ListView listView1;
     private ArrayList<HashMap<String, Object>> mData1;
     private SimpleAdapter adapter1;
+    private Boolean isSubTaskEmpty;
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -151,6 +153,7 @@ public class JobCardClock extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_erdclock);
+        companyId = cf.companyId();
         initViews();
 
         Bundle extras = getIntent().getExtras();
@@ -158,7 +161,6 @@ public class JobCardClock extends AppCompatActivity {
 
             String value = extras.getString("job_id");
             job_id = Integer.parseInt(value);
-            companyId = cf.companyId();
 
             Cursor cursor = jobDB.getERDJobById(Integer.parseInt(value));
             cursor.moveToFirst();
@@ -176,33 +178,50 @@ public class JobCardClock extends AppCompatActivity {
 
             hideViews(job_name, txt_job_name);
             hideViews(address, txt_address);
+            hideViews(description, txt_description);
 
             if (companyId == MyConstants.COMPANY_DRYDEN) {
                 txt_notify.setVisibility(View.VISIBLE);
                 txt_job_name.setText(getString(R.string.client_name, job_name));
+            } else if (companyId == MyConstants.COMPANY_MECHFIT) {
+                txt_job_name.setText(getString(R.string.client_name, job_name));
+                txt_address.setText(getString(R.string.drawing_no, address));
             } else {
                 txt_job_name.setText(getString(R.string.job_name, job_name));
+                txt_address.setText(getString(R.string.address, address));
             }
-
             txt_job_code.setText(getString(R.string.job_no, job_code));
             txt_description.setText(getString(R.string.job_description, description));
-            txt_address.setText(getString(R.string.address, address));
             txt_supervisor.setText(getString(R.string.supervisor, supervisor));
             txt_start_date.setText(getString(R.string.start_date, startDate));
             txt_end_date.setText(getString(R.string.end_date, endDate));
 
             subTaskList = jobDB.getSubTasks(job_id);
-            for (ERDSubTask subTask : subTaskList) {
-                trades.add(subTask.getName());
-                tradeMap.put(subTask.getName(), subTask.getId());
+            isSubTaskEmpty = subTaskList.isEmpty();
+            if (!isSubTaskEmpty) {
+                for (ERDSubTask subTask : subTaskList) {
+                    trades.add(subTask.getName());
+                    tradeMap.put(subTask.getName(), subTask.getId());
+                }
             }
+
+            //SubTAsks
+            if (companyId == MyConstants.COMPANY_MECHFIT) {
+                if (!isSubTaskEmpty) {
+                    spn_trade.setVisibility(View.VISIBLE);
+                    initAllSpinner(this, stage_prompt, trades, spn_trade);
+                } else {
+                    cf.showToast("This job has no stage(s)");
+                }
+            }
+
         } else {
             finish();
         }
     }
 
     private void hideViews(String text, View view) {
-        if (text == null || text.isEmpty()) {
+        if (text == null || text.isEmpty() || text.equalsIgnoreCase("null")) {
             view.setVisibility(View.GONE);
         }
     }
@@ -224,8 +243,13 @@ public class JobCardClock extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             workExit();
-            Intent intent = new Intent(this, MenuActivity.class);
-            startActivity(intent);
+           if(companyId == MyConstants.COMPANY_MECHFIT){
+               Intent intent = new Intent(this, JobClockActivity.class);
+               startActivity(intent);
+           }else{
+               Intent intent = new Intent(this, MenuActivity.class);
+               startActivity(intent);
+           }
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_HOME) {
             return true;
@@ -237,7 +261,7 @@ public class JobCardClock extends AppCompatActivity {
 
         empList = userDB.getAllUsers();
         spn_status = findViewById(R.id.status_spinner);
-        // spn_trade = findViewById(R.id.trade_spinner);
+        spn_trade = findViewById(R.id.trade_spinner);
 
         txt_address = findViewById(R.id.txt_address);
         txt_description = findViewById(R.id.txt_description);
@@ -271,6 +295,7 @@ public class JobCardClock extends AppCompatActivity {
 
         //status
         initAllSpinner(this, status_prompt, statuses, spn_status);
+
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
         FPInit();
         FPProcess();
@@ -288,7 +313,6 @@ public class JobCardClock extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //val = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -431,51 +455,19 @@ public class JobCardClock extends AppCompatActivity {
             @Override
             public void onUpCharSuccess(byte[] model) {
 
-                //String trade = spn_trade.getSelectedItem().toString();
                 String status = spn_status.getSelectedItem().toString();
-                if (status.equals(status_prompt)) {
-                    showToast("Please select a status");
-                } else {
-                    List<User> user = empList;
-                    int count = 0;
-                    if (empList.size() > 0) {
-
-                        for (User us : user) {
-
-                            if (us.getFinger1() != null && us.getFinger1().length() >= 512) {
-
-                                byte[] ref = ExtApi.Base64ToBytes(us.getFinger1());
-                                if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
-                                    //Clock
-                                    AddPersonItem(us);
-                                    tvFpStatus.setText(getString(R.string.txt_fpmatchok));
-                                    break;
-                                }
-                            }
-
-                            if (us.getFinger2() != null && us.getFinger2().length() >= 512) {
-
-                                byte[] ref = ExtApi.Base64ToBytes(us.getFinger2());
-                                if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
-
-                                    //Clock
-                                    AddPersonItem(us);
-                                    Log.d(TAG, "onUpCharSuccess: " + us.getuName());
-                                    tvFpStatus.setText(getString(R.string.txt_fpmatchok));
-                                    break;
-                                }
-                            }
-
-                            count++;
-                        }
-
-                        if (count == empList.size()) {
-                            showToast("fingerprint not found");
-
-                        }
+                if (companyId == MyConstants.COMPANY_MECHFIT && !isSubTaskEmpty) {
+                    String trade = spn_trade.getSelectedItem().toString();
+                    if (status.equals(status_prompt) || trade.equals(trade_prompt)) {
+                        showToast("Please select both Status a Stage");
                     } else {
-                        showToast("Please download employee information");
-
+                        acceptClock(model);
+                    }
+                } else {
+                    if (status.equals(status_prompt)) {
+                        showToast("Please select a status");
+                    } else {
+                        acceptClock(model);
                     }
                 }
                 bfpWork = false;
@@ -492,6 +484,46 @@ public class JobCardClock extends AppCompatActivity {
 
     }
 
+    private void acceptClock(byte[] model) {
+        List<User> user = empList;
+        int count = 0;
+        if (empList.size() > 0) {
+
+            for (User us : user) {
+
+                if (us.getFinger1() != null && us.getFinger1().length() >= 512) {
+
+                    byte[] ref = ExtApi.Base64ToBytes(us.getFinger1());
+                    if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
+                        AddPersonItem(us);
+                        tvFpStatus.setText(getString(R.string.txt_fpmatchok));
+                        break;
+                    }
+                }
+
+                if (us.getFinger2() != null && us.getFinger2().length() >= 512) {
+
+                    byte[] ref = ExtApi.Base64ToBytes(us.getFinger2());
+                    if (FPMatch.getInstance().MatchTemplate(model, ref) > 60) {
+                        AddPersonItem(us);
+                        Log.d(TAG, "onUpCharSuccess: " + us.getuName());
+                        tvFpStatus.setText(getString(R.string.txt_fpmatchok));
+                        break;
+                    }
+                }
+
+                count++;
+            }
+
+            if (count == empList.size()) {
+                showToast("fingerprint not found");
+
+            }
+        } else {
+            showToast("Please download employee information");
+        }
+    }
+
     public void upload(int user_id, String date) {
         JSONObject postDataParams = new JSONObject();
 
@@ -500,6 +532,15 @@ public class JobCardClock extends AppCompatActivity {
             postDataParams.accumulate("status", spn_status.getSelectedItem().toString());
             postDataParams.accumulate("user_id", user_id);
             postDataParams.accumulate("job_id", job_id);
+
+            //For MechFit add tradeId
+            if (companyId == MyConstants.COMPANY_MECHFIT && !isSubTaskEmpty) {
+                String stage = spn_trade.getSelectedItem().toString();
+                if (tradeMap.get(stage) != null) {
+                    int stageId = tradeMap.get(stage);
+                    postDataParams.accumulate("stage_id", stageId);
+                }
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -519,6 +560,9 @@ public class JobCardClock extends AppCompatActivity {
                 break;
             case MyConstants.COMPANY_DRYDEN:
                 client_intent.putExtra(DownloadService.URL, MyConstants.DRYDEN_CLOCK_URL);
+                break;
+            case MyConstants.COMPANY_MECHFIT:
+                client_intent.putExtra(DownloadService.URL, MyConstants.MECHFIT_JOB_CLOCK_URL);
                 break;
         }
         client_intent.putExtra(DownloadService.FILTER, JOB_CLOCK);

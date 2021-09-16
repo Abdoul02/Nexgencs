@@ -170,7 +170,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <receiver
+<!--        <receiver
             android:name="com.fgtit.models.SampleBC"
             android:exported="true"
             android:process=":remote">
@@ -179,7 +179,7 @@
 
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
         <receiver android:name="com.fgtit.service.UsbBroadcastReceiver">
             <intent-filter>
                 <action android:name="NotifyUsbStartNet" />
