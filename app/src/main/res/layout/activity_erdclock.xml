@@ -145,7 +145,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rL_clock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -154,11 +154,14 @@
 
         <Spinner
             android:id="@+id/trade_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:background="@drawable/custom_spinner"
             android:spinnerMode="dropdown"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <Spinner
             android:id="@+id/status_spinner"
@@ -168,6 +171,8 @@
             android:layout_toRightOf="@+id/trade_spinner"
             android:background="@drawable/custom_spinner"
             android:spinnerMode="dropdown"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/trade_spinner"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/trade_spinner" />
 
@@ -175,13 +180,15 @@
             android:id="@+id/erd_clock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+           app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/status_spinner"
             android:src="@drawable/ic_fingerprint"
+            tools:visibility="visible"
             android:visibility="gone">
 
         </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/txtNotify"

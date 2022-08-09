@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
-import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Base64;
@@ -58,6 +57,8 @@ import java.util.TimerTask;
 
 import android_serialport_api.AsyncFingerprint;
 import android_serialport_api.SerialPortManager;
+
+import static com.fgtit.data.MyConstants.BASE_URL;
 
 public class ProjectDetail extends AppCompatActivity {
 
@@ -358,7 +359,7 @@ public class ProjectDetail extends AppCompatActivity {
                 workRequire = workRequired.getText().toString();
                 sit = site.getText().toString();
                 progres = 0;
-                createNopict(locatio, jobNumber, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
+                createNoPict(locatio, jobNumber, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
 
             } else {
                 Toast.makeText(getApplicationContext(), "Please fill in fields with *", Toast.LENGTH_SHORT).show();
@@ -518,7 +519,7 @@ public class ProjectDetail extends AppCompatActivity {
 
                                     } else {
                                         //No Picture
-                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
+                                        createNoPict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
                                         //Toast.makeText(getApplicationContext(), "No Picture", Toast.LENGTH_SHORT).show();
                                     }
 
@@ -544,7 +545,7 @@ public class ProjectDetail extends AppCompatActivity {
 
                                     } else {
                                         //No Picture
-                                        createNopict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
+                                        createNoPict(locatio, asse, requestedB, criticalAsse, dateRequire, workRequire, sit, progres);
                                     }
                                     //Toast.makeText(getApplicationContext(), "Job Done " + us.getuName(), Toast.LENGTH_SHORT).show();
                                     tvFpStatus.setText(getString(R.string.txt_fpmatchok));
@@ -665,7 +666,7 @@ public class ProjectDetail extends AppCompatActivity {
             prgDialog.show();
             params.put("projectJSON", json);
             client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 
@@ -688,7 +689,7 @@ public class ProjectDetail extends AppCompatActivity {
         }
     }
 
-    public void createNopict(String loc, String asset, String rb, final String ca, String dr, String wr, String sit, final int pro) {
+    public void createNoPict(String loc, String asset, String rb, final String ca, String dr, String wr, String sit, final int pro) {
 
         try {
 
@@ -732,7 +733,7 @@ public class ProjectDetail extends AppCompatActivity {
             prgDialog.show();
             params.put("projectJSON", json);
             client.setTimeout(7000);
-            client.post("http://www.nexgencs.co.za/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/project/createProject.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">NexGenCS</string>
+    <!--<string name="app_name">NexGenCS</string>-->
 
     <string name="title_activity_login">Login</string>
     <string name="title_activity_menu">Menu</string>
@@ -193,6 +193,7 @@
     <string name="client_name" translatable="false">Client: %1$s</string>
     <string name="supervisor" translatable="false">Supervisor: %1$s</string>
     <string name="address" translatable="false">Address: %1$s</string>
+    <string name="drawing_no" translatable="false">Drawing no: %1$s</string>
 
     <!-- Setting   -->
     <string name="default_target_ip">192.168.1.106</string>

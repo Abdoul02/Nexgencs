@@ -22,6 +22,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class DownloadService extends IntentService {
 
     private int result = Activity.RESULT_CANCELED;
@@ -30,9 +32,9 @@ public class DownloadService extends IntentService {
     public static final String POST_JSON = "json";
     public static final String JSON_VAL = "json_value";
 
-    public static final String EC_DATA_URL = "http://nexgencs.co.za/alos/get_ec_data.php";
-    public static final String ERD_DATA_URL = "http://nexgencs.co.za/alos/get_erd_job.php";
-    public static final String ERD_CLOCK_URL = "http://nexgencs.co.za/alos/erd_job_clock.php";
+    public static final String EC_DATA_URL = BASE_URL + "/alos/get_ec_data.php";
+    public static final String ERD_DATA_URL = BASE_URL + "/alos/get_erd_job.php";
+    public static final String ERD_CLOCK_URL = BASE_URL + "/alos/erd_job_clock.php";
 
     public static final String CUSTOMER = "customer";
     public static final String PRODUCTS = "product";

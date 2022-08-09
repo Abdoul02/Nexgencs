@@ -62,7 +62,7 @@ import static com.fgtit.service.DownloadService.ERD_DATA_URL;
 
 public class JobClockActivity extends AppCompatActivity {
     Dialog dialog;
-    private static final String TAG = "ERDJobActivity";
+    private static final String TAG = "JobClockActivity";
     JobDB jobDB = new JobDB(this);
     DBHandler userDB = new DBHandler(this);
     CommonFunction cf = new CommonFunction(this);
@@ -104,7 +104,8 @@ public class JobClockActivity extends AppCompatActivity {
             int resultCode = bundle.getInt(DownloadService.RESULT);
 
             assert filter != null;
-            if (resultCode == RESULT_OK && (filter.equals(ERD) || filter.equals(MyConstants.TURNMILL_GET_JOB) || filter.equals(MyConstants.DRYDEN_GET_JOB))) {
+            if (resultCode == RESULT_OK && (filter.equals(ERD) || filter.equals(MyConstants.TURNMILL_GET_JOB)
+                    || filter.equals(MyConstants.DRYDEN_GET_JOB) || filter.equals(MyConstants.MECHFIT_GET_JOB))) {
                 String response = bundle.getString(DownloadService.CALL_RESPONSE);
                 Log.d(TAG, "onReceive: " + response);
 
@@ -142,16 +143,27 @@ public class JobClockActivity extends AppCompatActivity {
                                     jobCard.setName(obj.getString("name"));
                                 }
 
+                                //This is for Mechfit
+                                if (obj.has("customer_name")) {
+                                    jobCard.setCustomerName(obj.getString("customer_name"));
+                                }
+
+                                if (obj.has("qty")) {
+                                    jobCard.setQty(obj.getString("qty"));
+                                }
+
+                                if (obj.has("drawing_no")) {
+                                    jobCard.setDrawingNo(obj.getString("drawing_no"));
+                                }
+
                                 if (obj.has("sub_task")) {
                                     String tasks = obj.getString("sub_task");
                                     JSONArray taskArray = new JSONArray(tasks);
 
                                     if (taskArray.length() != 0) {
-                                        Log.d(TAG, "Tasks: " + taskArray);
+                                        Log.d(TAG, "Job: "+obj.getString("job_no") + " Tasks: " + taskArray.length());
                                         for (int x = 0; x < taskArray.length(); x++) {
                                             JSONObject taskObject = (JSONObject) taskArray.get(x);
-                                            Log.d(TAG, "Name: " + taskObject.getString("name"));
-                                            Log.d(TAG, "job_card_id: " + taskObject.getString("job_card_id"));
                                             ERDSubTask subTask = new ERDSubTask();
                                             subTask.setName(taskObject.getString("name"));
                                             subTask.setJobCardId(taskObject.getInt("job_card_id"));
@@ -160,7 +172,11 @@ public class JobClockActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                                jobDB.insertERDJob(jobCard);
+                                if (filter.equals(MyConstants.MECHFIT_GET_JOB)) {
+                                    jobDB.insertMechFitJob(jobCard);
+                                } else {
+                                    jobDB.insertERDJob(jobCard);
+                                }
                             }
 
                             if (dialog != null && dialog.isShowing()) {
@@ -191,8 +207,13 @@ public class JobClockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_erdjob);
+        companyId = cf.companyId();
 
-        list_of_jobs = jobDB.getERDJobList();
+        if (companyId == MyConstants.COMPANY_MECHFIT) {
+            list_of_jobs = jobDB.getMechFitJobList();
+        } else {
+            list_of_jobs = jobDB.getERDJobList();
+        }
         myList = findViewById(R.id.erd_job_list);
 
         empList = userDB.getAllUsers();
@@ -216,8 +237,6 @@ public class JobClockActivity extends AppCompatActivity {
         } else {
             cf.showToast("No jobs");
         }
-
-        companyId = cf.companyId();
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
         FPInit();
     }
@@ -356,6 +375,10 @@ public class JobClockActivity extends AppCompatActivity {
             case MyConstants.COMPANY_DRYDEN:
                 getJobs("dryden_data", MyConstants.DRYDEN_GET_JOB_CARDS_URL, MyConstants.DRYDEN_GET_JOB);
                 break;
+
+            case MyConstants.COMPANY_MECHFIT:
+                getJobs("mpt", MyConstants.MECHFIT_GET_JOB_URL, MyConstants.MECHFIT_GET_JOB);
+                break;
         }
     }
 
@@ -422,7 +445,6 @@ public class JobClockActivity extends AppCompatActivity {
         }
     }
 
-    //Finger Print Registration
     private void FPInit() {
         vFingerprint.setOnGetImageListener(new AsyncFingerprint.OnGetImageListener() {
             @Override
@@ -645,26 +667,18 @@ public class JobClockActivity extends AppCompatActivity {
                 viewHolder = (JobClockActivity.MyAppAdapter.ViewHolder) convertView.getTag();
             }
 
-            /* switch (companyId) {
-                case MyConstants.COMPANY_TURN_MILL:
-                    viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
-                    viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
-                    break;
-                case MyConstants.COMPANY_DRYDEN:
-                    viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
-
-                    break;
-                default:
-                    viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
-                    break;
-            }*/
             if (companyId == MyConstants.COMPANY_TURN_MILL) {
                 viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
                 viewHolder.txt_job_code.setVisibility(View.INVISIBLE);
+            } else if (companyId == MyConstants.COMPANY_MECHFIT) {
+                viewHolder.txt_job_name.setText(JobList.get(position).getJobNo() + "");
+                viewHolder.txt_job_code.setText(JobList.get(position).getCustomerName() + "");
+            } else {
+                viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
+                viewHolder.txt_job_code.setText(JobList.get(position).getJobNo() + "");
             }
-            viewHolder.txt_job_name.setText(JobList.get(position).getName() + "");
+
             viewHolder.txt_supervisor.setText(userDB.getUserName(JobList.get(position).getSupervisorId()) + "");
-            viewHolder.txt_job_code.setText(JobList.get(position).getJobNo() + "");
             viewHolder.txt_local_id.setText(JobList.get(position).getLocal_id() + "");
             viewHolder.txt_job_id.setText(JobList.get(position).getId() + "");
             viewHolder.txt_supervisor_id.setText(JobList.get(position).getSupervisorId() + "");

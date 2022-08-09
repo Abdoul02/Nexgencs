@@ -56,6 +56,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
 import static com.fgtit.service.DownloadService.EC_DATA_URL;
 import static com.fgtit.service.DownloadService.PRODUCTS;
 
@@ -72,7 +73,7 @@ public class EffectiveCooling extends AppCompatActivity {
     private ArrayList<EcProduct> productList;
     List<String> allProducts = new ArrayList<>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String URL = "http://www.nexgencs.co.za/alos/capture_ec_job_info.php";
+    String URL = BASE_URL + "/alos/capture_ec_job_info.php";
     String currentDateTime, status;
     JobDB jobDB = new JobDB(this);
     HashMap<String, String> queryValues;
@@ -209,7 +210,7 @@ public class EffectiveCooling extends AppCompatActivity {
 
             Bundle dataBundle = new Bundle();
             dataBundle.putString("code", job_id);
-            dataBundle.putString("url", "http://www.nexgencs.co.za/alos/ec_job_card/sign.php");
+            dataBundle.putString("url", BASE_URL + "/alos/ec_job_card/sign.php");
             Intent intent = new Intent(getApplicationContext(), Signature.class);
             intent.putExtras(dataBundle);
             startActivity(intent);

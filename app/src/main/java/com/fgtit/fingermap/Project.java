@@ -164,14 +164,14 @@ public class Project extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_add) {
 
+            Intent intent;
             if (companyID == 116) {
 
-                Intent intent = new Intent(Project.this, CreateEffectiveJob.class);
-                startActivity(intent);
+                intent = new Intent(Project.this, CreateEffectiveJob.class);
             } else {
-                Intent intent = new Intent(Project.this, ProjectDetail.class);
-                startActivity(intent);
+                intent = new Intent(Project.this, ProjectDetail.class);
             }
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

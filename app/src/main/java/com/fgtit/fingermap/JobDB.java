@@ -382,6 +382,22 @@ public class JobDB extends SQLiteOpenHelper {
         database.close();
     }
 
+    public void insertMechFitJob(CustomJobCard jobCard) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", jobCard.getId());
+        values.put("job_no", jobCard.getJobNo());
+        values.put("supervisor_id", jobCard.getSupervisorId());
+        values.put("name", jobCard.getCustomerName());
+        values.put("description", jobCard.getDescription());
+        values.put("address", jobCard.getDrawingNo());
+        values.put("progress", jobCard.getQty());
+        values.put("from_date", jobCard.getFromDate());
+        values.put("to_date", jobCard.getToDate());
+        database.insert(ERD_TABLE, null, values);
+        database.close();
+    }
+
     public void insertERDSubTask(ERDSubTask subTask) {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -415,15 +431,40 @@ public class JobDB extends SQLiteOpenHelper {
         return jobList;
     }
 
+    public ArrayList<CustomJobCard> getMechFitJobList() {
+        ArrayList<CustomJobCard> jobList = new ArrayList<>();
+        String selectQuery = "SELECT  * FROM erd_job";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+
+                CustomJobCard jobCard = new CustomJobCard();
+                jobCard.setLocal_id(cursor.getInt(0));
+                jobCard.setId(cursor.getInt(1));
+                jobCard.setSupervisorId(cursor.getInt(2));
+                jobCard.setCustomerName(cursor.getString(3));
+                jobCard.setJobNo(cursor.getString(4));
+                jobCard.setDescription(cursor.getString(5));
+                jobCard.setDrawingNo(cursor.getString(6));
+                jobCard.setQty(cursor.getString(7));
+
+                jobList.add(jobCard);
+            } while (cursor.moveToNext());
+        }
+        database.close();
+        return jobList;
+    }
+
     public Cursor getERDJobById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("select * from erd_job where id=" + id, null);
         return res;
     }
 
-    public Cursor getDataById(int id, String table){
+    public Cursor getDataById(int id, String table) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from " + table+ " where id=" + id, null);
+        Cursor res = db.rawQuery("select * from " + table + " where id=" + id, null);
         return res;
     }
 
@@ -711,10 +752,11 @@ public class JobDB extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT  * FROM vehicle WHERE reg_no ='" + reg_no + "'", null);
         return res;
     }
-    public String getVehicleById(int id){
+
+    public String getVehicleById(int id) {
         String name = "vehicle not found";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM vehicle WHERE id ="+id, null);
+        Cursor res = db.rawQuery("SELECT * FROM vehicle WHERE id =" + id, null);
         if (res.moveToFirst()) {
             name = res.getString((res.getColumnIndex("reg_no")));
         }
@@ -727,7 +769,7 @@ public class JobDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteDeliveryById(String id){
+    public void deleteDeliveryById(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(DELIVERY_TABLE, "id=? ", new String[]{id});
         db.close();

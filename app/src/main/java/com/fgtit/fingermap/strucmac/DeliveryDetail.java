@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fgtit.data.CommonFunction;
+import com.fgtit.fingermap.BuildConfig;
 import com.fgtit.fingermap.DBHandler;
 import com.fgtit.fingermap.DisplayLocalPictures;
 import com.fgtit.fingermap.JobDB;
@@ -298,7 +299,8 @@ public class DeliveryDetail extends AppCompatActivity implements SingleUploadBro
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "co.za.nexgencs.clocking.fileprovider",
+                        BuildConfig.APPLICATION_ID +
+                                ".fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

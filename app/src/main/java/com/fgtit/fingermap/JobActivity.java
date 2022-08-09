@@ -12,12 +12,16 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.appcompat.widget.SearchView;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -39,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import static com.fgtit.data.MyConstants.BASE_URL;
 
 
 public class JobActivity extends AppCompatActivity {
@@ -134,9 +140,9 @@ public class JobActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String searchQuery) {
 
-                if(list_of_jobs.isEmpty()){
+                if (list_of_jobs.isEmpty()) {
                     Toast.makeText(JobActivity.this, "Download jobs first", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     myAppAdapter.filter(searchQuery.trim());
                     myList.invalidate();
                 }
@@ -292,7 +298,7 @@ public class JobActivity extends AppCompatActivity {
             params.put("jobJSON", json);
 
             // Make Http call to getJobs.php
-            client.post("http://www.nexgencs.co.za/api/getJobs.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/getJobs.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 

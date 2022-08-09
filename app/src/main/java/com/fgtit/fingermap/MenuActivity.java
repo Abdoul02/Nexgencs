@@ -68,6 +68,8 @@ import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 public class MenuActivity extends AppCompatActivity {
 
     private ListView listView;
@@ -84,7 +86,7 @@ public class MenuActivity extends AppCompatActivity {
     int companyID;
     SessionManager session;
     HashMap<String, String> manager;
-    String serverURL = "http://www.nexgencs.co.za/alos/checkUpdate.php";
+    String serverURL = BASE_URL + "/alos/checkUpdate.php";
 
     @SuppressLint("NewApi")
     @Override
@@ -331,6 +333,7 @@ public class MenuActivity extends AppCompatActivity {
         switch (companyID) {
             case MyConstants.COMPANY_ERD:
             case MyConstants.COMPANY_TURN_MILL:
+            case MyConstants.COMPANY_MECHFIT:
                 intent = new Intent(MenuActivity.this, JobClockActivity.class);
                 break;
             case MyConstants.COMPANY_DRYDEN:

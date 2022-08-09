@@ -16,6 +16,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
+
 /**
  * Created by Abdoul on 14-12-2016.
  */
@@ -92,7 +94,7 @@ public class LocationBC extends BroadcastReceiver {
             json = jsonObject.toString();
             params.put("locate", json);
 
-            client.post("http://www.nexgencs.co.za/api/location.php", params, new AsyncHttpResponseHandler() {
+            client.post(BASE_URL + "/api/location.php", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(String response) {
 

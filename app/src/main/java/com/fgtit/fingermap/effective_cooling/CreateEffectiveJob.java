@@ -44,6 +44,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.fgtit.data.MyConstants.BASE_URL;
 import static com.fgtit.service.DownloadService.CUSTOMER;
 import static com.fgtit.service.DownloadService.EC_DATA_URL;
 
@@ -56,7 +57,7 @@ public class CreateEffectiveJob extends AppCompatActivity {
     Dialog dialog;
     String[] customersArray;
     private ArrayList<EcCustomer> customerList;
-    public static final String JOBURL = "http://www.nexgencs.co.za/alos/create_update_job.php";
+    public static final String JOBURL = BASE_URL + "/alos/create_update_job.php";
     JobDB jobDB = new JobDB(this);
     HashMap<String, String> queryValues;
 
