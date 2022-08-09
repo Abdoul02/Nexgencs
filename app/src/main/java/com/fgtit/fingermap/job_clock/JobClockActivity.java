@@ -94,7 +94,7 @@ public class JobClockActivity extends AppCompatActivity {
 
 
     //Receiving Downloaded info
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -107,99 +107,17 @@ public class JobClockActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK && (filter.equals(ERD) || filter.equals(MyConstants.TURNMILL_GET_JOB)
                     || filter.equals(MyConstants.DRYDEN_GET_JOB) || filter.equals(MyConstants.MECHFIT_GET_JOB))) {
                 String response = bundle.getString(DownloadService.CALL_RESPONSE);
-                Log.d(TAG, "onReceive: " + response);
 
-                int success;
-                String message;
-
-                try {
-                    JSONObject result = new JSONObject(response);
-                    success = result.getInt("success");
-                    message = result.getString("message");
-
-                    if (success == 1) {
-                        JSONArray arr = result.getJSONArray("data");
-                        if (arr.length() != 0) {
-                            jobDB.deleteAllERD();
-                            for (int i = 0; i < arr.length(); i++) {
-                                JSONObject obj = (JSONObject) arr.get(i);
-                                CustomJobCard jobCard = new CustomJobCard();
-                                jobCard.setId(obj.getInt("id"));
-                                jobCard.setSupervisorId(obj.getInt("supervisor_id"));
-                                jobCard.setJobNo(obj.getString("job_no"));
-                                jobCard.setDescription(obj.getString("description"));
-                                jobCard.setFromDate(obj.getString("from_date"));
-                                jobCard.setToDate(obj.getString("to_date"));
-
-                                if (obj.has("address")) {
-                                    jobCard.setAddress(obj.getString("address"));
-                                }
-
-                                if (obj.has("progress")) {
-                                    jobCard.setProgress(obj.getString("progress"));
-                                }
-
-                                if (obj.has("name")) {
-                                    jobCard.setName(obj.getString("name"));
-                                }
-
-                                //This is for Mechfit
-                                if (obj.has("customer_name")) {
-                                    jobCard.setCustomerName(obj.getString("customer_name"));
-                                }
-
-                                if (obj.has("qty")) {
-                                    jobCard.setQty(obj.getString("qty"));
-                                }
-
-                                if (obj.has("drawing_no")) {
-                                    jobCard.setDrawingNo(obj.getString("drawing_no"));
-                                }
-
-                                if (obj.has("sub_task")) {
-                                    String tasks = obj.getString("sub_task");
-                                    JSONArray taskArray = new JSONArray(tasks);
-
-                                    if (taskArray.length() != 0) {
-                                        Log.d(TAG, "Job: "+obj.getString("job_no") + " Tasks: " + taskArray.length());
-                                        for (int x = 0; x < taskArray.length(); x++) {
-                                            JSONObject taskObject = (JSONObject) taskArray.get(x);
-                                            ERDSubTask subTask = new ERDSubTask();
-                                            subTask.setName(taskObject.getString("name"));
-                                            subTask.setJobCardId(taskObject.getInt("job_card_id"));
-                                            subTask.setId(taskObject.getInt("id"));
-                                            jobDB.insertERDSubTask(subTask);
-                                        }
-                                    }
-                                }
-                                if (filter.equals(MyConstants.MECHFIT_GET_JOB)) {
-                                    jobDB.insertMechFitJob(jobCard);
-                                } else {
-                                    jobDB.insertERDJob(jobCard);
-                                }
-                            }
-
-                            if (dialog != null && dialog.isShowing()) {
-                                dialog.dismiss();
-                            }
-                            refresh(message);
-                        }
-                    } else {
-                        if (dialog != null && dialog.isShowing()) {
-                            dialog.dismiss();
-                        }
-                        cf.showToast(message);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    cf.showToast("Json error: " + e.getMessage());
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
                 }
+                refresh(response);
+            } else {
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                cf.showToast("Data error has occurred");
             }
-            if (dialog != null && dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            cf.showToast("Data error has occurred");
         }
     };
 

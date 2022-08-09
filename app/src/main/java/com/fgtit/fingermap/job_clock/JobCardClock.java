@@ -243,13 +243,13 @@ public class JobCardClock extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             workExit();
-           if(companyId == MyConstants.COMPANY_MECHFIT){
-               Intent intent = new Intent(this, JobClockActivity.class);
-               startActivity(intent);
-           }else{
-               Intent intent = new Intent(this, MenuActivity.class);
-               startActivity(intent);
-           }
+            Intent intent;
+            if(companyId == MyConstants.COMPANY_MECHFIT){
+                intent = new Intent(this, JobClockActivity.class);
+            }else{
+                intent = new Intent(this, MenuActivity.class);
+            }
+            startActivity(intent);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_HOME) {
             return true;

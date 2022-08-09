@@ -24,6 +24,10 @@ import okhttp3.Response;
 
 import static com.fgtit.data.MyConstants.BASE_URL;
 
+import com.fgtit.data.MyConstants;
+import com.fgtit.fingermap.SaveCustomJobInDb;
+import com.fgtit.models.SaveJobResponse;
+
 public class DownloadService extends IntentService {
 
     private int result = Activity.RESULT_CANCELED;
@@ -39,6 +43,7 @@ public class DownloadService extends IntentService {
     public static final String CUSTOMER = "customer";
     public static final String PRODUCTS = "product";
     public static final String ERD = "erd_job";
+    public static final String ERROR = "error";
     public static final String JOB_CLOCK = "job_clock";
 
     public static final String URL = "url";
@@ -54,8 +59,8 @@ public class DownloadService extends IntentService {
     final Handler responseHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-
-            showToast("Something went wrong: ");
+            publishResults(ERROR, Activity.RESULT_CANCELED, msg.obj.toString());
+            //showToast("Something went wrong: ");
         }
     };
 
@@ -85,7 +90,7 @@ public class DownloadService extends IntentService {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            showToast("Please check internet connection");
+                            publishResults(filter, Activity.RESULT_CANCELED, "Please check internet connection");
                         }
                     });
 
@@ -98,6 +103,7 @@ public class DownloadService extends IntentService {
                         response.body().close();
                         result = Activity.RESULT_OK;
                         Log.d(TAG, "Result =>" + result);
+                        Log.d(TAG, "Response =>" + responseStr);
                         publishResults(filter, result, responseStr);
 
                     } else {
@@ -137,11 +143,22 @@ public class DownloadService extends IntentService {
         Intent intent = new Intent(NOTIFICATION);
         intent.putExtra(FILTER, filter);
         intent.putExtra(RESULT, result);
-        intent.putExtra(CALL_RESPONSE, response);
+        if (result == Activity.RESULT_OK && (filter.equals(ERD) || filter.equals(MyConstants.TURNMILL_GET_JOB)
+                || filter.equals(MyConstants.DRYDEN_GET_JOB) || filter.equals(MyConstants.MECHFIT_GET_JOB))) {
+            SaveJobResponse saveJobResponse = saveJobs(response, filter);
+            intent.putExtra(CALL_RESPONSE, saveJobResponse.getMessage());
+        } else {
+            intent.putExtra(CALL_RESPONSE, response);
+        }
         sendBroadcast(intent);
     }
 
     public void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private SaveJobResponse saveJobs(String jsonResponse, String filter) {
+        SaveCustomJobInDb saveJob = new SaveCustomJobInDb(this.getApplicationContext());
+        return saveJob.saveJobs(jsonResponse, filter);
     }
 }
