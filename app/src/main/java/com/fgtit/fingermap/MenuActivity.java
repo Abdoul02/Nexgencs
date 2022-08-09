@@ -258,7 +258,7 @@ public class MenuActivity extends AppCompatActivity {
 
         map = new HashMap<>();
         map.put("title", "Check for update");
-        map.put("info", ",your current version is " + versionName);
+        map.put("info", "your current version is " + versionName);
         map.put("img", R.drawable.check_update);
         list.add(map);
 
@@ -349,10 +349,8 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.system, menu);
         return true;
@@ -395,17 +393,11 @@ public class MenuActivity extends AppCompatActivity {
     public class checkUpdate extends AsyncTask<String, Void, String> {
 
         protected void onPreExecute() {
-
             prgDialog.show();
-
         }
 
         protected String doInBackground(String... args) {
-
-
             try {
-
-
                 String identifier = "N/A";
                 if (ContextCompat.checkSelfPermission(MenuActivity.this, Manifest.permission.READ_PHONE_STATE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -422,14 +414,12 @@ public class MenuActivity extends AppCompatActivity {
 
                 }
 
-
 				/*TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 				if (telephonyManager != null) {
 					identifier = telephonyManager.getDeviceId();
 				} else {
 					identifier = "Not available";
 				}*/
-
 
                 URL url = new URL(serverURL);
                 JSONObject postDataParams = new JSONObject();
@@ -688,10 +678,7 @@ public class MenuActivity extends AppCompatActivity {
         builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 dialog.dismiss();
-
-
             }
         });
         builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -813,8 +800,6 @@ public class MenuActivity extends AppCompatActivity {
 			handler.postDelayed(new Runnable() {
 				public void run() {
 					// Actions to do after 10 seconds
-
-
 				}
 			}, 5000);*/
         }
