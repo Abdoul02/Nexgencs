@@ -12,7 +12,6 @@ public class MtRfid {
 	private final int PCD_RESETPHASE        =0x0F;
 	private final int PCD_CALCCRC           =0x03;
 
-	//Mifare_One��Ƭ������
 	private final int PICC_REQIDL           =0x26;
 	private final int PICC_REQALL           =0x52;
 	private final int PICC_ANTICOLL1        =0x93;
@@ -27,20 +26,18 @@ public class MtRfid {
 	private final int PICC_TRANSFER         =0xB0;
 	private final int PICC_HALT             =0x50;
 
-	//MF522 FIFO���ȶ���
 	private final int DEF_FIFO_LENGTH       =64;                 //FIFO size=64byte
-	
-	//MF522�Ĵ�������
+
 	//PAGE 0
-	private final int RFU00                 =0x00;    
-	private final int CommandReg            =0x01;    
-	private final int ComIEnReg             =0x02;    
-	private final int DivlEnReg             =0x03;    
-	private final int ComIrqReg             =0x04;    
+	private final int RFU00                 =0x00;
+	private final int CommandReg            =0x01;
+	private final int ComIEnReg             =0x02;
+	private final int DivlEnReg             =0x03;
+	private final int ComIrqReg             =0x04;
 	private final int DivIrqReg             =0x05;
-	private final int ErrorReg              =0x06;    
-	private final int Status1Reg            =0x07;    
-	private final int Status2Reg            =0x08;    
+	private final int ErrorReg              =0x06;
+	private final int Status1Reg            =0x07;
+	private final int Status2Reg            =0x08;
 	private final int FIFODataReg           =0x09;
 	private final int FIFOLevelReg          =0x0A;
 	private final int WaterLevelReg         =0x0B;
@@ -48,7 +45,7 @@ public class MtRfid {
 	private final int BitFramingReg         =0x0D;
 	private final int CollReg               =0x0E;
 	private final int RFU0F                 =0x0F;
-	//PAGE 1     
+	//PAGE 1
 	private final int RFU10                 =0x10;
 	private final int ModeReg               =0x11;
 	private final int TxModeReg             =0x12;
@@ -65,8 +62,8 @@ public class MtRfid {
 	private final int RFU1D                 =0x1D;;
 	private final int RFU1E                 =0x1E;
 	private final int SerialSpeedReg        =0x1F;
-	//PAGE 2    
-	private final int RFU20                 =0x20;  
+	//PAGE 2
+	private final int RFU20                 =0x20;
 	private final int CRCResultRegM         =0x21;
 	private final int CRCResultRegL         =0x22;
 	private final int RFU23                 =0x23;
@@ -82,7 +79,7 @@ public class MtRfid {
 	private final int TReloadRegL           =0x2D;
 	private final int TCounterValueRegH     =0x2E;
 	private final int TCounterValueRegL     =0x2F;
-	//PAGE 3      
+	//PAGE 3
 	private final int RFU30                 =0x30;
 	private final int TestSel1Reg           =0x31;
 	private final int TestSel2Reg           =0x32;
@@ -92,35 +89,34 @@ public class MtRfid {
 	private final int AutoTestReg           =0x36;
 	private final int VersionReg            =0x37;
 	private final int AnalogTestReg         =0x38;
-	private final int TestDAC1Reg           =0x39; 
-	private final int TestDAC2Reg           =0x3A;   
-	private final int TestADCReg            =0x3B;  
-	private final int RFU3C                 =0x3C;   
-	private final int RFU3D                 =0x3D;   
-	private final int RFU3E                 =0x3E;   
+	private final int TestDAC1Reg           =0x39;
+	private final int TestDAC2Reg           =0x3A;
+	private final int TestADCReg            =0x3B;
+	private final int RFU3C                 =0x3C;
+	private final int RFU3D                 =0x3D;
+	private final int RFU3E                 =0x3E;
 	private final int RFU3F		  			=0x3F;
 
-	//��MF522ͨѶʱ���صĴ������
 	private final int MI_OK                 =0;
 	private final int MI_NOTAGERR           =(-1);
 	private final int MI_ERR                =(-2);
 
 	//private final int MAXRLEN 			=18;
 	private final int MAXRLEN 				=256;
-	
-	private Context pContext=null;
-	
+
+	private Context	pContext=null;
+
 	private MtGpio mt=null;
-		
+
 	public void SetContext(Context context){
-		pContext=context;		
+		pContext=context;
 	}
-	
+
 	public void ShowToast(String txt){
 		if(pContext!=null)
 			Toast.makeText(pContext, txt, Toast.LENGTH_SHORT).show();
 	}
-	
+
 	private void Sleep(int n){
 		try {
 			Thread.currentThread();
@@ -130,23 +126,15 @@ public class MtRfid {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void SleepNs(int n){
-		/*
-		try {
-			Thread.currentThread();
-			Thread.sleep(0,n);
-		}catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-		*/
+
 	}
-	
+
 	private void RfidEnable(){
-		
+
 		mt.RFInit();
-		
+
 		mt.RFCS(1);
 		mt.RFReset(1);
 		Sleep(100);
@@ -154,12 +142,12 @@ public class MtRfid {
 		mt.RFCS(0);
 		mt.RFCLK(0);
 	}
-	
+
 	private void RfidDisable(){
 		mt.RFCS(1);
 		mt.RFReset(1);
 	}
-	
+
 	private void RfidWrite(int c){
 		//mt.RFCS(0);
 		for(int i=0;i<8;i++){
@@ -176,7 +164,7 @@ public class MtRfid {
 		}
 		//mt.RFCS(1);
 	}
-	
+
 	private int RfidRead(){
 		//mt.RFCS(0);
 		int r=0;
@@ -194,59 +182,50 @@ public class MtRfid {
 		//mt.RFCS(1);
 		return r;
 	}
-	
-	//��    �ܣ���RC632�Ĵ���
-	//����˵����Address[IN]:�Ĵ�����ַ
-	//��    �أ�������ֵ
+
+
 	private int ReadRawRC(int address){
 		mt.RFCS(0);
-		
+
 		//RfidWrite(address);
 		RfidWrite(((address & 0x3F) << 1) | 0x80);
 		int r=RfidRead();
-		
+
 		//if(r>0){
 		//	ShowToast(String.valueOf(r));
 		//}
-		
+
 		mt.RFCS(1);
 		return r;
 	}
-	
-	//��    �ܣ�дRC632�Ĵ���
-	//����˵����Address[IN]:�Ĵ�����ַ
-	//	  value[IN]:д���ֵ
+
+
 	private void WriteRawRC(int address,int value){
 		mt.RFCS(0);
-		
+
 		//RfidWrite(address);
 		RfidWrite((address<<1) & 0x7F);	//0x7E
 		RfidWrite(value);
-		
+
 		mt.RFCS(1);
 	}
-	
-	//��    �ܣ���RC522�Ĵ���λ
-	//����˵����reg[IN]:�Ĵ�����ַ
-	//         	mask[IN]:��λֵ
-	private void SetBitMask(int reg,int mask)  
-	{
-	    int tmp = 0x0;
-	    tmp = ReadRawRC(reg);
-	    WriteRawRC(reg,tmp | mask);  // set bit mask
-	}
-	
-	//��    �ܣ���RC522�Ĵ���λ
-	//����˵����reg[IN]:�Ĵ�����ַ
-	//          mask[IN]:��λֵ
-	private void ClearBitMask(int reg,int mask)  
-	{
-	    int tmp = 0x0;
-	    tmp = ReadRawRC(reg);
-	    WriteRawRC(reg, tmp & ~mask);  // clear bit mask
-	} 
 
-	//��MF522����CRC16����
+
+	private void SetBitMask(int reg,int mask)
+	{
+		int tmp = 0x0;
+		tmp = ReadRawRC(reg);
+		WriteRawRC(reg,tmp | mask);  // set bit mask
+	}
+
+
+	private void ClearBitMask(int reg,int mask)
+	{
+		int tmp = 0x0;
+		tmp = ReadRawRC(reg);
+		WriteRawRC(reg, tmp & ~mask);  // clear bit mask
+	}
+
 	public void CalulateCRC(int[] pIndata,int len,int[] pOutData,int outoffset){
 		int i,n;
 		ClearBitMask(DivIrqReg,0x04);
@@ -266,14 +245,12 @@ public class MtRfid {
 		pOutData[outoffset+0] = ReadRawRC(CRCResultRegL);
 		pOutData[outoffset+1] = ReadRawRC(CRCResultRegM);
 	}
-	
 
-	//��    �ܣ����Ƭ��������״̬
-	//��    ��: �ɹ�����MI_OK
+
 	public int PcdHalt(){
 		int status;
 		int[] unLen=new int[1];
-		int[] ucComMF522Buf=new int[MAXRLEN]; 
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
 		ucComMF522Buf[0] = PICC_HALT;
 		ucComMF522Buf[1] = 0;
@@ -282,64 +259,53 @@ public class MtRfid {
 		return status;
 	}
 
-	//��    �ܣ���λRC522
-	//��    ��: �ɹ�����MI_OK
 	public int PcdReset(){
 		WriteRawRC(CommandReg,PCD_RESETPHASE);
 		Sleep(10);
-		
-	    WriteRawRC(ModeReg,0x3D);
-	    WriteRawRC(TReloadRegL,30);
-	    WriteRawRC(TReloadRegH,0);
-	    WriteRawRC(TModeReg,0x8D);
-	    WriteRawRC(TPrescalerReg,0x3E);
-	   
-		WriteRawRC(TxAutoReg,0x40);  
+
+		WriteRawRC(ModeReg,0x3D);
+		WriteRawRC(TReloadRegL,30);
+		WriteRawRC(TReloadRegH,0);
+		WriteRawRC(TModeReg,0x8D);
+		WriteRawRC(TPrescalerReg,0x3E);
+
+		WriteRawRC(TxAutoReg,0x40);
 		return MI_OK;
 	}
-	
-	//�ر�����
+
 	public void PcdAntennaOff()
 	{
-	    ClearBitMask(TxControlReg, 0x03);
+		ClearBitMask(TxControlReg, 0x03);
 	}
-	
-	//��������  
-	//ÿ��������ر����շ���֮��Ӧ������1ms�ļ��
+
 	public void PcdAntennaOn()
 	{
-	    int i;
-	    i = ReadRawRC(TxControlReg);
-	    //if (!(i & 0x03))
-	    if ((i & 0x03)==0)
-	    {
-	        SetBitMask(TxControlReg, 0x03);
-	    }
+		int i;
+		i = ReadRawRC(TxControlReg);
+		//if (!(i & 0x03))
+		if ((i & 0x03)==0)
+		{
+			SetBitMask(TxControlReg, 0x03);
+		}
 	}
-	
-	//����RC632�Ĺ�����ʽ
+
 	public int M500PcdConfigISOType()
 	{
-		ClearBitMask(Status2Reg, 0x08);  //��MFCrypto1On
-		WriteRawRC(ModeReg, 0x3D);       //CRC��ʼֵ0x6363
+		ClearBitMask(Status2Reg, 0x08);
+		WriteRawRC(ModeReg, 0x3D);
 		/* Modulation signal from the internal analog part, default. */
-		WriteRawRC(RxSelReg,0x86); 
+		WriteRawRC(RxSelReg,0x86);
 		WriteRawRC(RFCfgReg,0x7F);    //RxGain=48dB
-		WriteRawRC(TReloadRegL, 30);  //��ʱ����װֵ           
+		WriteRawRC(TReloadRegL, 30);
 		WriteRawRC(TReloadRegH, 0);
-		WriteRawRC(TModeReg, 0x8D);   		//TAuto=1������ʱ��Ԥ��Ƶ��4λ
-		WriteRawRC(TPrescalerReg, 0x3E);  //��ʱ��Ԥ��Ƶ��8λ
-		WriteRawRC(TxAutoReg, 0x40);      //Force100ASK(����Ҫ)
-		PcdAntennaOn();    //������
-	   return MI_OK;
+		WriteRawRC(TModeReg, 0x8D);
+		WriteRawRC(TPrescalerReg, 0x3E);
+		WriteRawRC(TxAutoReg, 0x40);
+		PcdAntennaOn();
+		return MI_OK;
 	}
-	
-	//��    �ܣ�ͨ��RC522��ISO14443��ͨѶ
-	//����˵����Command[IN]:RC522������
-	//          pInData[IN]:ͨ��RC522���͵���Ƭ������
-	//          InLenByte[IN]:�������ݵ��ֽڳ���
-	//          pOutData[OUT]:���յ��Ŀ�Ƭ��������
-	//          *pOutLenBit[OUT]:�������ݵ�λ����
+
+
 	public int PcdComMF522(int Command,int[] pInData,int InLenByte,int[] pOutData,int[] pOutLenBit)
 	{
 		int status = MI_ERR;
@@ -350,16 +316,16 @@ public class MtRfid {
 		int i;
 		switch (Command)
 		{
-		case PCD_AUTHENT:
-			irqEn   = 0x12;
-			waitFor = 0x10;
-			break;
-		case PCD_TRANSCEIVE:
-			irqEn   = 0x77;
-			waitFor = 0x30;
-			break;
-		default:
-			break;
+			case PCD_AUTHENT:
+				irqEn   = 0x12;
+				waitFor = 0x10;
+				break;
+			case PCD_TRANSCEIVE:
+				irqEn   = 0x77;
+				waitFor = 0x30;
+				break;
+			default:
+				break;
 		}
 		WriteRawRC(ComIEnReg,irqEn|0x80);
 		ClearBitMask(ComIrqReg,0x80);
@@ -371,58 +337,52 @@ public class MtRfid {
 		}
 		WriteRawRC(CommandReg, Command);
 
-		if (Command == PCD_TRANSCEIVE){    
+		if (Command == PCD_TRANSCEIVE){
 			SetBitMask(BitFramingReg,0x80);
 		}
-			//i = 600;//����ʱ��Ƶ�ʵ���������M1�����ȴ�ʱ��25ms
-			i=800;
-			do {
-				n = ReadRawRC(ComIrqReg);
-				i--;
-			}
-			//while ((i!=0) && !(n&0x01) && !(n&waitFor));
-			while ((i!=0) && (n&0x01)==0 && (n&waitFor)==0);
-			ClearBitMask(BitFramingReg,0x80);
-     
-			if (i!=0){    
-				if((ReadRawRC(ErrorReg)&0x1B)==0){
-					status = MI_OK;
-					if ((n & irqEn & 0x01)>0){
-						status = MI_NOTAGERR;
-					}
-					if (Command == PCD_TRANSCEIVE){
-						n = ReadRawRC(FIFOLevelReg);
-						lastBits = ReadRawRC(ControlReg) & 0x07;
-						if (lastBits>0){
-							pOutLenBit[0] = (n-1)*8 + lastBits;
-						}else{
-							pOutLenBit[0] = n*8;
-						}
-						if (n == 0){
-							n = 1;
-						}
-						if (n > MAXRLEN){
-							n = MAXRLEN;
-						}
-						for (i=0; i<n; i++)
-						{   
-							pOutData[i] = ReadRawRC(FIFODataReg);
-						}
-					}
-				}else{
-					status = MI_ERR;
+		i=800;
+		do {
+			n = ReadRawRC(ComIrqReg);
+			i--;
+		}
+		while ((i!=0) && (n&0x01)==0 && (n&waitFor)==0);
+		ClearBitMask(BitFramingReg,0x80);
+
+		if (i!=0){
+			if((ReadRawRC(ErrorReg)&0x1B)==0){
+				status = MI_OK;
+				if ((n & irqEn & 0x01)>0){
+					status = MI_NOTAGERR;
 				}
+				if (Command == PCD_TRANSCEIVE){
+					n = ReadRawRC(FIFOLevelReg);
+					lastBits = ReadRawRC(ControlReg) & 0x07;
+					if (lastBits>0){
+						pOutLenBit[0] = (n-1)*8 + lastBits;
+					}else{
+						pOutLenBit[0] = n*8;
+					}
+					if (n == 0){
+						n = 1;
+					}
+					if (n > MAXRLEN){
+						n = MAXRLEN;
+					}
+					for (i=0; i<n; i++)
+					{
+						pOutData[i] = ReadRawRC(FIFODataReg);
+					}
+				}
+			}else{
+				status = MI_ERR;
 			}
-			SetBitMask(ControlReg,0x80);           // stop timer now
-			WriteRawRC(CommandReg,PCD_IDLE); 
-			return status;
+		}
+		SetBitMask(ControlReg,0x80);           // stop timer now
+		WriteRawRC(CommandReg,PCD_IDLE);
+		return status;
 	}
-	
-	//��    �ܣ�Ѱ��
-	//����˵��: req_code[IN]:Ѱ����ʽ
-	//0x52 = Ѱ��Ӧ�������з���14443A��׼�Ŀ�
-	//0x26 = Ѱδ��������״̬�Ŀ�
-	//pTagType[OUT]����Ƭ���ʹ���
+
+
 	//0x4400 = Mifare_UltraLight
 	//0x0400 = Mifare_One(S50)
 	//0x0200 = Mifare_One(S70)
@@ -431,71 +391,65 @@ public class MtRfid {
 	//��    ��: �ɹ�����MI_OK
 	public int PcdRequest(int req_code,int[] pTagType)
 	{
-		   int status;  
-		   int[] unLen=new int[1];
-		   int[] ucComMF522Buf=new int[MAXRLEN]; 
+		int status;
+		int[] unLen=new int[1];
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
-		   ClearBitMask(Status2Reg,0x08);
-		   WriteRawRC(BitFramingReg,0x07);
-		   SetBitMask(TxControlReg,0x03);
-		 
-		   ucComMF522Buf[0] = req_code;
+		ClearBitMask(Status2Reg,0x08);
+		WriteRawRC(BitFramingReg,0x07);
+		SetBitMask(TxControlReg,0x03);
 
-		   status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,1,ucComMF522Buf,unLen);
-		   
-		   if ((status == MI_OK) && (unLen[0] == 0x10)){    
-			   pTagType[0] = ucComMF522Buf[0];
-			   pTagType[1] = ucComMF522Buf[1];
-		   }else{
-			   status = MI_ERR;
-		   }
-		   
-		   return status;
+		ucComMF522Buf[0] = req_code;
+
+		status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,1,ucComMF522Buf,unLen);
+
+		if ((status == MI_OK) && (unLen[0] == 0x10)){
+			pTagType[0] = ucComMF522Buf[0];
+			pTagType[1] = ucComMF522Buf[1];
+		}else{
+			status = MI_ERR;
+		}
+
+		return status;
 	}
-	
-	//��    �ܣ�����ײ
-	//����˵��: pSnr[OUT]:��Ƭ���кţ�4�ֽ�
-	//��    ��: �ɹ�����MI_OK
+
 	public int PcdAnticoll(int[] pSnr)
 	{
-	    int status;
-	    int i,snr_check=0;
-	    int[]  unLen=new int[1];
-	    int[] ucComMF522Buf=new int[MAXRLEN]; 
-	    
+		int status;
+		int i,snr_check=0;
+		int[]  unLen=new int[1];
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
-	    ClearBitMask(Status2Reg,0x08);
-	    WriteRawRC(BitFramingReg,0x00);
-	    ClearBitMask(CollReg,0x80);
-	 
-	    ucComMF522Buf[0] = PICC_ANTICOLL1;
-	    ucComMF522Buf[1] = 0x20;
 
-	    status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,2,ucComMF522Buf,unLen);
+		ClearBitMask(Status2Reg,0x08);
+		WriteRawRC(BitFramingReg,0x00);
+		ClearBitMask(CollReg,0x80);
 
-	    if (status == MI_OK){
-	    	 for (i=0; i<4; i++){   
-	    		 pSnr[i]  = ucComMF522Buf[i];
-	             snr_check ^= ucComMF522Buf[i];
-	         }
-	         if (snr_check != ucComMF522Buf[i]){   
-	        	 status = MI_ERR;    
-	         }
-	    }
-	    
-	    SetBitMask(CollReg,0x80);
-	    return status;
+		ucComMF522Buf[0] = PICC_ANTICOLL1;
+		ucComMF522Buf[1] = 0x20;
+
+		status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,2,ucComMF522Buf,unLen);
+
+		if (status == MI_OK){
+			for (i=0; i<4; i++){
+				pSnr[i]  = ucComMF522Buf[i];
+				snr_check ^= ucComMF522Buf[i];
+			}
+			if (snr_check != ucComMF522Buf[i]){
+				status = MI_ERR;
+			}
+		}
+
+		SetBitMask(CollReg,0x80);
+		return status;
 	}
-	
-	//��    �ܣ�ѡ����Ƭ
-	//����˵��: pSnr[IN]:��Ƭ���кţ�4�ֽ�
-	//��    ��: �ɹ�����MI_OK
+
 	public int PcdSelect(int[] pSnr)
 	{
 		int status;
 		int i;
 		int[] unLen=new int[1];
-		int[] ucComMF522Buf=new int[MAXRLEN]; 
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
 		ucComMF522Buf[0] = PICC_ANTICOLL1;
 		ucComMF522Buf[1] = 0x70;
@@ -517,19 +471,12 @@ public class MtRfid {
 
 		return status;
 	}
-	
-	//��    �ܣ���֤��Ƭ����
-	//����˵��: auth_mode[IN]: ������֤ģʽ
-	//0x60 = ��֤A��Կ
-	//0x61 = ��֤B��Կ 
-	//addr[IN]�����ַ
-	//pKey[IN]������
-	//pSnr[IN]����Ƭ���кţ�4�ֽ�
-	//��    ��: �ɹ�����MI_OK             
+
+
 	public int PcdAuthState(int auth_mode,int addr,int[] pKey,int[] pSnr){
 		int  status,i;
 		int[] unLen=new int[1];
-		int[] ucComMF522Buf=new int[MAXRLEN]; 
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
 		ucComMF522Buf[0] = auth_mode;
 		ucComMF522Buf[1] = addr;
@@ -548,15 +495,11 @@ public class MtRfid {
 		}
 		return status;
 	}
-	
-	//��    �ܣ���ȡM1��һ������
-	//����˵��: addr[IN]�����ַ
-	//pData[OUT]�����������ݣ�16�ֽ�
-	//��    ��: �ɹ�����MI_OK
+
 	public int PcdRead(int addr,int[] pData,int offset){
 		int status,i;
 		int[] unLen=new int[1];
-		int[] ucComMF522Buf=new int[MAXRLEN]; 
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
 		ucComMF522Buf[0] = PICC_READ;
 		ucComMF522Buf[1] = addr;
@@ -573,17 +516,13 @@ public class MtRfid {
 		}
 		return status;
 	}
-	
 
-	//��    �ܣ�д���ݵ�M1��һ��
-	//����˵��: addr[IN]�����ַ
-	//pData[IN]��д������ݣ�16�ֽ�
-	//��    ��: �ɹ�����MI_OK                  
+
 	public int PcdWrite(int addr,int[] pData,int offset)
 	{
 		int status,i;
 		int[] unLen=new int[1];
-		int[] ucComMF522Buf=new int[MAXRLEN]; 
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
 		ucComMF522Buf[0] = PICC_WRITE;
 		ucComMF522Buf[1] = addr;
@@ -606,25 +545,17 @@ public class MtRfid {
 		}
 		return status;
 	}
-	
 
-	//��    �ܣ��ۿ�ͳ�ֵ
-	//����˵��: dd_mode[IN]��������
-	//0xC0 = �ۿ�
-	//0xC1 = ��ֵ
-	//addr[IN]��Ǯ����ַ
-	//pValue[IN]��4�ֽ���(��)ֵ����λ��ǰ
-	//��    ��: �ɹ�����MI_OK                
 	public int PcdValue(int dd_mode,int addr,int[] pValue)
 	{
 		int status,i;
 		int[] unLen=new int[1];
-		int[] ucComMF522Buf=new int[MAXRLEN]; 
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
 		ucComMF522Buf[0] = dd_mode;
 		ucComMF522Buf[1] = addr;
 		CalulateCRC(ucComMF522Buf,2,ucComMF522Buf,2);
-		
+
 		status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,4,ucComMF522Buf,unLen);
 
 		if ((status != MI_OK) || (unLen[0] != 4) || ((ucComMF522Buf[0] & 0x0F) != 0x0A)){
@@ -644,8 +575,8 @@ public class MtRfid {
 		if (status == MI_OK){
 			ucComMF522Buf[0] = PICC_TRANSFER;
 			ucComMF522Buf[1] = addr;
-			CalulateCRC(ucComMF522Buf,2,ucComMF522Buf,2); 
-			
+			CalulateCRC(ucComMF522Buf,2,ucComMF522Buf,2);
+
 			status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,4,ucComMF522Buf,unLen);
 			if ((status != MI_OK) || (unLen[0] != 4) || ((ucComMF522Buf[0] & 0x0F) != 0x0A)){
 				status = MI_ERR;
@@ -653,15 +584,11 @@ public class MtRfid {
 		}
 		return status;
 	}
-	
-	//��    �ܣ�����Ǯ��
-	//����˵��: sourceaddr[IN]��Դ��ַ
-	//goaladdr[IN]��Ŀ���ַ
-	//��    ��: �ɹ�����MI_OK
+
 	public int PcdBakValue(int sourceaddr, int goaladdr){
 		int status;
 		int[] unLen=new int[1];
-		int[] ucComMF522Buf=new int[MAXRLEN]; 
+		int[] ucComMF522Buf=new int[MAXRLEN];
 
 		ucComMF522Buf[0] = PICC_RESTORE;
 		ucComMF522Buf[1] = sourceaddr;
@@ -677,7 +604,7 @@ public class MtRfid {
 			ucComMF522Buf[2] = 0;
 			ucComMF522Buf[3] = 0;
 			CalulateCRC(ucComMF522Buf,4,ucComMF522Buf,4);
-			
+
 			status = PcdComMF522(PCD_TRANSCEIVE,ucComMF522Buf,6,ucComMF522Buf,unLen);
 			if (status != MI_ERR){
 				status = MI_OK;
@@ -703,24 +630,24 @@ public class MtRfid {
 	public void RfidInit(){
 		if(mt==null)
 			mt=new MtGpio();
-		
+
 		RfidEnable();
-				
+
 		PcdReset();
-		PcdAntennaOff(); 
+		PcdAntennaOff();
 		Sleep(10);
-		PcdAntennaOn();  
+		PcdAntennaOn();
 		M500PcdConfigISOType();
 	}
-	
+
 	public void RfidClose(){
 		RfidDisable();
 	}
-	
+
 	public int RfidGetSn(int[] sn){
 		int status;
 		status = PcdRequest(PICC_REQALL, sn);
-		if (status== MI_OK){    			
+		if (status== MI_OK){
 			status = PcdAnticoll(sn);
 			if (status == MI_OK){
 				return 0;
@@ -728,7 +655,7 @@ public class MtRfid {
 		}
 		return -1;
 	}
-	
+
 	public int RfidReadFullCard(int[] sn,int[] buffer,int length){
 		int status,i,m;
 		int p=0;
@@ -741,9 +668,8 @@ public class MtRfid {
 		status=0;
 		status = PcdSelect(sn);
 		if (status == MI_OK){
-			//S70��ǰ��32�����ǿɶ�3����
-			for(i=0;i<32;i++){					
-				sector=i*4;	
+			for(i=0;i<32;i++){
+				sector=i*4;
 				for(m=0;m<3;m++){
 					status=PcdAuthState(PICC_AUTHENT1A,(m+sector),key, sn);
 					if(status != MI_OK)
@@ -758,8 +684,7 @@ public class MtRfid {
 					}
 				}
 			}
-			//S70��ǰ��8�����ǿɶ�15����(ֻд7��)
-			for(i=0;i<7;i++){					
+			for(i=0;i<7;i++){
 				sector=i*16+32*4;
 				for(m=0;m<15;m++){
 					status=PcdAuthState(PICC_AUTHENT1A,(m+sector),key,sn);
@@ -776,7 +701,7 @@ public class MtRfid {
 		}
 		return -3;
 	}
-	
+
 	public int RfidWriteFullCard(int[] sn,int[] buffer,int length){
 		int status,i,m,p,sector;
 		int[] key=new int[6];
@@ -786,11 +711,9 @@ public class MtRfid {
 		status=0;
 		status = PcdSelect(sn);
 		if (status == MI_OK){
-			//p=16;	//ǰ��Ŀ�����д
 			p=0;
-			//S70��ǰ��32�����ǿɶ�3����
-			for(i=0;i<32;i++){					
-				sector=i*4;	
+			for(i=0;i<32;i++){
+				sector=i*4;
 				for(m=0;m<3;m++){
 					status=PcdAuthState(PICC_AUTHENT1A,(m+sector),key, sn);
 					if(status != MI_OK){
@@ -808,8 +731,8 @@ public class MtRfid {
 					}
 				}
 			}
-			//S70��ǰ��8�����ǿɶ�15����(ֻд7��)
-			for(i=0;i<7;i++){					
+
+			for(i=0;i<7;i++){
 				sector=i*16+32*4;
 				for(m=0;m<15;m++){
 					status=PcdAuthState(PICC_AUTHENT1A,(m+sector),key,sn);
@@ -823,10 +746,10 @@ public class MtRfid {
 						return 0;
 				}
 			}
-		}		
-		return -3;	
+		}
+		return -3;
 	}
-	
+
 	public byte[] IntArrayToByteArray(int[] pint,int size){
 		byte[] result = new byte[size];
 		for(int i=0;i<size;i++){
@@ -834,7 +757,7 @@ public class MtRfid {
 		}
 		return result;
 	}
-	
+
 	public int[] ByteArrayToIntArray(byte[] pint,int size){
 		int[] result = new int[size];
 		for(int i=0;i<size;i++){
@@ -842,5 +765,5 @@ public class MtRfid {
 		}
 		return result;
 	}
-	
+
 }

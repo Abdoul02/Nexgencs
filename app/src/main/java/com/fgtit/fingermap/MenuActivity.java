@@ -192,13 +192,13 @@ public class MenuActivity extends AppCompatActivity {
                 break;
 
                 case 7: {
+                    Intent intent;
                     if (companyID == 135) {
-                        Intent intent = new Intent(MenuActivity.this, StrucMacReport.class);
-                        startActivity(intent);
+                        intent = new Intent(MenuActivity.this, StrucMacReport.class);
                     } else {
-                        Intent intent = new Intent(MenuActivity.this, BTScale.class);
-                        startActivity(intent);
+                        intent = new Intent(MenuActivity.this, BTScale.class);
                     }
+                    startActivity(intent);
                 }
                 break;
 
