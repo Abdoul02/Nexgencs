@@ -36,14 +36,20 @@ public class AsyncFingerprint extends Handler {
 	private static final int  FP_UpImageEX = 0x31;
 	private static final int  FP_GenCharEX = 0x32;
 
-
+	/**
+	 * return value and image data are 40044 bytes in total
+	 */
 	private static final int UP_IMAGE_RESPONSE_SIZE = 40044;
 
 	private static final int UP_IMAGEEX_RESPONSE_SIZE = 16521;
-
+	/**
+	 * return value and image data are 568 bytes in total
+	 */
 	private static final int UP_CHAR_RESPONSE_SIZE = 568;
 
-
+	/**
+	 * buffer:device go back to place for data
+	 */
 	private byte[] data = new byte[1024 * 50];
 
 	private byte[] buffer = new byte[1024 * 50];
@@ -109,6 +115,7 @@ public class AsyncFingerprint extends Handler {
 				if (onUpCharListener == null) {
 					return;
 				} else {
+					Log.d("sss", "handleMessage: "+msg.obj);
 					if (msg.obj != null) {
 						onUpCharListener.onUpCharSuccess((byte[]) msg.obj);
 					} else {
@@ -593,10 +600,11 @@ public class AsyncFingerprint extends Handler {
 
 	public void FP_UpChar() {
 		SystemClock.sleep(50);
+		Log.d("sss", "FP_UpChar: ");
 		mWorkerThreadHandler.sendEmptyMessage(FP_UpChar);
 	}
 
-	public void FP_DownChar(byte[] model) {
+	public void FP_DownChar(OnDownCharListener model) {
 		mWorkerThreadHandler.obtainMessage(FP_DownChar, model).sendToTarget();
 	}
 
@@ -649,17 +657,13 @@ public class AsyncFingerprint extends Handler {
 				.sendToTarget();
 	}
 
-	/**
-	 * ¼��ָ��ͼ��
-	 *
-	 * @return ����ֵΪȷ���� ȷ����=00H��ʾ¼��ɹ� ȷ����=01H��ʾ�հ��д� ȷ����=02H��ʾ������������ָ
-	 *         ȷ����=03H��ʾ¼�벻�ɹ� ȷ����=-1 ��ʾʧ��
-	 */
+
 	private synchronized int PSGetImage() {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, 0x01, 0x00, 0x03, 0x01, 0x00, 0x05 };
 		sendCommand(command);
-		int length = SerialPortManager.getInstance().read(buffer,12,300);
+		int length = SerialPortManager.getInstance().read(buffer,12,500);
+
 		printlog("PSGetImage", length);
 		if (length == 12) {
 			return buffer[9];
@@ -667,15 +671,7 @@ public class AsyncFingerprint extends Handler {
 		return -1;
 	}
 
-	/**
-	 * ��ImageBuffer�е�ָ��ͼ�����������ļ�����charBuffer1��CharBuffer2��
-	 *
-	 * @param bufferId
-	 *            ��CharBuffer1:1h,CharBuffer2:2h��
-	 * @return ����ֵΪȷ���� ȷ����=00H��ʾ���������ɹ� ȷ����=01H��ʾ�հ��д� ȷ����=06H��ʾָ��ͼ��̫�Ҷ�������ͼ��
-	 *         ȷ����=07H��ʾָ��ͼ����������������̫�ٶ����������� ȷ����=15H��ʾͼ�񻺳�����û����Чԭʼͼ��������ͼ�� ȷ����=-1
-	 *         ��ʾʧ��
-	 */
+
 	private synchronized byte PSGenChar(int bufferId) {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 01, (byte) 0x00, (byte) 0x04,
@@ -690,13 +686,7 @@ public class AsyncFingerprint extends Handler {
 		return -1;
 	}
 
-	/**
-	 * �ϲ���������ģ�壬��CharBuffer1��CharBuffer2�е������ļ��ϲ�����ģ�壬�������CharBuffer1��CharBuffer2
-	 * �С�
-	 *
-	 * @return ����ֵΪȷ���� ȷ����=00H��ʾ�ϲ��ɹ� ȷ����=01H��ʾ�հ��д� ȷ����=0aH��ʾ�ϲ�ʧ�ܣ���öָ�Ʋ�����ͬһ��ָ��
-	 *         ȷ����=-1 ��ʾʧ��
-	 */
+
 	private synchronized byte PSRegModel() {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, 0x01, 0x00, 0x03, 0x05, 0x00, 0x09 };
@@ -709,22 +699,13 @@ public class AsyncFingerprint extends Handler {
 		return -1;
 	}
 
-	/**
-	 * ��CharBuffer�е�ģ�崢�浽ָ����pageId�ŵ�flash���ݿ�λ�� bufferId:ֻ��Ϊ1h��2h
-	 * pageId����ΧΪ0~1010
-	 *
-	 * @return ����ֵΪȷ���� ȷ����=00H��ʾ����ɹ� ȷ����=01H��ʾ�հ��д� ȷ����=0bH��ʾPageID����ָ�ƿⷶΧ
-	 *         ȷ����=18H��ʾдFLASH���� ȷ����=-1 ��ʾʧ��
-	 */
+
 	private synchronized byte PSStoreChar(int bufferId, int pageId) {
 		byte[] pageIDArray = short2byte((short) pageId);
-		// Log.i("whw", "pageid hex=" + DataUtils.toHexString(pageIDArray));
 		int checkSum = 0x01 + 0x00 + 0x06 + 0x06 + bufferId
 				+ (pageIDArray[0] & 0xff) + (pageIDArray[1] & 0xff);
 		byte[] checkSumArray = short2byte((short) checkSum);
-		// Log.i("whw",
-		// "checkSumArray hex=" + DataUtils.toHexString(checkSumArray)
-		// + "    checkSum=" + checkSum);
+
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0x01, (byte) 0x00,
 				(byte) 0x06, (byte) 0x06, (byte) bufferId,
@@ -739,15 +720,6 @@ public class AsyncFingerprint extends Handler {
 		return -1;
 	}
 
-	/**
-	 * ��flash ���ݿ���ָ��pageId�ŵ�ָ��ģ����뵽ģ�建����CharBuffer1��CharBuffer2
-	 * bufferId:ֻ��Ϊ1h��2h pageId����ΧΪ0~1023
-	 *
-	 * @param index
-	 *            pageId��
-	 * @return ����ֵΪȷ���� ȷ����=00H��ʾ�����ɹ� ȷ����=01H��ʾ�հ��д� ȷ����=0cH��ʾ�����д��ģ���д�
-	 *         ȷ����=0BH��ʾPageID����ָ�ƿⷶΧ ȷ����=-1 ��ʾʧ��
-	 */
 	private synchronized byte PSLoadChar(int bufferId, int pageId) {
 		byte[] pageIDArray = short2byte((short) pageId);
 		int checkSum = 0x01 + 0x00 + 0x06 + 0x07 + bufferId
@@ -792,11 +764,7 @@ public class AsyncFingerprint extends Handler {
 		return null;
 	}
 
-	/**
-	 * ��ȷ�ȶ�CharBuffer1��CharBuffer2�е������ļ� ע���:��λ�����ص��������滹��һ���÷֣����÷ִ��ڵ���50ʱ��ָ��ƥ��
-	 *
-	 * @return true��ָ��ƥ��ɹ� false���ȶ�ʧ��
-	 */
+
 	private synchronized boolean PSMatch() {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0x01, (byte) 0x00,
@@ -827,10 +795,6 @@ public class AsyncFingerprint extends Handler {
 		return null;
 	}
 
-	/**
-	 *
-	 * @return -1:�������� -2��û�������� >=0:��������ҳ�� 0-1023
-	 */
 	private synchronized byte[] PSIdentify() {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0x01, (byte) 0x00,
@@ -846,13 +810,7 @@ public class AsyncFingerprint extends Handler {
 		return null;
 	}
 
-	/**
-	 * ɾ��ģ��
-	 *
-	 * @param pageIDStart
-	 * @param delNum
-	 * @return
-	 */
+
 	private synchronized byte PSDeleteChar(short pageIDStart, short delNum) {
 		byte[] pageIDArray = short2byte(pageIDStart);
 		byte[] delNumArray = short2byte(delNum);
@@ -887,11 +845,7 @@ public class AsyncFingerprint extends Handler {
 		return -1;
 	}
 
-	/**
-	 * �������������е������ļ��ϴ�����λ��(Ĭ�ϵ�����������Ϊcharbuffer1)
-	 *
-	 * @return byte[]������Ϊ512�ֽڳɹ� ����ʧ�� null:�ϴ������ļ�ʧ��
-	 */
+
 	private synchronized byte[] PSUpChar() {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0x01, (byte) 0x00,
@@ -899,9 +853,8 @@ public class AsyncFingerprint extends Handler {
 		sendCommand(command);
 		int length = SerialPortManager.getInstance().read(buffer, UP_CHAR_RESPONSE_SIZE,100);
 		printlog("PSUpChar", 12);
-		// ��ӦΪ12�ֽڣ���4�����ݰ���ÿ����Ϊ139�ֽڣ����Է��ص����ֽ���Ϊ568�ֽ�
 		if (length >= UP_CHAR_RESPONSE_SIZE) {
-			index = 12;// ���ݰ�����ʼ�±�
+			index = 12;
 			packetNum = 0;
 			byte[] packets = new byte[UP_CHAR_RESPONSE_SIZE];
 			System.arraycopy(buffer, 0, packets, 0, UP_CHAR_RESPONSE_SIZE);
@@ -911,13 +864,7 @@ public class AsyncFingerprint extends Handler {
 
 	}
 
-	/**
-	 * ��λ�����������ļ���ģ�������������(Ĭ�ϵĻ�����ΪCharBuffer2)
-	 *
-	 * @param model
-	 *            :ָ�Ƶ������ļ�
-	 * @return ����ֵΪȷ���� ȷ����=00H��ʾ���سɹ� ȷ����=-1 ��ʾʧ��
-	 */
+
 	private synchronized byte PSDownChar(byte[] model) {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0x01, (byte) 0x00,
@@ -932,17 +879,13 @@ public class AsyncFingerprint extends Handler {
 		return -1;
 	}
 
-	/**
-	 * ��ͼ�񻺳����������ϴ�����λ��
-	 *
-	 * @return byte[]��length��СΪ36k ��һ���ֽں����������أ�ÿ������ռ4bits null:�ϴ�ʧ��
-	 */
+
 	private synchronized byte[] PSUpImage() {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0x01, (byte) 0x00,
 				(byte) 0x03, (byte) 0x0a, (byte) 0x00, (byte) 0x0e };
 		sendCommand(command);
-		int length = SerialPortManager.getInstance().read(buffer, UP_IMAGE_RESPONSE_SIZE,100);
+		int length = SerialPortManager.getInstance().read(buffer, UP_IMAGE_RESPONSE_SIZE,500);
 		Log.i("whw", "PSUpImage length=" + length);
 		if (length >= UP_IMAGE_RESPONSE_SIZE) {
 			byte[] packets = new byte[length];
@@ -957,17 +900,12 @@ public class AsyncFingerprint extends Handler {
 	}
 
 
-	/**
-	 * ¼��ָ��ͼ��
-	 *
-	 * @return ����ֵΪȷ���� ȷ����=00H��ʾ¼��ɹ� ȷ����=01H��ʾ�հ��д� ȷ����=02H��ʾ������������ָ
-	 *         ȷ����=03H��ʾ¼�벻�ɹ� ȷ����=-1 ��ʾʧ��
-	 */
+
 	private synchronized int PSGetImageEx() {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, 0x01, 0x00, 0x03, 0x30, 0x00, 0x34 };
 		sendCommand(command);
-		int length = SerialPortManager.getInstance().read(buffer, 12,250);
+		int length = SerialPortManager.getInstance().read(buffer, 12,500);
 		printlog("PSGetImageEx", length);
 		if (length == 12) {
 			return buffer[9];
@@ -975,15 +913,7 @@ public class AsyncFingerprint extends Handler {
 		return -1;
 	}
 
-	/**
-	 * ��ImageBuffer�е�ָ��ͼ�����������ļ�����charBuffer1��CharBuffer2��
-	 *
-	 * @param bufferId
-	 *            ��CharBuffer1:1h,CharBuffer2:2h��
-	 * @return ����ֵΪȷ���� ȷ����=00H��ʾ���������ɹ� ȷ����=01H��ʾ�հ��д� ȷ����=06H��ʾָ��ͼ��̫�Ҷ�������ͼ��
-	 *         ȷ����=07H��ʾָ��ͼ����������������̫�ٶ����������� ȷ����=15H��ʾͼ�񻺳�����û����Чԭʼͼ��������ͼ�� ȷ����=-1
-	 *         ��ʾʧ��
-	 */
+
 	private synchronized byte PSGenCharEx(int bufferId) {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 01, (byte) 0x00, (byte) 0x04,
@@ -999,17 +929,12 @@ public class AsyncFingerprint extends Handler {
 	}
 
 
-	/**
-	 * ��ͼ�񻺳����������ϴ�����λ��
-	 *
-	 * @return byte[]��length��СΪ36k ��һ���ֽں����������أ�ÿ������ռ4bits null:�ϴ�ʧ��
-	 */
 	private synchronized byte[] PSUpImageEx() {
 		byte[] command = { (byte) 0xef, (byte) 0x01, (byte) 0xff, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0x01, (byte) 0x00,
 				(byte) 0x03, (byte) 0x31, (byte) 0x00, (byte) 0x35 };
 		sendCommand(command);
-		int length = SerialPortManager.getInstance().read(buffer, UP_IMAGEEX_RESPONSE_SIZE,100);
+		int length = SerialPortManager.getInstance().read(buffer, UP_IMAGEEX_RESPONSE_SIZE,500);
 		Log.i("whw", "PSUpImageEx length=" + length);
 		if (length >= UP_IMAGEEX_RESPONSE_SIZE) {
 			byte[] packets = new byte[length];
@@ -1026,16 +951,12 @@ public class AsyncFingerprint extends Handler {
 
 
 	/**
-	 * ����ָ��ģ�����ݰ�512�ֽ�,��Ϊ4�η��ͣ�3�����ݰ���һ�ν�����
-	 *
 	 * @param data
 	 */
 	private void sendData(byte[] data) {
-		// ���ݰ�ָ��ͷ
 		byte[] dataPrefix = { (byte) 0xef, (byte) 0x01, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0x02,
 				(byte) 0x00, (byte) 0x82 };
-		// ������ָ��ͷ
 		byte[] endPrefix = { (byte) 0xef, (byte) 0x01, (byte) 0xff,
 				(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0x08,
 				(byte) 0x00, (byte) 0x82 };
@@ -1059,8 +980,8 @@ public class AsyncFingerprint extends Handler {
 		}
 	}
 
-	private int index;// ���ݰ�����ʼ�±�
-	private int packetNum;// ���ݰ��ĸ���
+	private int index;
+	private int packetNum;
 
 	private byte[] parsePacketData(byte[] packet) {
 		int dstPos = 0;
@@ -1068,11 +989,13 @@ public class AsyncFingerprint extends Handler {
 		int size = 0;
 		do {
 			packageLength = getShort(packet[index + 7], packet[index + 8]);
-			System.arraycopy(packet, index + 9, data, dstPos, packageLength - 2);
-			dstPos += packageLength - 2;// 2��У���
-			packetNum++;
-			size += packageLength - 2;
-			Log.i("xpb", "**************size=" + size);
+			if(packageLength>0){
+				System.arraycopy(packet, index + 9, data, dstPos, packageLength - 2);
+				dstPos += packageLength - 2;
+				packetNum++;
+				size += packageLength - 2;
+				Log.i("xpb", "**************size=" + size);
+			}
 			if(bCancel)
 				return null;
 		} while (moveToNext(index + 6, packageLength, packet));
@@ -1091,11 +1014,13 @@ public class AsyncFingerprint extends Handler {
 		int size = 0;
 		do {
 			packageLength = getShort(packet[index + 7], packet[index + 8]);
-			System.arraycopy(packet, index + 9, data, dstPos, packageLength - 2);
-			dstPos += packageLength - 2;// 2��У���
-			packetNum++;
-			size += packageLength - 2;
-			Log.i("xpb", "**************size=" + size);
+			if(packageLength>0){
+				System.arraycopy(packet, index + 9, data, dstPos, packageLength - 2);
+				dstPos += packageLength - 2;
+				packetNum++;
+				size += packageLength - 2;
+				Log.i("xpb", "**************size=" + size);
+			}
 			if(size==512)
 				break;
 			if(bCancel)
@@ -1123,7 +1048,6 @@ public class AsyncFingerprint extends Handler {
 			return null;
 		}
 		byte[] imageData = new byte[data.length * 2];
-		// Log.i("whw", "*****************data.length="+data.length);
 		for (int i = 0; i < data.length; i++) {
 			imageData[i * 2] = (byte) (data[i] & 0xf0);
 			imageData[i * 2 + 1] = (byte) (data[i] << 4 & 0xf0);
@@ -1138,7 +1062,6 @@ public class AsyncFingerprint extends Handler {
 			return null;
 		}
 		byte[] imageData = new byte[data.length * 2];
-		// Log.i("whw", "*****************data.length="+data.length);
 		for (int i = 0; i < data.length; i++) {
 			imageData[i * 2] = (byte) (data[i] & 0xf0);
 			imageData[i * 2 + 1] = (byte) (data[i] << 4 & 0xf0);
@@ -1148,68 +1071,53 @@ public class AsyncFingerprint extends Handler {
 		return bmpData;
 	}
 
-	/**
-	 * �����ݴ����ڴ�
-	 */
+
 	private byte[] toBmpByte(int width, int height, byte[] data) {
 		byte[] buffer = null;
 		try {
-			// // ����������ļ�����
-			// java.io.FileOutputStream fos = new
-			// java.io.FileOutputStream(path);
-			// // ����ԭʼ�������������
-			// java.io.DataOutputStream dos = new java.io.DataOutputStream(fos);
+
 
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			DataOutputStream dos = new DataOutputStream(baos);
 
-			// ���ļ�ͷ�ı�����ֵ
-			int bfType = 0x424d; // λͼ�ļ����ͣ�0��1�ֽڣ�
-			int bfSize = 54 + 1024 + width * height;// bmp�ļ��Ĵ�С��2��5�ֽڣ�
-			int bfReserved1 = 0;// λͼ�ļ������֣�����Ϊ0��6-7�ֽڣ�
-			int bfReserved2 = 0;// λͼ�ļ������֣�����Ϊ0��8-9�ֽڣ�
-			int bfOffBits = 54 + 1024;// �ļ�ͷ��ʼ��λͼʵ������֮����ֽڵ�ƫ������10-13�ֽڣ�
+			int bfType = 0x424d;
+			int bfSize = 54 + 1024 + width * height;
+			int bfReserved1 = 0;
+			int bfReserved2 = 0;
+			int bfOffBits = 54 + 1024;
 
-			// �������ݵ�ʱ��Ҫע��������������ڴ���Ҫռ�����ֽڣ�
-			// Ȼ����ѡ����Ӧ��д�뷽�������������Լ��������������
-			// �����ļ�ͷ����
-			dos.writeShort(bfType); // ����λͼ�ļ�����'BM'
-			dos.write(changeByte(bfSize), 0, 4); // ����λͼ�ļ���С
-			dos.write(changeByte(bfReserved1), 0, 2);// ����λͼ�ļ�������
-			dos.write(changeByte(bfReserved2), 0, 2);// ����λͼ�ļ�������
-			dos.write(changeByte(bfOffBits), 0, 4);// ����λͼ�ļ�ƫ����
 
-			// ����Ϣͷ�ı�����ֵ
-			int biSize = 40;// ��Ϣͷ������ֽ�����14-17�ֽڣ�
-			int biWidth = width;// λͼ�Ŀ�18-21�ֽڣ�
-			int biHeight = -height;// λͼ�ĸߣ�22-25�ֽڣ�
-			int biPlanes = 1; // Ŀ���豸�ļ��𣬱�����1��26-27�ֽڣ�
-			int biBitcount = 8;// ÿ�����������λ����28-29�ֽڣ���������1λ��˫ɫ����4λ��16ɫ����8λ��256ɫ������24λ�����ɫ��֮һ��
-			int biCompression = 0;// λͼѹ�����ͣ�������0����ѹ������30-33�ֽڣ���1��BI_RLEBѹ�����ͣ���2��BI_RLE4ѹ�����ͣ�֮һ��
-			int biSizeImage = width * height;// ʵ��λͼͼ��Ĵ�С��������ʵ�ʻ��Ƶ�ͼ���С��34-37�ֽڣ�
-			int biXPelsPerMeter = 0;// λͼˮƽ�ֱ��ʣ�ÿ����������38-41�ֽڣ��������ϵͳĬ��ֵ
-			int biYPelsPerMeter = 0;// λͼ��ֱ�ֱ��ʣ�ÿ����������42-45�ֽڣ��������ϵͳĬ��ֵ
-			int biClrUsed = 256;// λͼʵ��ʹ�õ���ɫ���е���ɫ����46-49�ֽڣ������Ϊ0�Ļ���˵��ȫ��ʹ����
-			int biClrImportant = 0;// λͼ��ʾ��������Ҫ����ɫ��(50-53�ֽ�)�����Ϊ0�Ļ���˵��ȫ����Ҫ
+			dos.writeShort(bfType);
+			dos.write(changeByte(bfSize), 0, 4);
+			dos.write(changeByte(bfReserved1), 0, 2);
+			dos.write(changeByte(bfReserved2), 0, 2);
+			dos.write(changeByte(bfOffBits), 0, 4);
 
-			// ��Ϊjava�Ǵ�˴洢����ôҲ����˵ͬ�����������
-			// ��������ǰ�С�˶�ȡ��������ǲ��ı���ֽ����ݵ�˳��Ļ�����ô�����Ͳ���������ȡ��
-			// �������ȵ��÷�����int����ת��Ϊ���byte���ݣ����Ұ�С�˴洢��˳��
+			int biSize = 40;
+			int biWidth = width;
+			int biHeight = -height;
+			int biPlanes = 1;
+			int biBitcount = 8;
+			int biCompression = 0;
+			int biSizeImage = width * height;
+			int biXPelsPerMeter = 0;
+			int biYPelsPerMeter = 0;
+			int biClrUsed = 256;
+			int biClrImportant = 0;
 
-			// ������Ϣͷ����
-			dos.write(changeByte(biSize), 0, 4);// ������Ϣͷ���ݵ����ֽ���
-			dos.write(changeByte(biWidth), 0, 4);// ����λͼ�Ŀ�
-			dos.write(changeByte(biHeight), 0, 4);// ����λͼ�ĸ�
-			dos.write(changeByte(biPlanes), 0, 2);// ����λͼ��Ŀ���豸����
-			dos.write(changeByte(biBitcount), 0, 2);// ����ÿ������ռ�ݵ��ֽ���
-			dos.write(changeByte(biCompression), 0, 4);// ����λͼ��ѹ������
-			dos.write(changeByte(biSizeImage), 0, 4);// ����λͼ��ʵ�ʴ�С
-			dos.write(changeByte(biXPelsPerMeter), 0, 4);// ����λͼ��ˮƽ�ֱ���
-			dos.write(changeByte(biYPelsPerMeter), 0, 4);// ����λͼ�Ĵ�ֱ�ֱ���
-			dos.write(changeByte(biClrUsed), 0, 4);// ����λͼʹ�õ�����ɫ��
-			dos.write(changeByte(biClrImportant), 0, 4);// ����λͼʹ�ù�������Ҫ����ɫ��
 
-			// �����ɫ������
+			dos.write(changeByte(biSize), 0, 4);
+			dos.write(changeByte(biWidth), 0, 4);
+			dos.write(changeByte(biHeight), 0, 4);
+			dos.write(changeByte(biPlanes), 0, 2);
+			dos.write(changeByte(biBitcount), 0, 2);
+			dos.write(changeByte(biCompression), 0, 4);
+			dos.write(changeByte(biSizeImage), 0, 4);
+			dos.write(changeByte(biXPelsPerMeter), 0, 4);
+			dos.write(changeByte(biYPelsPerMeter), 0, 4);
+			dos.write(changeByte(biClrUsed), 0, 4);
+			dos.write(changeByte(biClrImportant), 0, 4);
+
 			byte[] palatte = new byte[1024];
 			for (int i = 0; i < 256; i++) {
 				palatte[i * 4] = (byte) i;
@@ -1220,7 +1128,6 @@ public class AsyncFingerprint extends Handler {
 			dos.write(palatte);
 
 			dos.write(data);
-			// �ر����ݵĴ���
 			dos.flush();
 			buffer = baos.toByteArray();
 			dos.close();
@@ -1232,13 +1139,7 @@ public class AsyncFingerprint extends Handler {
 		return buffer;
 	}
 
-	/**
-	 * ��һ��int����תΪ��С��˳�����е��ֽ�����
-	 *
-	 * @param data
-	 *            int����
-	 * @return ��С��˳�����е��ֽ�����
-	 */
+
 	private byte[] changeByte(int data) {
 		byte b4 = (byte) ((data) >> 24);
 		byte b3 = (byte) (((data) << 8) >> 24);
@@ -1263,11 +1164,7 @@ public class AsyncFingerprint extends Handler {
 		return size;
 	}
 
-	/**
-	 * ָ�Ƶ÷ֱȶ�,>=50�ַ���true���ȶԳɹ�
-	 *
-	 * @return
-	 */
+
 	private boolean score(byte b1, byte b2) {
 		byte[] temp = { b1, b2 };
 		short score = 0;
@@ -1279,7 +1176,6 @@ public class AsyncFingerprint extends Handler {
 	}
 
 	private void sendCommand(byte[] command) {
-//		Log.i("whw", "sendCommand hex=" + DataUtils.toHexString(command));
 		try {
 			SerialPortManager.getInstance().write(command);
 		} catch (IOException e) {

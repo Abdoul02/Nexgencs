@@ -55,8 +55,9 @@ public class FingerprintActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fingerprint);
-		
-		FPMatch.getInstance().InitMatch();
+
+		//initialize the matching mechanism for comparing the fingerprint.
+		FPMatch.getInstance().InitMatch(1, "http://www.hfcctv.com/ ");
 		
 		initView();
 		initViewListener();

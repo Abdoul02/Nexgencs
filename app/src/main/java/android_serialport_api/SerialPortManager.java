@@ -15,14 +15,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 
+/**
+ * class of managing the serial port of the devices
+ */
 public class SerialPortManager {
 
     private static SerialPortManager mSerialPortManager = new SerialPortManager();
+
+    //types of serial ports
 
     public static final int DEVTYPE_UART = 0;
     public static final int DEVTYPE_SPI = 1;
     public static final int DEVTYPE_USB = 2;
 
+    //port used for different types of devices
     public static final int DEV_UART_3G_5O = 0x01;    //Old 4.4.4
     public static final int DEV_UART_3G_5N = 0x02;    //Android
     public static final int DEV_SPI_3G_7 = 0x03;
@@ -32,7 +38,9 @@ public class SerialPortManager {
     public static final int DEV_UART_4G_6 = 0x07;
     public static final int DEV_USB_4G_7 = 0x08;
     public static final int DEV_USB_4G_8 = 0x09;
-    public static final int DEV_UART_4G_7 = 0x10;     //ANDROID 4G 7.0 FP-05-7A
+    public static final int DEV_UART_4G_7 = 0x10;
+    public static final int DEV_UART_3G_ACCESS = 0x11;
+    public static final int DEV_UART_HF_A5 = 0x12;
 
     private static final int BAUDRATE = 460800;
     private static final int Speed = 2000 * 1000;
@@ -55,6 +63,11 @@ public class SerialPortManager {
     private boolean bCancel = false;
     private AsyncFingerprint asyncFP = null;
 
+    /**
+     * create the link with the fingerprint module
+     * start to communicate with the module
+     * @return
+     */
     public AsyncFingerprint getNewAsyncFingerprint() {
         if (!isOpen) {
             try {
@@ -85,6 +98,10 @@ public class SerialPortManager {
         return mSerialPortManager;
     }
 
+    /**
+     * check the fingerprint module is open or not
+     * @return
+     */
     public boolean isOpen() {
         return isOpen;
     }
@@ -97,12 +114,22 @@ public class SerialPortManager {
         this.firstOpen = firstOpen;
     }
 
+    /**
+     * start the thread for FP module.
+     */
     private void createWorkThread() {
         ht = new HandlerThread("workerThread");
         ht.start();
         looper = ht.getLooper();
     }
 
+    /**
+     * open the serial port
+     * based on checking the different model of devices.
+     *
+     * @throws IOException
+     * @throws InvalidParameterException
+     */
     public void openSerialPort() throws SecurityException, IOException,
             InvalidParameterException {
         if (mSerialPort == null) {
@@ -131,6 +158,8 @@ public class SerialPortManager {
                     (mDeviceType == DEV_UART_4G_5) ||
                     (mDeviceType == DEV_UART_4G_T) ||
                     (mDeviceType == DEV_UART_4G_7) ||
+                    (mDeviceType == DEV_UART_3G_ACCESS) ||
+                    (mDeviceType == DEV_UART_HF_A5) ||
                     (mDeviceType == DEV_UART_4G_6)) {
                 mReadThread = new ReadThread();
                 mReadThread.start();
@@ -198,7 +227,7 @@ public class SerialPortManager {
                     ((byte) data[i + 1] == (byte) (0x01)) &&
                     ((byte) data[i + 2] == (byte) (0xFF)) &&
                     ((byte) data[i + 3] == (byte) (0xFF))
-                    ) {
+            ) {
                 return true;
             }
         }
@@ -274,7 +303,7 @@ public class SerialPortManager {
                         ((byte) mBuffer[i + 1] == (byte) (0x01)) &&
                         ((byte) mBuffer[i + 2] == (byte) (0xFF)) &&
                         ((byte) mBuffer[i + 3] == (byte) (0xFF))
-                        ) {
+                ) {
                     int pkgsize = (int) (mBuffer[i + 8]) + ((int) (mBuffer[i + 7] << 8) & 0xFF00) + 9;
                     if (pkgsize == -117)
                         pkgsize = 139;
@@ -384,7 +413,7 @@ public class SerialPortManager {
         String devname = android.os.Build.MODEL;
         String devid = android.os.Build.DEVICE;
         String devmodel = android.os.Build.DISPLAY;
-
+        Log.d("SerialPortManager", "xinghao:" + devname);
         if (devname.equals("b82"))
             return DEV_SPI_3G_7;
         if (devname.equals("FP07") || devname.equals("FP-07")) {
@@ -396,30 +425,48 @@ public class SerialPortManager {
                 return DEV_USB_4G_7;
             return DEV_SPI_3G_7;
         }
-        if (devname.equals("FP08") || devname.equals("FP-08")) {
+        if (devname.equals("FP08") || devname.equals("FP-08T")) {
+            Log.d("SerialPortManager", "DEV_USB_4G_8:" + DEV_USB_4G_8);
             return DEV_USB_4G_8;
         }
-        if (devname.equals("FT06") || devname.equals("FT-06") || devname.equals("FP-05")) {
-            return DEV_UART_3G_6;
+        if (devname.equals("FT06") || devname.equals("FT-06")) {
+            return DEV_UART_3G_ACCESS;
         }
+        if (devname.equals("HF-A5")){
+            return DEV_UART_HF_A5;
+        }
+
         if (devname.equals("FP06") || devname.equals("FP-06") || devname.equals("KT7500")) {
             return DEV_UART_4G_6;
         }
         if (devname.equals("M9PLUS")) {
             return DEV_UART_4G_T;
         }
+        if (devname.equals("FP-05")) {
+            if (devmodel.indexOf("35SM") >= 0) {
+                return DEV_UART_4G_5;
+            }
+            if (devmodel.indexOf("80M") >= 0) {
+                return DEV_UART_3G_6;
+            }
+            if (devmodel.indexOf("37SM") >= 0) {
+                return DEV_UART_4G_5;
+            }
+            return DEV_UART_3G_6;
+        }
+        if (devname.equals("M9PLUS")) {
+            return DEV_UART_3G_5N;
+        }
         if (devname.equals("FP--05")) {
             return DEV_UART_4G_7;
         }
-        if (devname.equals("iMA122")){
-            return DEV_UART_3G_5O;
+        if (devmodel.indexOf("35SM") >= 0) {
+            return DEV_UART_4G_5;
+        }
+        if (devmodel.indexOf("80M") >= 0) {
+            return DEV_UART_3G_5N;
         }
 
-        if (devmodel.indexOf("35SM") >= 0 || devname.equals("FP-05"))
-            return DEV_UART_4G_5;
-
-        if (devmodel.indexOf("80M") >= 0)
-            return DEV_UART_3G_5N;
 
         return DEV_UART_3G_5O;
     }
@@ -439,13 +486,17 @@ public class SerialPortManager {
             case DEV_UART_4G_T:
                 return "/dev/ttyHSL1";
             case DEV_UART_4G_6:
-                return "/dev/ttyMT2";
-            case DEV_UART_4G_7:
                 return "/dev/ttyMT1";
             case DEV_USB_4G_7:
                 return "";
+            case DEV_UART_4G_7:
+                return "/dev/ttyMT1";
             case DEV_USB_4G_8:
                 return "/dev/ttyMT2";
+            case DEV_UART_3G_ACCESS:
+                return "/dev/ttyMT1";
+            case DEV_UART_HF_A5:
+                return "/dev/ttyMT1";
         }
         return "";
     }
@@ -512,19 +563,6 @@ public class SerialPortManager {
                 }
             }
             break;
-            case DEV_UART_4G_7: {
-                CommonApi ca = new CommonApi();
-                if (bOn) {
-                    ca.setGpioMode(59, 0);
-                    ca.setGpioDir(59, 1);
-                    ca.setGpioOut(59, 1);
-                } else {
-                    ca.setGpioMode(59, 0);
-                    ca.setGpioDir(59, 1);
-                    ca.setGpioOut(59, 0);
-                }
-            }
-            break;
             case DEV_UART_4G_T: {
                 if (bOn) {
                     IoControl(true);
@@ -543,6 +581,19 @@ public class SerialPortManager {
                     ca.setGpioMode(54, 0);
                     ca.setGpioDir(54, 1);
                     ca.setGpioOut(54, 0);
+                }
+            }
+            break;
+            case DEV_UART_4G_7: {
+                CommonApi ca = new CommonApi();
+                if (bOn) {
+                    ca.setGpioMode(59, 0);
+                    ca.setGpioDir(59, 1);
+                    ca.setGpioOut(59, 1);
+                } else {
+                    ca.setGpioMode(59, 0);
+                    ca.setGpioDir(59, 1);
+                    ca.setGpioOut(59, 0);
                 }
             }
             break;
@@ -588,7 +639,32 @@ public class SerialPortManager {
                 }
             }
             break;
-
+            case DEV_UART_3G_ACCESS: {
+                CommonApi ca = new CommonApi();
+                if (bOn) {
+                    ca.setGpioMode(14, 0);
+                    ca.setGpioDir(14, 1);
+                    ca.setGpioOut(14, 1);
+                } else {
+                    ca.setGpioMode(14, 0);
+                    ca.setGpioDir(14, 1);
+                    ca.setGpioOut(14, 0);
+                }
+            }
+            break;
+            case DEV_UART_HF_A5: {
+                CommonApi ca = new CommonApi();
+                if (bOn) {
+                    ca.setGpioMode(15, 0);
+                    ca.setGpioDir(15, 1);
+                    ca.setGpioOut(15, 1);
+                } else {
+                    ca.setGpioMode(15, 0);
+                    ca.setGpioDir(15, 1);
+                    ca.setGpioOut(15, 0);
+                }
+            }
+            break;
         }
     }
 }
