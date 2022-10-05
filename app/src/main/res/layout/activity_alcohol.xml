@@ -78,9 +78,9 @@
             android:id="@+id/btn_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Clock"
             android:layout_alignParentRight="true"
-            android:textColor="@android:color/black"/>
+            android:text="Clock"
+            android:textColor="@android:color/black" />
 
     </RelativeLayout>
 

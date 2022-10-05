@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -111,7 +112,7 @@ public class MenuActivity extends AppCompatActivity {
         pDialog.setMessage("Downloading Attachment...");
         pDialog.setIndeterminate(false);
         pDialog.setMax(100);
-        pDialog.setProgressStyle(pDialog.STYLE_HORIZONTAL);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         pDialog.setCancelable(true);
 
 
@@ -438,7 +439,7 @@ public class MenuActivity extends AppCompatActivity {
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
+                        new OutputStreamWriter(os, StandardCharsets.UTF_8));
                 writer.write(getPostDataString(postDataParams));
                 writer.flush();
                 writer.close();
@@ -447,7 +448,7 @@ public class MenuActivity extends AppCompatActivity {
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
 
                     BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    StringBuffer sb = new StringBuffer("");
+                    StringBuffer sb = new StringBuffer();
                     String line = "";
 
                     while ((line = in.readLine()) != null) {
@@ -461,7 +462,7 @@ public class MenuActivity extends AppCompatActivity {
 
                 } else {
                     BufferedReader in = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-                    StringBuffer sb = new StringBuffer("");
+                    StringBuffer sb = new StringBuffer();
                     String line = "";
 
                     while ((line = in.readLine()) != null) {
@@ -477,7 +478,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
             } catch (Exception e) {
-                return new String("Exception: " + e.getMessage());
+                return "Exception: " + e.getMessage();
             }
         }
 
@@ -620,8 +621,8 @@ public class MenuActivity extends AppCompatActivity {
         builder.setTitle("Application update ");
         final LayoutInflater inflater = LayoutInflater.from(MenuActivity.this);
         View vl = inflater.inflate(R.layout.dialog_enrolfinger, null);
-        fpImage = (ImageView) vl.findViewById(R.id.imageView1);
-        tvFpStatus = (TextView) vl.findViewById(R.id.textview1);
+        fpImage = vl.findViewById(R.id.imageView1);
+        tvFpStatus = vl.findViewById(R.id.textview1);
 
         if (status == 1) {
             fpImage.setImageResource(R.drawable.approve);
@@ -664,8 +665,8 @@ public class MenuActivity extends AppCompatActivity {
         builder.setTitle("Application update");
         final LayoutInflater inflater = LayoutInflater.from(MenuActivity.this);
         View vl = inflater.inflate(R.layout.dialog_enrolfinger, null);
-        fpImage = (ImageView) vl.findViewById(R.id.imageView1);
-        tvFpStatus = (TextView) vl.findViewById(R.id.textview1);
+        fpImage = vl.findViewById(R.id.imageView1);
+        tvFpStatus = vl.findViewById(R.id.textview1);
 
         if (status == 1) {
             fpImage.setImageResource(R.drawable.approve);
@@ -750,7 +751,7 @@ public class MenuActivity extends AppCompatActivity {
 
                 apkPath = extStorageDirectory + "/ALOS/" + fileName;
 
-                byte data[] = new byte[1024];
+                byte[] data = new byte[1024];
                 long total = 0;
                 int count;
                 while ((count = input.read(data)) != -1) {
