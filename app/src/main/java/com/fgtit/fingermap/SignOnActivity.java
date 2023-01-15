@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,6 +41,7 @@ import android.fpi.MtRfid;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -130,7 +132,7 @@ public class SignOnActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_local);
 
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(this.getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         this.getSupportActionBar().setBackgroundDrawable(new
                 ColorDrawable(Color.parseColor("#020969")));
@@ -227,9 +229,12 @@ public class SignOnActivity extends AppCompatActivity {
 
         final String identifier;
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        if (telephonyManager != null)
-            identifier = telephonyManager.getDeviceId();
-        else
+        if (telephonyManager != null) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                identifier = telephonyManager.getDeviceId();
+            else
+                identifier = "N/A";
+        } else
             identifier = "Not available";
 
 

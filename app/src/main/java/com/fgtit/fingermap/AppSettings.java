@@ -2,7 +2,9 @@ package com.fgtit.fingermap;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -14,11 +16,11 @@ import com.fgtit.models.AdminData;
 
 import java.util.HashMap;
 
-public class AppSettings extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener{
+public class AppSettings extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-    EditText edtOldPass,edtNewPass;
+    EditText edtOldPass, edtNewPass;
     AdminData data;
-    String savedPassword,oldPassword,newPassword;
+    String savedPassword, oldPassword, newPassword;
     CheckBox fingerLock;
 
     @Override
@@ -39,7 +41,7 @@ public class AppSettings extends AppCompatActivity implements CompoundButton.OnC
         edtNewPass = (EditText) findViewById(R.id.edtNewPass);
         fingerLock = (CheckBox) findViewById(R.id.chFingerLock);
 
-        if(savedPassword == null){
+        if (savedPassword == null) {
             toast("First time setting up password, ignore Old password Field");
 
         }
@@ -81,38 +83,25 @@ public class AppSettings extends AppCompatActivity implements CompoundButton.OnC
 
     }
 
-    public void updatePass(View v){
+    public void updatePass(View v) {
 
 
         oldPassword = edtOldPass.getText().toString();
         newPassword = edtNewPass.getText().toString();
 
-            //toast(savedPassword);
+        //toast(savedPassword);
 
-            if(savedPassword != null){
+        if (savedPassword != null) {
 
-                if(oldPassword.length() < 1 && newPassword.length() < 1){
+            if (oldPassword.length() < 1 && newPassword.length() < 1) {
 
-                    toast("Please Provide both fields");
-                }else{
+                toast("Please Provide both fields");
+            } else {
 
-                    if(!oldPassword.equals(savedPassword)){
-                        toast("Incorrect old Password");
-                    }else{
+                if (!oldPassword.equals(savedPassword)) {
+                    toast("Incorrect old Password");
+                } else {
 
-                        data.storePassword(newPassword);
-                        toast("New Password saved!");
-                        Intent intent = new Intent(AppSettings.this, MenuActivity.class);
-                        startActivity(intent);
-                    }
-                }
-
-
-            }else{
-
-                if( newPassword.length() < 1){
-                    toast("Please Provide new Password");
-                }else{
                     data.storePassword(newPassword);
                     toast("New Password saved!");
                     Intent intent = new Intent(AppSettings.this, MenuActivity.class);
@@ -121,17 +110,25 @@ public class AppSettings extends AppCompatActivity implements CompoundButton.OnC
             }
 
 
+        } else {
+
+            if (newPassword.length() < 1) {
+                toast("Please Provide new Password");
+            } else {
+                data.storePassword(newPassword);
+                toast("New Password saved!");
+                Intent intent = new Intent(AppSettings.this, MenuActivity.class);
+                startActivity(intent);
+            }
+        }
 
 
     }
 
-public void toast(String message){
+    public void toast(String message) {
 
-        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
-}
-
-
-
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
     /*private boolean getFromSP(String key){
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("NEXGENCS", android.content.Context.MODE_PRIVATE);
@@ -149,12 +146,12 @@ public void toast(String message){
                                  boolean isChecked) {
         // TODO Auto-generated method stub
 
-        switch(buttonView.getId()){
+        switch (buttonView.getId()) {
 
             case R.id.chFingerLock:
                 //saveInSp("chSync",isChecked);
                 data.lockFingerReg(isChecked);
-                Toast.makeText(getApplicationContext(),String.valueOf(isChecked),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), String.valueOf(isChecked), Toast.LENGTH_SHORT).show();
                 break;
 
         }

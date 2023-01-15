@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -23,10 +24,11 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.fgtit.data.MyConstants.BASE_URL;
+import static com.fgtit.data.MyConstants.DOWNLOAD_EMP;
 
 import com.fgtit.data.MyConstants;
-import com.fgtit.fingermap.SaveCustomJobInDb;
-import com.fgtit.models.SaveJobResponse;
+import com.fgtit.fingermap.SaveCustomDataInDb;
+import com.fgtit.models.SaveDataResponse;
 
 public class DownloadService extends IntentService {
 
@@ -75,7 +77,7 @@ public class DownloadService extends IntentService {
         Log.d(TAG, filter);
 
         String jsonValue = "";
-        if (filter.equals(JOB_CLOCK)) {
+        if (filter.equals(JOB_CLOCK) || filter.equals(DOWNLOAD_EMP)) {
             jsonValue = intent.getStringExtra(JSON_VAL);
         }
 
@@ -99,8 +101,8 @@ public class DownloadService extends IntentService {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
-                        String responseStr = response.body().string();
-                        response.body().close();
+                        String responseStr = Objects.requireNonNull(response.body()).string();
+                        Objects.requireNonNull(response.body()).close();
                         result = Activity.RESULT_OK;
                         Log.d(TAG, "Result =>" + result);
                         Log.d(TAG, "Response =>" + responseStr);
@@ -145,8 +147,11 @@ public class DownloadService extends IntentService {
         intent.putExtra(RESULT, result);
         if (result == Activity.RESULT_OK && (filter.equals(ERD) || filter.equals(MyConstants.TURNMILL_GET_JOB)
                 || filter.equals(MyConstants.DRYDEN_GET_JOB) || filter.equals(MyConstants.MECHFIT_GET_JOB))) {
-            SaveJobResponse saveJobResponse = saveJobs(response, filter);
-            intent.putExtra(CALL_RESPONSE, saveJobResponse.getMessage());
+            SaveDataResponse saveDataResponse = saveJobs(response, filter);
+            intent.putExtra(CALL_RESPONSE, saveDataResponse.getMessage());
+        } else if (result == Activity.RESULT_OK && filter.equals(DOWNLOAD_EMP)) {
+            SaveDataResponse saveDataResponse = saveEmployInfo(response);
+            intent.putExtra(CALL_RESPONSE, saveDataResponse.getMessage());
         } else {
             intent.putExtra(CALL_RESPONSE, response);
         }
@@ -157,8 +162,13 @@ public class DownloadService extends IntentService {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private SaveJobResponse saveJobs(String jsonResponse, String filter) {
-        SaveCustomJobInDb saveJob = new SaveCustomJobInDb(this.getApplicationContext());
+    private SaveDataResponse saveJobs(String jsonResponse, String filter) {
+        SaveCustomDataInDb saveJob = new SaveCustomDataInDb(this.getApplicationContext());
         return saveJob.saveJobs(jsonResponse, filter);
+    }
+
+    private SaveDataResponse saveEmployInfo(String employeeData) {
+        SaveCustomDataInDb saveData = new SaveCustomDataInDb(this.getApplicationContext());
+        return saveData.saveEmployeeInfo(employeeData);
     }
 }

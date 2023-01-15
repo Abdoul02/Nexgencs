@@ -12,6 +12,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Fgtit"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".strucmac.DeliveryDetail"></activity>

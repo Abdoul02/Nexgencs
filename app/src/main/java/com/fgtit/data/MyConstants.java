@@ -38,6 +38,7 @@ public class MyConstants {
     public static final String MECHFIT_JOB_CLOCK_URL = BASE_URL + "/alos/mechfit/mpt_job_clock.php";
 
     public static final String PROJECT_SIGNATURE_URL = BASE_URL + "/alos/project_signature.php";
+    public static final String GET_USER_URL = "/alos/getUsers.php";
 
     public static String getMainClockURL() {
         String mainClock = BASE_URL + "/alos/alcohol.php";
@@ -58,6 +59,7 @@ public class MyConstants {
     public static final String STRUCMAC_VEHICLE = "strucMacVehicle";
     public static final String STRUCMAC_UPLOAD = "StrucMacUpload";
     public static final String DELIVERY = "delivery";
+    public static final String DOWNLOAD_EMP = "download_employee";
 
     //Data
     public static final String REPORT_SHARED_PREF = "reportSharedPref";
