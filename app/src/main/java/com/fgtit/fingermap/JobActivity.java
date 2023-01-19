@@ -182,7 +182,11 @@ public class JobActivity extends AppCompatActivity {
                 return true;
 
             case R.id.refresh:
-                syncSQLiteMySQLDB();
+                try {
+                    syncSQLiteMySQLDB();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 return true;
 
             case R.id.job_search:
@@ -275,60 +279,55 @@ public class JobActivity extends AppCompatActivity {
 
 
     // Method to Sync MySQL to SQLite DB
-    public void syncSQLiteMySQLDB() {
-
-        try {
-            AsyncHttpClient client = new AsyncHttpClient();
-            RequestParams params = new RequestParams();
-
-            session = new SessionManager(getApplicationContext());
-            HashMap<String, String> manager = session.getUserDetails();
-            int userID = Integer.parseInt(manager.get(SessionManager.KEY_UID));
+    public void syncSQLiteMySQLDB() throws JSONException {
 
 
-            String json = "";
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("dat", "dummy");
-            jsonObject.accumulate("userID", userID);
-            //  convert JSONObject to JSON to String
-            json = jsonObject.toString();
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
 
-            prgDialog.show();
+        session = new SessionManager(getApplicationContext());
+        HashMap<String, String> manager = session.getUserDetails();
+        int userID = Integer.parseInt(manager.get(SessionManager.KEY_UID));
 
-            params.put("jobJSON", json);
 
-            // Make Http call to getJobs.php
-            client.post(BASE_URL + "/api/getJobs.php", params, new AsyncHttpResponseHandler() {
-                @Override
-                public void onSuccess(String response) {
+        String json = "";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.accumulate("dat", "dummy");
+        jsonObject.accumulate("userID", userID);
+        //  convert JSONObject to JSON to String
+        json = jsonObject.toString();
 
-                    // Hide ProgressBar
-                    prgDialog.hide();
-                    // Update SQLite DB with response sent by getusers.php
-                    updateSQLite(response);
+        prgDialog.show();
+
+        params.put("jobJSON", json);
+
+        // Make Http call to getJobs.php
+        client.post(BASE_URL + "/api/getJobs.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+
+                // Hide ProgressBar
+                prgDialog.hide();
+                // Update SQLite DB with response sent by getusers.php
+                updateSQLite(response);
+            }
+
+            // When error occured
+            @Override
+            public void onFailure(int statusCode, Throwable error, String content) {
+                // TODO Auto-generated method stub
+                // Hide ProgressBar
+                prgDialog.hide();
+                if (statusCode == 404) {
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                } else if (statusCode == 500) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet]",
+                            Toast.LENGTH_LONG).show();
                 }
-
-                // When error occured
-                @Override
-                public void onFailure(int statusCode, Throwable error, String content) {
-                    // TODO Auto-generated method stub
-                    // Hide ProgressBar
-                    prgDialog.hide();
-                    if (statusCode == 404) {
-                        Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                    } else if (statusCode == 500) {
-                        Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet]",
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-
-        } catch (Exception e) {
-
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
+            }
+        });
     }
 
     public void updateSQLite(String response) {
