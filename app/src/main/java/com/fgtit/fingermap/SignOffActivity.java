@@ -40,6 +40,7 @@ import android.fpi.MtRfid;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.nfc.NfcAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -209,13 +210,7 @@ public class SignOffActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         Location loc = locationManager.getLastKnownLocation(provider);
@@ -231,9 +226,12 @@ public class SignOffActivity extends AppCompatActivity {
 
         final String identifier;
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        if (telephonyManager != null)
-            identifier = telephonyManager.getDeviceId();
-        else
+        if (telephonyManager != null) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+                identifier = telephonyManager.getDeviceId();
+            else
+                identifier = "N/A";
+        } else
             identifier = "Not available";
 
 

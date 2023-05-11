@@ -1,27 +1,35 @@
 package com.fgtit.fingermap;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.fgtit.data.MyConstants;
 import com.fgtit.models.CustomJobCard;
 import com.fgtit.models.ERDSubTask;
-import com.fgtit.models.SaveJobResponse;
+import com.fgtit.models.SaveDataResponse;
+import com.fgtit.models.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SaveCustomJobInDb {
+import java.util.HashMap;
+
+public class SaveCustomDataInDb {
 
     Context context;
     JobDB jobDB;
+    DBHandler db;
 
-    public SaveCustomJobInDb(Context context) {
+    public SaveCustomDataInDb(Context context) {
         this.context = context;
         jobDB = new JobDB(context);
+        db = new DBHandler(context);
     }
 
-    public SaveJobResponse saveJobs(String jsonValue, String filter) {
+    public SaveDataResponse saveJobs(String jsonValue, String filter) {
         if (jsonValue != null && !jsonValue.isEmpty()) {
             int success;
             String message;
@@ -91,16 +99,54 @@ public class SaveCustomJobInDb {
                             }
                         }
 
-                        return new SaveJobResponse(message, true);
+                        return new SaveDataResponse(message, true);
                     }
-                    return new SaveJobResponse("No job card found", true);
+                    return new SaveDataResponse("No job card found", true);
                 }
-                return new SaveJobResponse(message, false);
+                return new SaveDataResponse(message, false);
 
             } catch (JSONException e) {
-                return new SaveJobResponse("JSON error: " + e.getMessage(), false);
+                return new SaveDataResponse("JSON error: " + e.getMessage(), false);
             }
         }
-        return new SaveJobResponse("Error, Could not get job", false);
+        return new SaveDataResponse("Error, Could not get job", false);
+    }
+
+    public SaveDataResponse saveEmployeeInfo(String employeeInfo) {
+        // Create GSON object
+        Gson gson = new GsonBuilder().create();
+        try {
+            // Extract JSON array from the response
+            JSONArray arr = new JSONArray(employeeInfo);
+            System.out.println(arr.length());
+            // If no of array elements is not zero
+            if (arr.length() != 0) {
+
+                db.deleteAll();
+                // Loop through each array element, get JSON object which has userid and username
+                for (int i = 0; i < arr.length(); i++) {
+                    // Get JSON object
+                    JSONObject obj = (JSONObject) arr.get(i);
+                    User user = new User();
+                    user.setuId(Integer.parseInt(obj.get("userId").toString()));
+                    user.setIdNum(obj.get("idNum").toString());
+                    user.setuName(obj.get("name").toString());
+                    user.setFinger1(obj.get("finger1").toString());
+                    user.setFinger2(obj.get("finger2").toString());
+
+                    user.setCostCenterId(Integer.parseInt(obj.get("costCenterId").toString()));
+                    user.setShifts_id(Integer.parseInt(obj.get("shifts_id").toString()));
+                    user.setShift_type(Integer.parseInt(obj.get("shift_type").toString()));
+                    user.setCard(obj.get("card").toString());
+                    db.insertUser(user);
+                }
+                return new SaveDataResponse(arr.length() + " Employee(s) downloaded", true);
+                //gotoUserList();
+            }
+        } catch (JSONException e) {
+            Toast.makeText(context, "Error Occurred [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+        return new SaveDataResponse("Could not download employee information", true);
     }
 }

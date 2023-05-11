@@ -1,10 +1,10 @@
 package com.fgtit.models;
 
-public class SaveJobResponse {
+public class SaveDataResponse {
     private String message;
     private boolean success;
 
-    public SaveJobResponse(String message, boolean success) {
+    public SaveDataResponse(String message, boolean success) {
         this.message = message;
         this.success = success;
     }

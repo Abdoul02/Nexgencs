@@ -15,8 +15,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.fgtit.data.CommonFunction;
 import com.fgtit.models.SessionManager;
 import com.fgtit.models.User;
+import com.fgtit.service.DownloadService;
+import com.fgtit.service.NetworkService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.loopj.android.http.AsyncHttpClient;
@@ -26,6 +29,9 @@ import com.loopj.android.http.RequestParams;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -61,12 +67,17 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.fgtit.data.MyConstants.BASE_URL;
+import static com.fgtit.data.MyConstants.DELIVERY;
+import static com.fgtit.data.MyConstants.DOWNLOAD_EMP;
+import static com.fgtit.data.MyConstants.GET_USER_URL;
+import static com.fgtit.data.MyConstants.PROJECT_SIGNATURE;
+import static com.fgtit.data.MyConstants.STRUCMAC_DATA_URL;
 
 public class UtilitiesActivity extends AppCompatActivity {
 
     // User DB Class to perform DB related operations
     DBHandler db = new DBHandler(this);
-
+    CommonFunction commonFunction = new CommonFunction(this);
 
     // Session Manager Class
     SessionManager session;
@@ -83,6 +94,14 @@ public class UtilitiesActivity extends AppCompatActivity {
     private List<Map<String, Object>> mData;
     String serverURL = BASE_URL + "/api/getPineUsers.php";
     String scaleURL = BASE_URL + "/alos/scale_upload.php";
+
+    private final BroadcastReceiver employeeDownloadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            handleEmpDownloadResponse(bundle);
+        }
+    };
 
     @SuppressLint("NewApi")
     @Override
@@ -143,7 +162,7 @@ public class UtilitiesActivity extends AppCompatActivity {
 							serviceIntent.putExtra("inputExtra", "test");
 							ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);*/
 
-                            syncSQLiteMySQLDB();
+                            downloadEmp();
                         }
                     }
                     break;
@@ -254,6 +273,19 @@ public class UtilitiesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(employeeDownloadReceiver, new IntentFilter(
+                DownloadService.NOTIFICATION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(employeeDownloadReceiver);
+    }
+
     private void setDialog(boolean show) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -269,10 +301,38 @@ public class UtilitiesActivity extends AppCompatActivity {
 
     }
 
+    public void downloadEmp() {
+        commonFunction.setDialog(true);
+        Intent client_intent = new Intent(this, DownloadService.class);
+        JSONObject postDataParams = new JSONObject();
+
+        try {
+            postDataParams.accumulate("compID", compID);
+            client_intent.putExtra(DownloadService.POST_JSON, "userJSON");
+            client_intent.putExtra(DownloadService.URL, BASE_URL + GET_USER_URL);
+            client_intent.putExtra(DownloadService.FILTER, DOWNLOAD_EMP);
+            client_intent.putExtra(DownloadService.JSON_VAL, postDataParams.toString());
+            startService(client_intent);
+        } catch (JSONException e) {
+            commonFunction.setDialog(false);
+            e.printStackTrace();
+        }
+
+    }
+
+    private void handleEmpDownloadResponse(Bundle bundle) {
+        String filter = bundle.getString(DownloadService.FILTER);
+        int resultCode = bundle.getInt(DownloadService.RESULT);
+        commonFunction.cancelDialog();
+        if (resultCode == RESULT_OK && filter.equals(DOWNLOAD_EMP)) {
+            String response = bundle.getString(DownloadService.CALL_RESPONSE);
+            commonFunction.showToast(response);
+            gotoUserList();
+        }
+    }
+
     // Method to Sync MySQL to SQLite DB
-    public void syncSQLiteMySQLDB() {
-
-
+    public void downloadEmployeeInformation() {
         try {
             // Create AsycHttpClient object
             AsyncHttpClient client = new AsyncHttpClient();
@@ -326,8 +386,6 @@ public class UtilitiesActivity extends AppCompatActivity {
     }
 
     public void updateSQLite(String response) {
-/*        ArrayList<HashMap<String, String>> usersynclist;
-        usersynclist = new ArrayList<HashMap<String, String>>();*/
         // Create GSON object
         Gson gson = new GsonBuilder().create();
         try {
@@ -354,11 +412,6 @@ public class UtilitiesActivity extends AppCompatActivity {
                     user.setShift_type(Integer.parseInt(obj.get("shift_type").toString()));
                     user.setCard(obj.get("card").toString());
                     db.insertUser(user);
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    // Add status for each User in Hashmap
-/*                    map.put("Id", obj.get("userId").toString());
-                    map.put("status", "1");
-                    usersynclist.add(map);*/
                 }
                 gotoUserList();
             }
