@@ -177,13 +177,16 @@ public class SignOnActivity extends AppCompatActivity {
             }
         });
 
-        //Card
-        InitReadCard();
-        ReadCardSn();
+
 
         //Fingerprint
         AddStatus(getString(R.string.txt_fpbegin));
         vFingerprint = SerialPortManager.getInstance().getNewAsyncFingerprint();
+
+        //Card
+        InitReadCard();
+        ReadCardSn();
+
         FPInit();
         FPProcess();
     }

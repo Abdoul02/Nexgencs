@@ -133,10 +133,23 @@ public class SerialPortManager {
     public void openSerialPort() throws SecurityException, IOException,
             InvalidParameterException {
         if (mSerialPort == null) {
+
+            CommonApi ca = new CommonApi();
+            ca.setGpioMode(172, 0);
+            ca.setGpioDir(172, 1);
+            ca.setGpioOut(172, 1);
+            SystemClock.sleep(500);
+
             /* Open the serial port */
             mSerialPort = new SerialPort();
-
             mDeviceType = getDeviceType();
+            Log.i("xpb", "SPI Mode");
+            mSerialPort.OpenDevice(new File("/dev/spidev1.0"), 6*1000*1000, DEVTYPE_SPI, 1);
+
+            //mDeviceType = DEV_SPI_3G_7;
+
+            //mSerialPort.PowerSwitch(true);
+            /* helloyifa
             if (mDeviceType == DEV_SPI_3G_7) {
                 Log.i("xpb", "SPI Mode");
                 mSerialPort.OpenDevice(new File(GetUartPath()), Speed, Mode, DEVTYPE_SPI);
@@ -149,8 +162,13 @@ public class SerialPortManager {
                 mSerialPort.OpenDevice(new File(GetUartPath()), BAUDRATE, 0, DEVTYPE_UART);
             }
 
+             */
+
             mOutputStream = mSerialPort.getOutputStream();
             mInputStream = mSerialPort.getInputStream();
+
+            //mReadThread = new ReadThread();
+            //mReadThread.start();
 
             if ((mDeviceType == DEV_UART_3G_5O) ||
                     (mDeviceType == DEV_UART_3G_5N) ||
@@ -160,6 +178,7 @@ public class SerialPortManager {
                     (mDeviceType == DEV_UART_4G_7) ||
                     (mDeviceType == DEV_UART_3G_ACCESS) ||
                     (mDeviceType == DEV_UART_HF_A5) ||
+
                     (mDeviceType == DEV_UART_4G_6)) {
                 mReadThread = new ReadThread();
                 mReadThread.start();
@@ -192,7 +211,13 @@ public class SerialPortManager {
         }
         ht = null;
         if (mDeviceType == DEV_SPI_3G_7) {
-            SystemClock.sleep(1000);
+            //helloyifa
+            CommonApi ca = new CommonApi();
+            ca.setGpioMode(172, 0);
+            ca.setGpioDir(172, 1);
+            ca.setGpioOut(172, 0);
+
+            //SystemClock.sleep(1000);
         } else {
             SystemClock.sleep(200);
         }
@@ -200,11 +225,7 @@ public class SerialPortManager {
         if (mReadThread != null)
             mReadThread.interrupt();
         mReadThread = null;
-        try {
-            setDownGpio();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+
         if (mSerialPort != null) {
             try {
                 mOutputStream.close();
@@ -217,7 +238,7 @@ public class SerialPortManager {
         }
         isOpen = false;
         mCurrentSize = 0;
-
+        //asyncFP = null;
         Log.i("xpb", "Close Serial");
     }
 
@@ -414,6 +435,10 @@ public class SerialPortManager {
         String devid = android.os.Build.DEVICE;
         String devmodel = android.os.Build.DISPLAY;
         Log.d("SerialPortManager", "xinghao:" + devname);
+        if(devname.equals("FP08")){
+            return DEV_SPI_3G_7;
+        }
+
         if (devname.equals("b82"))
             return DEV_SPI_3G_7;
         if (devname.equals("FP07") || devname.equals("FP-07")) {

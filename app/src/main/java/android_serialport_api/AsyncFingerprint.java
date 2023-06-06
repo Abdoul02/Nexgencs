@@ -69,6 +69,7 @@ public class AsyncFingerprint extends Handler {
 		super.handleMessage(msg);
 		switch (msg.what) {
 			case FP_GetImage:
+
 				if (onGetImageListener == null) {
 					return;
 				}
@@ -282,9 +283,12 @@ public class AsyncFingerprint extends Handler {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 				case FP_GetImage:
+					//Log.d("hello","--get image");
 					int valueGetImage = PSGetImage();
+					//Log.d("hello","get image:"+valueGetImage);
 					AsyncFingerprint.this.obtainMessage(FP_GetImage, valueGetImage,
 							-1).sendToTarget();
+
 					break;
 				case FP_UpImage:
 					byte[] imageData = PSUpImage();
@@ -354,6 +358,7 @@ public class AsyncFingerprint extends Handler {
 					break;
 				case FP_GetImageEX:
 					int valueGetImageEx = PSGetImageEx();
+
 					AsyncFingerprint.this.obtainMessage(FP_GetImageEX, valueGetImageEx,
 							-1).sendToTarget();
 					break;
@@ -576,9 +581,18 @@ public class AsyncFingerprint extends Handler {
 
 		void onGenCharExFail();
 	}
+	private void FP_Sleep(int ms){
+		try {
+			Thread.sleep(ms);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 
+	}
 	public void FP_GetImage() {
 		SystemClock.sleep(100);
+		//FP_Sleep(100);
+		mWorkerThreadHandler.removeMessages(FP_GetImage);
 		mWorkerThreadHandler.sendEmptyMessage(FP_GetImage);
 	}
 
