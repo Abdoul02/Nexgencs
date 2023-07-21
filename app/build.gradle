@@ -8,8 +8,8 @@ android {
         applicationId 'co.za.nexgencs.clocking'
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 3
-        versionName "1.2.3"
+        versionCode 5
+        versionName "2.0.0"
         flavorDimensions "default"
         ndk{
             abiFilters "armeabi","armeabi-v7a"
@@ -46,8 +46,6 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //implementation 'org.apache.httpcomponents:httpcore:4.4.14'
-    //implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
 
 

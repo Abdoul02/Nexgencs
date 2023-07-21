@@ -215,10 +215,13 @@ public class JobClockActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String searchQuery) {
 
                 if (list_of_jobs.isEmpty()) {
-                    Toast.makeText(JobClockActivity.this, "Download jobs first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JobClockActivity.this, "Could not find the search, clear and press back to restart", Toast.LENGTH_SHORT).show();
                 } else {
                     myAppAdapter.filter(searchQuery.trim());
                     myList.invalidate();
+                }
+                if (searchQuery.isEmpty()) {
+                    myAppAdapter.addAllJobsBack();
                 }
 
                 return true;
@@ -614,14 +617,30 @@ public class JobClockActivity extends AppCompatActivity {
 
             } else {
                 for (CustomJobCard jobCard : arrayList) {
-                    if (charText.length() != 0 && jobCard.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    String filterName;
+                    if (companyId == MyConstants.COMPANY_MECHFIT) {
+                        filterName = jobCard.getCustomerName().toLowerCase(Locale.getDefault());
+                    } else if (companyId == MyConstants.COMPANY_TURN_MILL) {
+                        filterName = "";
+                    } else {
+                        filterName = jobCard.getName().toLowerCase(Locale.getDefault());
+                    }
+
+                    if (charText.length() != 0 && filterName.contains(charText)) {
                         JobList.add(jobCard);
-                    } else if (charText.length() != 0 && jobCard.getJobNo().toLowerCase(Locale.getDefault()).contains(charText)) {
-                        JobList.add(jobCard);
+                    } else {
+                        if (charText.length() != 0 && jobCard.getJobNo().toLowerCase(Locale.getDefault()).contains(charText)) {
+                            JobList.add(jobCard);
+                        }
                     }
                 }
             }
             notifyDataSetChanged();
+        }
+
+        public void addAllJobsBack() {
+            JobList.clear();
+            JobList.addAll(arrayList);
         }
     }
 }
