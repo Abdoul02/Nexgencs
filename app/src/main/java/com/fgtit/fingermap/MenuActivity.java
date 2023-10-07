@@ -187,8 +187,8 @@ public class MenuActivity extends AppCompatActivity {
                 break;
 
                 case 6: {
-
-                    new checkUpdate().execute();
+                    showToast("Not available for this device");
+                   // new checkUpdate().execute();
                 }
                 break;
 
