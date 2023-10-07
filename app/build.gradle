@@ -9,7 +9,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 30
         versionCode 4
-        versionName "2.0.0"
+        versionName "2.1.0"
         flavorDimensions "default"
         ndk{
             abiFilters "armeabi","armeabi-v7a"

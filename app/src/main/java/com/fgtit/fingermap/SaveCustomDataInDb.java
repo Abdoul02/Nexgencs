@@ -113,10 +113,8 @@ public class SaveCustomDataInDb {
     }
 
     public SaveDataResponse saveEmployeeInfo(String employeeInfo) {
-        // Create GSON object
-        Gson gson = new GsonBuilder().create();
+
         try {
-            // Extract JSON array from the response
             JSONArray arr = new JSONArray(employeeInfo);
             System.out.println(arr.length());
             // If no of array elements is not zero

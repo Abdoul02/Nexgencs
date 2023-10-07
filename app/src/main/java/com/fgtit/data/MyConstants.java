@@ -39,6 +39,7 @@ public class MyConstants {
 
     public static final String PROJECT_SIGNATURE_URL = BASE_URL + "/alos/project_signature.php";
     public static final String GET_USER_URL = "/alos/getUsers.php";
+    public static final String GET_USER_AND_FINGERPRINT_URL = "/alos/getUsersAndFingerprints.php";
 
     public static String getMainClockURL() {
         String mainClock = BASE_URL + "/alos/alcohol.php";

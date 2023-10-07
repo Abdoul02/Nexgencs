@@ -69,6 +69,7 @@ import okhttp3.Response;
 import static com.fgtit.data.MyConstants.BASE_URL;
 import static com.fgtit.data.MyConstants.DELIVERY;
 import static com.fgtit.data.MyConstants.DOWNLOAD_EMP;
+import static com.fgtit.data.MyConstants.GET_USER_AND_FINGERPRINT_URL;
 import static com.fgtit.data.MyConstants.GET_USER_URL;
 import static com.fgtit.data.MyConstants.PROJECT_SIGNATURE;
 import static com.fgtit.data.MyConstants.STRUCMAC_DATA_URL;
@@ -309,7 +310,7 @@ public class UtilitiesActivity extends AppCompatActivity {
         try {
             postDataParams.accumulate("compID", compID);
             client_intent.putExtra(DownloadService.POST_JSON, "userJSON");
-            client_intent.putExtra(DownloadService.URL, BASE_URL + GET_USER_URL);
+            client_intent.putExtra(DownloadService.URL, BASE_URL + GET_USER_AND_FINGERPRINT_URL);
             client_intent.putExtra(DownloadService.FILTER, DOWNLOAD_EMP);
             client_intent.putExtra(DownloadService.JSON_VAL, postDataParams.toString());
             startService(client_intent);
@@ -435,6 +436,9 @@ public class UtilitiesActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This has been changed to update fingerprints to new table on DB for new Devices
+     */
     public void syncData() {
         //Create AsycHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
@@ -444,7 +448,8 @@ public class UtilitiesActivity extends AppCompatActivity {
             if (db.dbSyncCount() != 0) {
                 prgDialog1.show();
                 params.put("usersJSON", db.composeJSONfromSQLite());
-                client.post(BASE_URL + "/alos/updateUser.php", params, new AsyncHttpResponseHandler() {
+                params.put("device", "FP07"); //TODO: find a way to make this dynamic
+                client.post(BASE_URL + "/alos/updateUserAndFinger.php", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(String response) {
                         System.out.println("=======" + response);
